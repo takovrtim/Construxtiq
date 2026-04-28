@@ -1,0 +1,440 @@
+;!function(){try { var e="undefined"!=typeof globalThis?globalThis:"undefined"!=typeof global?global:"undefined"!=typeof window?window:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&((e._debugIds|| (e._debugIds={}))[n]="41c70229-3ae2-18e3-e8cf-ad536efae7ee")}catch(e){}}();
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,744061,418638,e=>{"use strict";var t=e.i(478902),s=e.i(938933),a=e.i(843778);function n({children:e,className:s,tag:a="div",style:r}){let i=`${a}`;return(0,t.jsx)(i,{style:r,children:e})}n.Title=function({className:e,level:s=1,children:a,style:n}){let r=`h${s}`;return(0,t.jsx)(r,{style:n,children:a})},n.Text=function({className:e,children:s,style:a,type:n,disabled:r,mark:i,code:o,keyboard:l,underline:c,strikethrough:u,strong:m,small:d}){return o?(0,t.jsx)("code",{style:a,children:s}):i?(0,t.jsx)("mark",{style:a,children:s}):l?(0,t.jsx)("kbd",{style:a,children:s}):m?(0,t.jsx)("strong",{style:a,children:s}):(0,t.jsx)("span",{style:a,children:s})},n.Link=function({children:e,target:s="_blank",href:a,className:n,onClick:r,style:i}){return(0,t.jsx)("a",{onClick:r,href:a,target:s,rel:"noopener noreferrer",style:i,children:e})},e.s(["default",0,n],418638);var r=e.i(389959);let i=(0,r.createContext)({type:"text"}),o=e=>{let{type:s}=e;return(0,t.jsx)(i.Provider,{value:{type:s},children:e.children})},l=()=>{let e=(0,r.useContext)(i);if(void 0===e)throw Error("MenuContext must be used within a MenuContextProvider.");return e};function c({children:e,className:s,ulClassName:a,style:n,type:r="text"}){return(0,t.jsx)("nav",{role:"menu","aria-label":"Sidebar","aria-orientation":"vertical","aria-labelledby":"options-menu",className:s,style:n,children:(0,t.jsx)(o,{type:r,children:(0,t.jsx)("ul",{className:a,children:e})})})}c.Item=function({children:e,icon:n,active:r,rounded:i,onClick:o,doNotCloseOverlay:c=!1,showActiveBar:u=!1,style:m}){let d=(0,s.default)("menu"),{type:h}=l(),p=[d.item.base];p.push(d.item.variants[h].base),r?p.push(d.item.variants[h].active):p.push(d.item.variants[h].normal);let _=[d.item.content.base];r?_.push(d.item.content.active):_.push(d.item.content.normal);let g=[d.item.icon.base];return r?g.push(d.item.icon.active):g.push(d.item.icon.normal),(0,t.jsxs)("li",{role:"menuitem",className:(0,a.cn)("outline-none",p),style:m,onClick:o,"aria-current":r?"page":void 0,children:[n&&(0,t.jsx)("div",{className:`${g.join(" ")} min-w-fit`,children:n}),(0,t.jsx)("span",{className:_.join(" "),children:e})]})},c.Group=function({children:e,icon:a,title:n}){let r=(0,s.default)("menu"),{type:i}=l();return(0,t.jsxs)("div",{className:[r.group.base,r.group.variants[i]].join(" "),children:[a&&(0,t.jsx)("span",{className:r.group.icon,children:a}),(0,t.jsx)("span",{className:r.group.content,children:n}),e]})},c.Misc=function({children:e}){return(0,t.jsx)("div",{children:(0,t.jsx)(n.Text,{children:(0,t.jsx)("span",{children:e})})})},e.s(["default",0,c],744061)},862326,e=>{"use strict";var t=e.i(744061);e.s(["Menu",()=>t.default])},799793,e=>{"use strict";var t=e.i(478902),s=e.i(46492),a=e.i(587433),n=e.i(837710),r=e.i(862326);e.s(["ProductMenuItem",0,({item:e,isActive:i,target:o="_self",hoverText:l="",onClick:c})=>{let{name:u="",url:m="",icon:d,rightIcon:h,isExternal:p,label:_,disabled:g}=e,x=(0,t.jsx)(r.Menu.Item,{icon:d,active:i,onClick:c,children:(0,t.jsxs)("div",{className:"flex w-full items-center justify-between gap-1",children:[(0,t.jsxs)("div",{className:"flex items-center gap-1 min-w-0 flex-1",title:l||("string"==typeof u?u:""),children:[(0,t.jsx)("span",{className:"truncate flex-1 min-w-0",children:u}),void 0!==_&&(0,t.jsx)(a.Badge,{className:"flex-shrink-0",variant:"new"===_.toLowerCase()?"success":"warning",children:_})]}),h&&(0,t.jsx)("div",{children:h})]})});return g?(0,t.jsx)("div",{className:"opacity-50 pointer-events-none",children:x}):m?p?(0,t.jsx)(n.Button,{asChild:!0,block:!0,className:"!justify-start",type:"text",size:"small",icon:d,children:(0,t.jsx)(s.default,{href:m,target:"_blank",rel:"noreferrer",children:u})}):(0,t.jsx)(s.default,{href:m,className:"block",target:o,onClick:c,children:x}):x}])},388147,e=>{"use strict";var t=e.i(478902),s=e.i(587433),a=e.i(862326),n=e.i(799793);e.s(["ProductMenu",0,({page:e,menu:r,onItemClick:i})=>(0,t.jsx)("div",{className:"flex flex-col space-y-4",children:(0,t.jsx)(a.Menu,{type:"pills",children:r.map((o,l)=>(0,t.jsxs)("div",{children:[(0,t.jsx)("div",{className:"my-4 space-y-4",children:(0,t.jsxs)("div",{className:"md:mx-3",children:[(0,t.jsx)(a.Menu.Group,{title:o.title?(0,t.jsxs)("div",{className:"flex flex-col space-y-2 uppercase font-mono",children:[(0,t.jsx)("span",{children:o.title}),o.isPreview&&(0,t.jsx)(s.Badge,{variant:"warning",children:"Not production ready"})]}):null}),(0,t.jsx)("div",{children:o.items.map(s=>{let a=s.pages?s.pages.includes(e??""):e===s.key;return(0,t.jsx)(n.ProductMenuItem,{item:s,isActive:a,target:s.isExternal?"_blank":"_self",onClick:i},s.key)})})]})}),l!==r.length-1&&(0,t.jsx)("div",{className:"h-px w-[calc(100%-1.5rem)] mx-auto md:w-full bg-border-overlay"})]},o.key||o.title))})})])},852315,e=>{"use strict";let t=(0,e.i(388019).default)("ArrowUpRight",[["path",{d:"M7 7h10v10",key:"1tivn9"}],["path",{d:"M7 17 17 7",key:"1vkiza"}]]);e.s(["ArrowUpRight",0,t],852315)},737051,e=>{"use strict";e.i(128328);var t=e.i(657588),s=e.i(265735);let a=e=>{let a=(0,t.useFlag)(e),{data:n}=(0,s.useSelectedOrganizationQuery)(),r="string"==typeof a?a.split(",").map(e=>e.trim()):[];return!!r.includes("all")||r.includes(n?.slug??"")};e.s(["useIsETLBigQueryPrivateAlpha",0,()=>a("etlEnableBigQueryPrivateAlpha"),"useIsETLIcebergPrivateAlpha",0,()=>a("etlEnableIcebergPrivateAlpha"),"useIsETLPrivateAlpha",0,()=>{let e=a("etlEnableBigQueryPrivateAlpha"),t=a("etlEnableIcebergPrivateAlpha");return e||t}])},812136,e=>{"use strict";var t=e.i(478902),s=e.i(661416),a=e.i(825713);e.i(128328);var n=e.i(158639),r=e.i(852315),i=e.i(463333),o=e.i(737051),l=e.i(450972),c=e.i(144676),u=e.i(912793),m=e.i(635494),d=e.i(10429);let h=(0,t.jsx)(r.ArrowUpRight,{strokeWidth:1,className:"h-4 w-4"});var p=e.i(388147),_=e.i(951138);let g=()=>{let e=(0,s.useRouter)().pathname.split("/")[4],a=(()=>{let{ref:e}=(0,n.useParams)(),{data:t}=(0,m.useSelectedProjectQuery)(),{databaseReplication:s,databaseRoles:a,integrationsWrappers:r}=(0,u.useIsFeatureEnabled)(["database:replication","database:roles","integrations:wrappers"]),{data:p}=(0,l.useDatabaseExtensionsQuery)({projectRef:t?.ref,connectionString:t?.connectionString}),{data:_}=(0,c.useProjectAddonsQuery)({projectRef:t?.ref}),g=(p??[]).some(e=>"pg_net"===e.name),x=_?.selected_addons.some(e=>"pitr"===e.type)??!1,f=(0,i.useIsColumnLevelPrivilegesEnabled)(),j=(0,o.useIsETLPrivateAlpha)(),y=t=>`/project/${e}/database/${t}`;return[{title:"Database Management",items:[{name:"Schema Visualizer",key:"schemas",url:y("schemas")},{name:"Tables",key:"tables",url:y("tables")},{name:"Functions",key:"functions",url:y("functions")},{name:"Triggers",key:"triggers",url:y("triggers/data")},{name:"Enumerated Types",key:"types",url:y("types")},{name:"Extensions",key:"extensions",url:y("extensions")},{name:"Indexes",key:"indexes",url:y("indexes")},{name:"Publications",key:"publications",url:y("publications")}]},{title:"Configuration",items:[a&&{name:"Roles",key:"roles",url:y("roles")},f&&{name:"Column Privileges",key:"column-privileges",url:y("column-privileges")},{name:"Policies",key:"policies",url:`/project/${e}/auth/policies`,rightIcon:h},{name:"Settings",key:"settings",url:y("settings")}].filter(Boolean)},{title:"Platform",items:[d.IS_PLATFORM&&s&&{name:"Replication",key:"replication",url:y("replication"),label:j?"New":void 0},d.IS_PLATFORM&&{name:"Backups",key:"backups",url:y(x?"backups/pitr":"backups/scheduled")},{name:"Migrations",key:"migrations",url:y("migrations")},r&&{name:"Wrappers",key:"wrappers",url:`/project/${e}/integrations?category=wrapper`,rightIcon:h},g&&{name:"Database Webhooks",key:"hooks",url:`/project/${e}/integrations/webhooks/overview`,rightIcon:h}].filter(Boolean)},{title:"Tools",items:[{name:"Security Advisor",key:"security-advisor",url:`/project/${e}/advisors/security`,rightIcon:h},{name:"Performance Advisor",key:"performance-advisor",url:`/project/${e}/advisors/performance`,rightIcon:h},{name:"Query Performance",key:"query-performance",url:`/project/${e}/observability/query-performance`,rightIcon:h}]}]})();return(0,t.jsx)(p.ProductMenu,{page:e,menu:a})},x=(0,_.withAuth)(({children:e,title:s})=>(0,t.jsx)(a.ProjectLayout,{product:"Database",browserTitle:{section:s},productMenu:(0,t.jsx)(g,{}),isBlocking:!1,children:e}));e.s(["DatabaseProductMenu",0,g,"default",0,x],812136)},983783,e=>{"use strict";e.i(128328);var t=e.i(947748),s=e.i(158639),a=e.i(953333),n=e.i(389959);e.s(["useQuerySchemaState",0,()=>{var e;let{ref:r}=(0,s.useParams)(),i=window.localStorage&&r&&r.length>0&&window.localStorage.getItem(t.LOCAL_STORAGE_KEYS.LAST_SELECTED_SCHEMA(r))||"public",[o,l]=(e=(0,n.useMemo)(()=>i,[r]),(0,a.useQueryState)("schema",a.parseAsString.withDefault(e).withOptions({clearOnDefault:!1})));return(0,n.useEffect)(()=>{window.localStorage&&r&&r.length>0&&window.localStorage.setItem(t.LOCAL_STORAGE_KEYS.LAST_SELECTED_SCHEMA(r),o)},[o,r]),{selectedSchema:o,setSelectedSchema:l}}])},300424,e=>{"use strict";var t=e.i(478902),s=e.i(26898),a=e.i(370410),n=e.i(365257),r=e.i(544197),i=e.i(389959),o=e.i(178527),l=e.i(206413),c=e.i(592360),u=e.i(837710),m=e.i(866205),d=e.i(703526),h=e.i(917007),p=e.i(920432),_=e.i(549815),g=e.i(911509),x=e.i(996960),f=e.i(689805),j=e.i(793912),y=e.i(135144),b=e.i(396831),v=e.i(903248),k=e.i(801834),w=e.i(2579),S=e.i(635494);let E=({className:e,disabled:E=!1,size:N="tiny",showError:q=!0,selectedSchemaName:P,placeholderLabel:A="Choose a schema...",supportSelectAll:C=!1,excludedSchemas:T=[],stopScrollPropagation:R=!1,onSelectSchema:I,onSelectCreateSchema:D,align:L="start"})=>{let[O,M]=(0,i.useState)(!1),{can:z}=(0,w.useAsyncCheckPermissions)(s.PermissionAction.TENANT_SQL_ADMIN_WRITE,"schemas"),{data:$}=(0,S.useSelectedProjectQuery)(),{data:F,isPending:B,isSuccess:U,isError:W,error:H,refetch:Q}=(0,k.useSchemasQuery)({projectRef:$?.ref,connectionString:$?.connectionString}),G=(F||[]).filter(e=>!T.includes(e.name)).sort((e,t)=>e.name.localeCompare(t.name));return(0,t.jsxs)("div",{className:e,children:[B&&(0,t.jsx)(u.Button,{type:"default",className:"w-full [&>span]:w-full",size:N,disabled:!0,children:(0,t.jsx)(v.Skeleton,{className:"w-full h-3 bg-foreground-muted"})},"schema-selector-skeleton"),q&&W&&(0,t.jsxs)(o.Alert_Shadcn_,{variant:"warning",className:"!px-3 !py-3",children:[(0,t.jsx)(c.AlertTitle_Shadcn_,{className:"text-xs text-amber-900",children:"Failed to load schemas"}),(0,t.jsxs)(l.AlertDescription_Shadcn_,{className:"text-xs mb-2 break-words",children:["Error: ",H?.message]}),(0,t.jsx)(u.Button,{type:"default",size:"tiny",onClick:()=>Q(),children:"Reload schemas"})]}),U&&(0,t.jsxs)(f.Popover_Shadcn_,{open:O,onOpenChange:M,modal:!1,children:[(0,t.jsx)(y.PopoverTrigger_Shadcn_,{asChild:!0,children:(0,t.jsx)(u.Button,{size:N,disabled:E,type:"default","data-testid":"schema-selector",className:"w-full [&>span]:w-full !pr-1 space-x-1",iconRight:(0,t.jsx)(n.ChevronsUpDown,{className:"text-foreground-muted",strokeWidth:2,size:14}),children:P?(0,t.jsxs)("div",{className:"w-full flex gap-1",children:[(0,t.jsx)("p",{className:"text-foreground-lighter",children:"schema"}),(0,t.jsx)("p",{className:"text-foreground",children:"*"===P?"All schemas":P})]}):(0,t.jsx)("div",{className:"w-full flex gap-1",children:(0,t.jsx)("p",{className:"text-foreground-lighter",children:A})})})}),(0,t.jsx)(j.PopoverContent_Shadcn_,{className:"p-0 min-w-[200px] pointer-events-auto",side:"bottom",align:L,sameWidthAsTrigger:!0,children:(0,t.jsxs)(m.Command_Shadcn_,{children:[(0,t.jsx)(p.CommandInput_Shadcn_,{className:"text-xs",placeholder:"Find schema..."}),(0,t.jsxs)(g.CommandList_Shadcn_,{onWheel:R?e=>e.stopPropagation():void 0,children:[(0,t.jsx)(d.CommandEmpty_Shadcn_,{children:"No schemas found"}),(0,t.jsx)(h.CommandGroup_Shadcn_,{children:(0,t.jsxs)(b.ScrollArea,{className:(G||[]).length>7?"h-[210px]":"",children:[C&&(0,t.jsxs)(_.CommandItem_Shadcn_,{className:"cursor-pointer flex items-center justify-between space-x-2 w-full",onSelect:()=>{I("*"),M(!1)},onClick:()=>{I("*"),M(!1)},children:[(0,t.jsx)("span",{children:"All schemas"}),"*"===P&&(0,t.jsx)(a.Check,{className:"text-brand",strokeWidth:2,size:16})]},"select-all"),G.map(e=>(0,t.jsxs)(_.CommandItem_Shadcn_,{className:"cursor-pointer flex items-center justify-between space-x-2 w-full",onSelect:()=>{I(e.name),M(!1)},onClick:()=>{I(e.name),M(!1)},children:[(0,t.jsx)("span",{children:e.name}),P===e.name&&(0,t.jsx)(a.Check,{className:"text-brand",strokeWidth:2,size:16})]},e.id))]})}),void 0!==D&&z&&(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(x.CommandSeparator_Shadcn_,{}),(0,t.jsx)(h.CommandGroup_Shadcn_,{children:(0,t.jsxs)(_.CommandItem_Shadcn_,{className:"cursor-pointer flex items-center gap-x-2 w-full",onSelect:()=>{D(),M(!1)},onClick:()=>{D(),M(!1)},children:[(0,t.jsx)(r.Plus,{size:12}),"Create a new schema"]})})]})]})]})})]})]})};e.s(["SchemaSelector",0,E,"default",0,E])},610144,e=>{"use strict";e.i(850036);var t=e.i(53336),s=e.i(38429),a=e.i(356003),n=e.i(355901),r=e.i(667286),i=e.i(78162),o=e.i(714403);async function l({projectRef:e,connectionString:s,schema:a,name:n,version:r,cascade:i=!1,createSchema:c=!1}){let u=new Headers;s&&u.set("x-connection-encrypted",s);let m=(0,t.getEnableDatabaseExtensionSQL)({schema:a,name:n,version:r,cascade:i,createSchema:c}),{result:d}=await (0,o.executeSql)({projectRef:e,connectionString:s,sql:m,queryKey:["extension","create"]});return d}e.s(["useDatabaseExtensionEnableMutation",0,({onSuccess:e,onError:t,...o}={})=>{let c=(0,a.useQueryClient)();return(0,s.useMutation)({mutationFn:e=>l(e),async onSuccess(t,s,a){let{projectRef:n}=s;await Promise.all([c.invalidateQueries({queryKey:r.databaseExtensionsKeys.list(n)}),c.invalidateQueries({queryKey:i.configKeys.upgradeEligibility(n)})]),await e?.(t,s,a)},async onError(e,s,a){void 0===t?n.toast.error(`Failed to enable database extension: ${e.message}`):t(e,s,a)},...o})}])},888525,760255,284399,e=>{"use strict";var t=e.i(355901),s=e.i(714403),a=e.i(392491);function n(e=[]){return{hypopg:e.find(e=>"hypopg"===e.name),indexAdvisor:e.find(e=>"index_advisor"===e.name)}}async function r({projectRef:e,connectionString:a,indexStatements:n,onSuccess:i,onError:o}){if(!e){let e=Error("Project ref is required");return o&&o(e),Promise.reject(e)}if(0===n.length){let e=Error("No index statements provided");return o&&o(e),Promise.reject(e)}try{return await (0,s.executeSql)({projectRef:e,connectionString:a,sql:n.join(";\n")+";"}),t.toast.success("Successfully created index"),i&&i(),Promise.resolve()}catch(e){return t.toast.error(`Failed to create index: ${e.message}`),o&&o(e),Promise.reject(e)}}function i(e){return e&&0!==e.length?e.filter(e=>{let t=e.match(/ON\s+(?:"?(\w+)"?\.|(\w+)\.)/i);if(!t)return!0;let s=t[1]||t[2];return!s||!a.INTERNAL_SCHEMAS.includes(s.toLowerCase())}):[]}e.s(["calculateImprovement",0,function(e,t){if(void 0===e||void 0===t)return 0;let s=Number(e),a=Number(t);return s<=0||s<=a?0:(s-a)/s*100},"createIndexes",0,r,"filterProtectedSchemaIndexAdvisorResult",0,function(e){if(!e||!e.index_statements)return e??null;let t=i(e.index_statements);return 0===t.length?null:{...e,index_statements:t}},"filterProtectedSchemaIndexStatements",0,i,"getIndexAdvisorExtensions",0,n,"hasIndexRecommendations",0,function(e,t){return!!(t&&e?.index_statements&&e.index_statements.length>0)},"queryInvolvesProtectedSchemas",0,function(e){if(!e)return!1;let t=e.toLowerCase();return a.INTERNAL_SCHEMAS.some(e=>RegExp(`(?:from|join|update|insert\\s+into|delete\\s+from)\\s+(?:${e}\\.|"${e}"\\.)`,"i").test(t))}],760255);var o=e.i(450972),l=e.i(635494);e.s(["useIndexAdvisorStatus",0,function(){let{data:e}=(0,l.useSelectedProjectQuery)(),{data:t}=(0,o.useDatabaseExtensionsQuery)({projectRef:e?.ref,connectionString:e?.connectionString}),{hypopg:s,indexAdvisor:a}=n(t??[]),r=!!s&&!!a,i=r&&null!==s.installed_version&&null!==a.installed_version;return{isIndexAdvisorAvailable:r,isIndexAdvisorEnabled:i}}],888525);var c=e.i(478902),u=e.i(389959),m=e.i(232520),d=e.i(837710),h=e.i(610144),p=e.i(967052);e.s(["EnableIndexAdvisorButton",0,()=>{let e=(0,p.useTrack)(),{data:s}=(0,l.useSelectedProjectQuery)(),[a,r]=(0,u.useState)(!1),{data:i}=(0,o.useDatabaseExtensionsQuery)({projectRef:s?.ref,connectionString:s?.connectionString}),{hypopg:_,indexAdvisor:g}=n(i),{mutateAsync:x,isPending:f}=(0,h.useDatabaseExtensionEnableMutation)(),j=async()=>{if(void 0===s)return t.toast.error("Project is required");try{_?.installed_version===null&&await x({projectRef:s?.ref,connectionString:s?.connectionString,name:_.name,schema:_?.schema??"extensions",version:_.default_version}),g?.installed_version===null&&await x({projectRef:s?.ref,connectionString:s?.connectionString,name:g.name,schema:g?.schema??"extensions",version:g.default_version}),t.toast.success("Successfully enabled Index Advisor!"),r(!1)}catch(e){t.toast.error(`Failed to enable Index Advisor: ${e.message}`)}};return(0,c.jsxs)(m.AlertDialog,{open:a,onOpenChange:()=>r(!a),children:[(0,c.jsx)(m.AlertDialogTrigger,{asChild:!0,children:(0,c.jsx)(d.Button,{type:"primary",onClick:()=>e("index_advisor_banner_enable_button_clicked"),children:"Enable"})}),(0,c.jsxs)(m.AlertDialogContent,{children:[(0,c.jsxs)(m.AlertDialogHeader,{children:[(0,c.jsx)(m.AlertDialogTitle,{children:"Enable Index Advisor"}),(0,c.jsxs)(m.AlertDialogDescription,{children:["This will enable the ",(0,c.jsx)("code",{className:"text-code-inline",children:"index_advisor"})," and"," ",(0,c.jsx)("code",{className:"text-code-inline",children:"hypopg"})," Postgres extensions so Index Advisor can analyse queries and suggest performance-improving indexes."]})]}),(0,c.jsxs)(m.AlertDialogFooter,{children:[(0,c.jsx)(m.AlertDialogCancel,{children:"Cancel"}),(0,c.jsx)(m.AlertDialogAction,{onClick:t=>{t.preventDefault(),j(),e("index_advisor_dialog_enable_button_clicked")},disabled:f,children:f?"Enabling...":"Enable"})]})]})]})}],284399)},820308,775159,e=>{"use strict";var t,s,a=e.i(55956),n=((t={}).API="api",t.STORAGE="storage",t.AUTH="auth",t.QUERY_PERFORMANCE="query_performance",t.DATABASE="database",t);e.s(["Presets",()=>n],775159);var r=((s={}).LAST_10_MINUTES="Last 10 minutes",s.LAST_30_MINUTES="Last 30 minutes",s.LAST_60_MINUTES="Last 60 minutes",s.LAST_3_HOURS="Last 3 hours",s.LAST_24_HOURS="Last 24 hours",s.LAST_7_DAYS="Last 7 days",s.LAST_14_DAYS="Last 14 days",s.LAST_28_DAYS="Last 28 days",s);let i=[{text:"Last 10 minutes",calcFrom:()=>(0,a.default)().subtract(10,"minute").toISOString(),calcTo:()=>(0,a.default)().toISOString(),availableIn:["free","pro","team","enterprise","platform"]},{text:"Last 30 minutes",calcFrom:()=>(0,a.default)().subtract(30,"minute").toISOString(),calcTo:()=>(0,a.default)().toISOString(),availableIn:["free","pro","team","enterprise","platform"]},{text:"Last 60 minutes",calcFrom:()=>(0,a.default)().subtract(1,"hour").toISOString(),calcTo:()=>(0,a.default)().toISOString(),default:!0,availableIn:["free","pro","team","enterprise","platform"]},{text:"Last 3 hours",calcFrom:()=>(0,a.default)().subtract(3,"hour").toISOString(),calcTo:()=>(0,a.default)().toISOString(),availableIn:["free","pro","team","enterprise","platform"]},{text:"Last 24 hours",calcFrom:()=>(0,a.default)().subtract(1,"day").toISOString(),calcTo:()=>(0,a.default)().toISOString(),availableIn:["free","pro","team","enterprise","platform"]},{text:"Last 7 days",calcFrom:()=>(0,a.default)().subtract(7,"day").toISOString(),calcTo:()=>(0,a.default)().toISOString(),availableIn:["pro","team","enterprise"]},{text:"Last 14 days",calcFrom:()=>(0,a.default)().subtract(14,"day").toISOString(),calcTo:()=>(0,a.default)().toISOString(),availableIn:["team","enterprise"]},{text:"Last 28 days",calcFrom:()=>(0,a.default)().subtract(28,"day").toISOString(),calcTo:()=>(0,a.default)().toISOString(),availableIn:["team","enterprise"]}],o={iso_timestamp_start:i[0].calcFrom(),iso_timestamp_end:i[0].calcTo()},l=(e,t=!0)=>{if(0===e.length)return"";let s=e.map(e=>{let t=e.key.split("."),s=[t[t.length-2],t[t.length-1]].join("."),a=e.key.includes(".")?s:e.key,n=e.value.toString().includes('"')||e.value.toString().includes("'"),r=!isNaN(Number(e.value)),i=!r&&n?e.value:`'${e.value}'`,o=!r&&String(i).toLowerCase(),l=r?e.value:o;switch(e.compare){case"matches":return`REGEXP_CONTAINS(${a}, ${l})`;case"is":default:return`${a} = ${l}`;case"!=":return`${a} != ${l}`;case">=":return`${a} >= ${l}`;case"<=":return`${a} <= ${l}`;case">":return`${a} > ${l}`;case"<":return`${a} < ${l}`}}).filter(Boolean).join(" AND ");return""===s?"":t?"WHERE "+s:"AND "+s},c={[n.API]:{title:"API",queries:{totalRequests:{queryType:"logs",sql:e=>`
+        -- reports-api-total-requests
+        select
+          cast(timestamp_trunc(t.timestamp, hour) as datetime) as timestamp,
+          count(t.id) as count
+        FROM edge_logs t
+          cross join unnest(metadata) as m
+          cross join unnest(m.response) as response
+          cross join unnest(m.request) as request
+          cross join unnest(request.headers) as headers
+          ${l(e)}
+        GROUP BY
+          timestamp
+        ORDER BY
+          timestamp ASC`},topRoutes:{queryType:"logs",sql:e=>`
+        -- reports-api-top-routes
+        select
+          request.path as path,
+          request.method as method,
+          request.search as search,
+          response.status_code as status_code,
+          count(t.id) as count
+        from edge_logs t
+          cross join unnest(metadata) as m
+          cross join unnest(m.response) as response
+          cross join unnest(m.request) as request
+          cross join unnest(request.headers) as headers
+          ${l(e)}
+        group by
+          request.path, request.method, request.search, response.status_code
+        order by
+          count desc
+        limit 10
+        `},errorCounts:{queryType:"logs",sql:e=>`
+        -- reports-api-error-counts
+        select
+          cast(timestamp_trunc(t.timestamp, hour) as datetime) as timestamp,
+          count(t.id) as count
+        FROM edge_logs t
+          cross join unnest(metadata) as m
+          cross join unnest(m.response) as response
+          cross join unnest(m.request) as request
+          cross join unnest(request.headers) as headers
+        WHERE
+          response.status_code >= 400
+        ${l(e,!1)}
+        GROUP BY
+          timestamp
+        ORDER BY
+          timestamp ASC
+        `},topErrorRoutes:{queryType:"logs",sql:e=>`
+        -- reports-api-top-error-routes
+        select
+          request.path as path,
+          request.method as method,
+          request.search as search,
+          response.status_code as status_code,
+          count(t.id) as count
+        from edge_logs t
+          cross join unnest(metadata) as m
+          cross join unnest(m.response) as response
+          cross join unnest(m.request) as request
+          cross join unnest(request.headers) as headers
+        where
+          response.status_code >= 400
+        ${l(e,!1)}
+        group by
+          request.path, request.method, request.search, response.status_code
+        order by
+          count desc
+        limit 10
+        `},responseSpeed:{queryType:"logs",sql:e=>`
+        -- reports-api-response-speed
+        select
+          cast(timestamp_trunc(t.timestamp, hour) as datetime) as timestamp,
+          avg(response.origin_time) as avg
+        FROM
+          edge_logs t
+          cross join unnest(metadata) as m
+          cross join unnest(m.response) as response
+          cross join unnest(m.request) as request
+          cross join unnest(request.headers) as headers
+          ${l(e)}
+        GROUP BY
+          timestamp
+        ORDER BY
+          timestamp ASC
+      `},topSlowRoutes:{queryType:"logs",sql:e=>`
+        -- reports-api-top-slow-routes
+        select
+          request.path as path,
+          request.method as method,
+          request.search as search,
+          response.status_code as status_code,
+          count(t.id) as count,
+          avg(response.origin_time) as avg
+        from edge_logs t
+          cross join unnest(metadata) as m
+          cross join unnest(m.response) as response
+          cross join unnest(m.request) as request
+          cross join unnest(request.headers) as headers
+        ${l(e)}
+        group by
+          request.path, request.method, request.search, response.status_code
+        order by
+          avg desc
+        limit 10
+        `},networkTraffic:{queryType:"logs",sql:e=>`
+        -- reports-api-network-traffic
+        select
+          cast(timestamp_trunc(t.timestamp, hour) as datetime) as timestamp,
+          coalesce(
+            safe_divide(
+              sum(
+                cast(coalesce(headers.content_length, "0") as int64)
+              ),
+              1000000
+            ),
+            0
+          ) as ingress_mb,
+          coalesce(
+            safe_divide(
+              sum(
+                cast(coalesce(resp_headers.content_length, "0") as int64)
+              ),
+              1000000
+            ),
+            0
+          ) as egress_mb,
+        FROM
+          edge_logs t
+          cross join unnest(metadata) as m
+          cross join unnest(m.response) as response
+          cross join unnest(m.request) as request
+          cross join unnest(request.headers) as headers
+          cross join unnest(response.headers) as resp_headers
+          ${l(e)}
+        GROUP BY
+          timestamp
+        ORDER BY
+          timestamp ASC
+        `},requestsByCountry:{queryType:"logs",sql:e=>`
+        -- reports-api-requests-by-country
+        select
+          cf.country as country,
+          count(t.id) as count
+        from edge_logs t
+          cross join unnest(metadata) as m
+          cross join unnest(m.response) as response
+          cross join unnest(m.request) as request
+          cross join unnest(request.headers) as headers
+          cross join unnest(request.cf) as cf
+        where
+          cf.country is not null
+        ${l(e,!1)}
+        group by
+          cf.country
+        `}}},[n.AUTH]:{title:"",queries:{}},[n.STORAGE]:{title:"Storage",queries:{cacheHitRate:{queryType:"logs",sql:e=>`
+        -- reports-storage-cache-hit-rate
+SELECT
+  timestamp_trunc(timestamp, hour) as timestamp,
+  countif( h.cf_cache_status in ('HIT', 'STALE', 'REVALIDATED', 'UPDATING') ) as hit_count,
+  countif( h.cf_cache_status in ('MISS', 'NONE/UNKNOWN', 'EXPIRED', 'BYPASS', 'DYNAMIC') ) as miss_count
+from edge_logs f
+  cross join unnest(f.metadata) as m
+  cross join unnest(m.request) as r
+  cross join unnest(m.response) as res
+  cross join unnest(res.headers) as h
+where starts_with(r.path, '/storage/v1/object') and r.method = 'GET'
+  ${l(e,!1)}
+group by timestamp
+order by timestamp desc
+`},topCacheMisses:{queryType:"logs",sql:e=>`
+        -- reports-storage-top-cache-misses
+SELECT
+  r.path as path,
+  r.search as search,
+  count(id) as count
+from edge_logs f
+  cross join unnest(f.metadata) as m
+  cross join unnest(m.request) as r
+  cross join unnest(m.response) as res
+  cross join unnest(res.headers) as h
+where starts_with(r.path, '/storage/v1/object')
+  and r.method = 'GET'
+  and h.cf_cache_status in ('MISS', 'NONE/UNKNOWN', 'EXPIRED', 'BYPASS', 'DYNAMIC')
+  ${l(e,!1)}
+group by path, search
+order by count desc
+limit 12
+    `}}},[n.QUERY_PERFORMANCE]:{title:"Query performance",queries:{mostFrequentlyInvoked:{queryType:"db",sql:(e,t,s,a=!1,n=!1)=>`
+        -- reports-query-performance-most-frequently-invoked
+set search_path to public, extensions;
+
+select
+    auth.rolname,
+    statements.query,
+    statements.calls,
+    -- -- Postgres 13, 14, 15
+    statements.total_exec_time + statements.total_plan_time as total_time,
+    statements.min_exec_time + statements.min_plan_time as min_time,
+    statements.max_exec_time + statements.max_plan_time as max_time,
+    statements.mean_exec_time + statements.mean_plan_time as mean_time,
+    -- -- Postgres <= 12
+    -- total_time,
+    -- min_time,
+    -- max_time,
+    -- mean_time,
+    coalesce(statements.rows::numeric / nullif(statements.calls, 0), 0) as avg_rows,
+    statements.rows as rows_read,
+    case
+      when (statements.shared_blks_hit + statements.shared_blks_read) > 0
+      then round(
+        (statements.shared_blks_hit * 100.0) /
+        (statements.shared_blks_hit + statements.shared_blks_read),
+        2
+      )
+      else 0
+    end as cache_hit_rate${a?`,
+    case
+      when (lower(statements.query) like 'select%' or lower(statements.query) like 'with pgrst%')
+      then (
+        select json_build_object(
+          'has_suggestion', array_length(index_statements, 1) > 0,
+          'startup_cost_before', startup_cost_before,
+          'startup_cost_after', startup_cost_after,
+          'total_cost_before', total_cost_before,
+          'total_cost_after', total_cost_after,
+          'index_statements', index_statements
+        )
+        from index_advisor(statements.query)
+      )
+      else null
+    end as index_advisor_result`:""}
+  from pg_stat_statements as statements
+    inner join pg_authid as auth on statements.userid = auth.oid
+  -- skip queries that were never actually executed
+  WHERE statements.calls > 0 ${t?t.replace(/^WHERE/,"AND"):""}
+  ${s||"order by statements.calls desc"}
+  limit 20`},mostTimeConsuming:{queryType:"db",sql:(e,t,s,a=!1,n=!1)=>`
+        -- reports-query-performance-most-time-consuming
+set search_path to public, extensions;
+
+-- compute total time once up front so we don't need a window function over all rows
+with grand_total as (
+  select coalesce(nullif(sum(total_exec_time + total_plan_time), 0), 1) as v
+  from pg_stat_statements where calls > 0
+)
+select
+    auth.rolname,
+    statements.query,
+    statements.calls,
+    statements.total_exec_time + statements.total_plan_time as total_time,
+    statements.mean_exec_time + statements.mean_plan_time as mean_time,
+    coalesce(
+      ((statements.total_exec_time + statements.total_plan_time) /
+        (select v from grand_total)) *
+        100,
+      0
+    ) as prop_total_time${a?`,
+    case
+      when (lower(statements.query) like 'select%' or lower(statements.query) like 'with pgrst%')
+      then (
+        select json_build_object(
+          'has_suggestion', array_length(index_statements, 1) > 0,
+          'startup_cost_before', startup_cost_before,
+          'startup_cost_after', startup_cost_after,
+          'total_cost_before', total_cost_before,
+          'total_cost_after', total_cost_after,
+          'index_statements', index_statements
+        )
+        from index_advisor(statements.query)
+      )
+      else null
+    end as index_advisor_result`:""}
+  from pg_stat_statements as statements
+    inner join pg_authid as auth on statements.userid = auth.oid
+  -- skip queries that were never actually executed
+  WHERE statements.calls > 0 ${t?t.replace(/^WHERE/,"AND"):""}
+  ${s||"order by total_time desc"}
+  limit 20`},slowestExecutionTime:{queryType:"db",sql:(e,t,s,a=!1,n=!1)=>`
+        -- reports-query-performance-slowest-execution-time
+set search_path to public, extensions;
+
+select
+    auth.rolname,
+    statements.query,
+    statements.calls,
+    -- -- Postgres 13, 14, 15
+    statements.total_exec_time + statements.total_plan_time as total_time,
+    statements.min_exec_time + statements.min_plan_time as min_time,
+    statements.max_exec_time + statements.max_plan_time as max_time,
+    statements.mean_exec_time + statements.mean_plan_time as mean_time,
+    -- -- Postgres <= 12
+    -- total_time,
+    -- min_time,
+    -- max_time,
+    -- mean_time,
+    coalesce(statements.rows::numeric / nullif(statements.calls, 0), 0) as avg_rows${a?`,
+    case
+      when (lower(statements.query) like 'select%' or lower(statements.query) like 'with pgrst%')
+      then (
+        select json_build_object(
+          'has_suggestion', array_length(index_statements, 1) > 0,
+          'startup_cost_before', startup_cost_before,
+          'startup_cost_after', startup_cost_after,
+          'total_cost_before', total_cost_before,
+          'total_cost_after', total_cost_after,
+          'index_statements', index_statements
+        )
+        from index_advisor(statements.query)
+      )
+      else null
+    end as index_advisor_result`:""}
+  from pg_stat_statements as statements
+    inner join pg_authid as auth on statements.userid = auth.oid
+  -- skip queries that were never actually executed
+  WHERE statements.calls > 0 ${t?t.replace(/^WHERE/,"AND"):""}
+  ${s||"order by max_time desc"}
+  limit 20`},queryHitRate:{queryType:"db",sql:e=>`-- reports-query-performance-cache-and-index-hit-rate
+select
+    'index hit rate' as name,
+    (sum(idx_blks_hit)) / nullif(sum(idx_blks_hit + idx_blks_read),0) as ratio
+  from pg_statio_user_indexes
+  union all
+  select
+    'table hit rate' as name,
+    sum(heap_blks_hit) / nullif(sum(heap_blks_hit) + sum(heap_blks_read),0) as ratio
+  from pg_statio_user_tables;`},unified:{queryType:"db",sql:(e,t,s,a=!1,n=!1,r=1,i=20)=>{let o=(r-1)*i,l=n&&a?o+10*i:o+i,c=a?Math.min(l,500):l;return`
+        -- reports-query-performance-unified
+        set search_path to public, extensions;
+
+        -- compute total time once up front so we don't need a window function over all rows
+        with grand_total as (
+          select coalesce(nullif(sum(total_exec_time + total_plan_time), 0), 1) as v
+          from pg_stat_statements where calls > 0
+        ),
+        base as (
+          select
+            auth.rolname,
+            statements.query,
+            statements.calls,
+            statements.total_exec_time + statements.total_plan_time as total_time,
+            statements.min_exec_time + statements.min_plan_time as min_time,
+            statements.max_exec_time + statements.max_plan_time as max_time,
+            statements.mean_exec_time + statements.mean_plan_time as mean_time,
+            coalesce(statements.rows::numeric / nullif(statements.calls, 0), 0) as avg_rows,
+            statements.rows as rows_read,
+            statements.shared_blks_hit as debug_hit,
+            statements.shared_blks_read as debug_read,
+            case
+              when (statements.shared_blks_hit + statements.shared_blks_read) > 0
+              then (statements.shared_blks_hit::numeric * 100.0) /
+                   (statements.shared_blks_hit + statements.shared_blks_read)
+              else 0
+            end as cache_hit_rate,
+            coalesce(
+              ((statements.total_exec_time + statements.total_plan_time) /
+                (select v from grand_total)) *
+                100,
+              0
+            ) as prop_total_time
+          from pg_stat_statements as statements
+            inner join pg_authid as auth on statements.userid = auth.oid
+          -- skip queries that were never actually executed
+          WHERE statements.calls > 0 ${t?t.replace(/^WHERE/,"AND"):""}
+          ${s||"order by total_time desc"}
+          ${null!==c?`limit ${c}`:""}
+        ),
+        query_results as (
+          select
+            base.*${a?`,
+            case
+              when (lower(base.query) like 'select%' or lower(base.query) like 'with pgrst%')
+              then (
+                select json_build_object(
+                  'has_suggestion', array_length(index_statements, 1) > 0,
+                  'startup_cost_before', startup_cost_before,
+                  'startup_cost_after', startup_cost_after,
+                  'total_cost_before', total_cost_before,
+                  'total_cost_after', total_cost_after,
+                  'index_statements', index_statements
+                )
+                from index_advisor(base.query)
+              )
+              else null
+            end as index_advisor_result`:""}
+          from base
+        )
+        select *
+        from query_results
+        ${n&&a?"where (index_advisor_result->>'has_suggestion')::boolean = true":""}
+        ${s||"order by total_time desc"}
+        limit ${i} offset ${o}`}},slowQueriesCount:{queryType:"db",sql:()=>`
+        -- reports-query-performance-slow-queries-count
+        set search_path to public, extensions;
+
+        -- Count of slow queries (> 1 second average)
+        SELECT count(*) as slow_queries_count
+        -- alias needed to reference columns in WHERE
+        FROM pg_stat_statements as statements
+        -- skip never-executed queries; mean_exec_time > 1000ms = avg over 1 second
+        WHERE statements.calls > 0 AND statements.mean_exec_time > 1000;`},queryMetrics:{queryType:"db",sql:(e,t,s,a=!1,n=!1)=>`
+        -- reports-query-performance-metrics
+        set search_path to public, extensions;
+
+        SELECT
+          COALESCE(ROUND(AVG(statements.rows::numeric / NULLIF(statements.calls, 0)), 1), 0) as avg_rows_per_call,
+          COUNT(*) FILTER (WHERE statements.total_exec_time + statements.total_plan_time > 1000) as slow_queries,
+          COALESCE(
+            ROUND(
+              SUM(statements.shared_blks_hit) * 100.0 /
+              NULLIF(SUM(statements.shared_blks_hit + statements.shared_blks_read), 0),
+              2
+            ), 0
+          ) || '%' as cache_hit_rate
+        FROM pg_stat_statements as statements
+        -- skip queries that were never actually executed
+        WHERE statements.calls > 0 ${t?t.replace(/^WHERE/,"AND"):""}
+        ${s||""}`}}},[n.DATABASE]:{title:"database",queries:{largeObjects:{queryType:"db",sql:e=>`-- reports-database-large-objects
+SELECT
+        SCHEMA_NAME,
+        relname,
+        table_size
+      FROM
+        (SELECT
+          pg_catalog.pg_namespace.nspname AS SCHEMA_NAME,
+          relname,
+          pg_total_relation_size(pg_catalog.pg_class.oid) AS table_size
+        FROM pg_catalog.pg_class
+        JOIN pg_catalog.pg_namespace ON relnamespace = pg_catalog.pg_namespace.oid
+        ) t
+      WHERE SCHEMA_NAME NOT LIKE 'pg_%'
+      ORDER BY table_size DESC
+      LIMIT 5;`}}}};e.s(["DEFAULT_QUERY_PARAMS",0,o,"DEPRECATED_REPORTS",0,["total_realtime_ingress","total_rest_options_requests","total_auth_ingress","total_auth_get_requests","total_auth_post_requests","total_auth_patch_requests","total_auth_options_requests","total_storage_options_requests","total_storage_patch_requests","total_options_requests","total_rest_ingress","total_rest_get_requests","total_rest_post_requests","total_rest_patch_requests","total_rest_delete_requests","total_storage_get_requests","total_storage_post_requests","total_storage_delete_requests","total_auth_delete_requests","total_get_requests","total_patch_requests","total_post_requests","total_ingress","total_delete_requests"],"EDGE_FUNCTION_REGIONS",0,[{key:"ap-northeast-1",label:"Tokyo"},{key:"ap-northeast-2",label:"Seoul"},{key:"ap-south-1",label:"Mumbai"},{key:"ap-southeast-1",label:"Singapore"},{key:"ap-southeast-2",label:"Sydney"},{key:"ca-central-1",label:"Canada Central"},{key:"us-east-1",label:"N. Virginia"},{key:"us-west-1",label:"N. California"},{key:"us-west-2",label:"Oregon"},{key:"eu-central-1",label:"Frankfurt"},{key:"eu-west-1",label:"Ireland"},{key:"eu-west-2",label:"London"},{key:"eu-west-3",label:"Paris"},{key:"sa-east-1",label:"São Paulo"}],"LAYOUT_COLUMN_COUNT",0,2,"PRESET_CONFIG",0,c,"REPORTS_DATEPICKER_HELPERS",0,i,"REPORT_DATERANGE_HELPER_LABELS",()=>r,"generateRegexpWhere",0,l],820308)},749199,e=>{"use strict";var t=e.i(242882),s=e.i(820308),a=e.i(150671),n=e.i(714403),r=e.i(635494),i=e.i(189329);e.s(["default",0,({sql:e,params:o=s.DEFAULT_QUERY_PARAMS,where:l,orderBy:c})=>{let{data:u}=(0,r.useSelectedProjectQuery)(),m=(0,i.useDatabaseSelectorStateSnapshot)(),{data:d}=(0,a.useReadReplicasQuery)({projectRef:u?.ref}),h=(d||[]).find(e=>e.identifier===m.selectedDatabaseId)?.connectionString,p=m.selectedDatabaseId,_="function"==typeof e?e([]):e,{data:g,error:x,isPending:f,isRefetching:j,refetch:y}=(0,t.useQuery)({queryKey:["projects",u?.ref,"db",{...o,sql:_,identifier:p},l,c],queryFn:({signal:e})=>(0,n.executeSql)({projectRef:u?.ref,connectionString:h||u?.connectionString,sql:_},e).then(e=>e.result),enabled:!!_,refetchOnWindowFocus:!1,refetchOnReconnect:!1});return{error:x||("object"==typeof g?g?.error:""),data:g,isLoading:f,isRefetching:j,params:o,runQuery:y,resolvedSql:_}}])},194576,e=>{"use strict";var t=e.i(478902),s=e.i(221287),a=e.i(938933);let n=({open:e,children:a,className:n,...r})=>(0,t.jsx)(s.Root,{asChild:r.asChild,defaultOpen:r.defaultOpen,open:e,onOpenChange:r.onOpenChange,disabled:r.disabled,className:n,children:a});n.Trigger=function({children:e,asChild:a}){return(0,t.jsx)(s.Trigger,{asChild:a,children:e})},n.Content=function({asChild:e,children:n,className:r}){let i=(0,a.default)("collapsible");return(0,t.jsx)(s.Content,{asChild:e,className:[i.content,r].join(" "),children:n})},e.s(["default",0,n])},58359,e=>{"use strict";var t=e.i(194576);e.s(["Collapsible",()=>t.default])},698175,e=>{"use strict";var t=e.i(478902),s=e.i(753515),a=e.i(440401),n=e.i(701823),r=e.i(938933);function i({autoComplete:e,autofocus:o,children:l,className:c,descriptionText:u,disabled:m,error:d,icon:h,id:p="",inputRef:_,label:g,afterLabel:x,beforeLabel:f,labelOptional:j,layout:y,name:b="",placeholder:v,required:k,value:w,defaultValue:S,style:E,size:N="medium",borderless:q=!1,validation:P,...A}){let C=(0,r.default)("select"),T=[C.container];c&&T.push(c);let R=[C.base];return d&&R.push(C.variants.error),d||R.push(C.variants.standard),h&&R.push(C.with_icon[N]),N&&R.push(C.size[N]),m&&R.push(C.disabled),(0,t.jsx)(s.FormLayout,{label:g,afterLabel:x,beforeLabel:f,labelOptional:j,layout:y,id:p,error:d,descriptionText:u,className:c,style:E,size:N,children:(0,t.jsxs)("div",{className:C.container,children:[(0,t.jsx)("select",{id:p,name:b,"data-size":N,defaultValue:S,autoComplete:e,autoFocus:o,className:R.join(" "),ref:_,value:w,disabled:m,required:k,placeholder:v,...A,children:l}),h&&(0,t.jsx)(n.default,{size:N,icon:h}),d&&(0,t.jsx)("div",{className:C.actions_container,children:d&&(0,t.jsx)(a.default,{size:N})}),(0,t.jsx)("span",{className:C.chevron_container,children:(0,t.jsx)("svg",{className:C.chevron,xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 20 20",fill:"currentColor","aria-hidden":"true",children:(0,t.jsx)("path",{fillRule:"evenodd",d:"M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z",clipRule:"evenodd"})})})]})})}i.Option=function({value:e,children:s,selected:a}){return(0,t.jsx)("option",{value:e,selected:a,children:s})},i.OptGroup=function({label:e,children:s}){return(0,t.jsx)("optgroup",{label:e,children:s})},e.s(["default",0,i])},384429,e=>{"use strict";var t=e.i(698175);e.s(["Select",()=>t.default])},870152,e=>{"use strict";var t=e.i(532480);e.s(["InfoIcon",()=>t.default])},241603,990275,e=>{"use strict";var t=e.i(726359);e.s(["zoom",()=>t.default],241603);var s=e.i(249355);e.s(["zoomIdentity",()=>s.identity],990275)},722738,861439,e=>{"use strict";var t=e.i(388019);let s=(0,t.default)("Diamond",[["path",{d:"M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41l-7.59-7.59a2.41 2.41 0 0 0-3.41 0Z",key:"1f1r0c"}]]);e.s(["DiamondIcon",0,s],722738);let a=(0,t.default)("Fingerprint",[["path",{d:"M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4",key:"1nerag"}],["path",{d:"M14 13.12c0 2.38 0 6.38-1 8.88",key:"o46ks0"}],["path",{d:"M17.29 21.02c.12-.6.43-2.3.5-3.02",key:"ptglia"}],["path",{d:"M2 12a10 10 0 0 1 18-6",key:"ydlgp0"}],["path",{d:"M2 16h.01",key:"1gqxmh"}],["path",{d:"M21.8 16c.2-2 .131-5.354 0-6",key:"drycrb"}],["path",{d:"M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2",key:"1tidbn"}],["path",{d:"M8.65 22c.21-.66.45-1.32.57-2",key:"13wd9y"}],["path",{d:"M9 6.8a6 6 0 0 1 9 5.2v2",key:"1fr1j5"}]]);e.s(["Fingerprint",0,a],861439)},672296,e=>{"use strict";e.s(["sanitizeArrayOfObjects",0,function(e,t={}){let{maxDepth:s=3,redaction:a="[REDACTED]",truncationNotice:n="[REDACTED: max depth reached]",sensitiveKeys:r=[]}=t,i=new Set(["password","passwd","pwd","pass","secret","token","id_token","access_token","refresh_token","apikey","api_key","api-key","apiKey","key","privatekey","private_key","client_secret","clientSecret","auth","authorization","ssh_key","sshKey","bearer","session","cookie","csrf","xsrf","ip","ip_address","ipAddress","aws_access_key_id","aws_secret_access_key","gcp_service_account_key",...r].map(e=>e.toLowerCase())),o=[{re:/\b(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)\b/g,reason:"ip"},{re:/\b(?:[A-Fa-f0-9]{1,4}:){2,7}[A-Fa-f0-9]{1,4}\b/g,reason:"ip6"},{re:/\b(AKI|ASI)A[0-9A-Z]{16}\b/g,reason:"aws_access_key_id"},{re:/\b[0-9A-Za-z/+]{40}\b/g,reason:"aws_secret_access_key_like"},{re:/\bBearer\s+[A-Za-z0-9\-._~+/]+=*\b/g,reason:"bearer"},{re:/\b[A-Za-z0-9-_]+?\.[A-Za-z0-9-_]+?\.[A-Za-z0-9-_]+?\b/g,reason:"jwt_like"},{re:/\b[A-Za-z0-9_\-]{24,64}\b/g,reason:"long_token"}],l=new WeakMap;function c(e){let t=e;for(let{re:e}of o)t=t.replace(e,a);return t}function u(e){return i.has(String(e).toLowerCase())}return e.map(e=>(function e(t,r){if(null==t||"number"==typeof t||"boolean"==typeof t||"bigint"==typeof t)return t;if("string"==typeof t)return c(t);if("function"==typeof t)return"[Function]";if(t instanceof Date)return t.toISOString();if(t instanceof RegExp)return t.toString();if(ArrayBuffer.isView(t)&&!(t instanceof DataView))return`[TypedArray byteLength=${t.byteLength}]`;if(t instanceof ArrayBuffer)return`[ArrayBuffer byteLength=${t.byteLength}]`;if(r>=s)return n;if("object"==typeof t){if(l.has(t))return"[Circular]";if(Array.isArray(t)){let s=[];l.set(t,s);for(let a=0;a<t.length;a++)s[a]=e(t[a],r+1);return s}if(function(e){if(null===e||"object"!=typeof e)return!1;let t=Object.getPrototypeOf(e);return t===Object.prototype||null===t}(t)){let s={};for(let[n,i]of(l.set(t,s),Object.entries(t)))u(n)?s[n]=a:s[n]=e(i,r+1);return s}if(t instanceof Map){let s=[];for(let[n,i]of(l.set(t,s),t.entries())){let t=u(n)?a:e(n,r+1),o=u(n)?a:e(i,r+1);s.push([t,o])}return s}if(t instanceof Set){let s=[];for(let a of(l.set(t,s),t.values()))s.push(e(a,r+1));return s}if(t instanceof URL)return t.toString();if(t instanceof Error){let e={name:t.name,message:c(t.message),stack:n};return l.set(t,e),e}try{return c(String(t))}catch{return c(Object.prototype.toString.call(t))}}return c(String(t))})(e,0))},"sanitizeUrlHashParams",0,function(e){return e.split("#")[0]}])},675811,996941,835453,648596,479675,e=>{"use strict";let t="u"<typeof __SENTRY_DEBUG__||__SENTRY_DEBUG__;e.s(["DEBUG_BUILD",0,t],675811);var s=e.i(469449);function a(e){let t={};try{e.forEach((e,s)=>{"string"==typeof e&&(t[s]=e)})}catch{}return t}function n(e){let t=Object.create(null);try{Object.entries(e).forEach(([e,s])=>{"string"==typeof s&&(t[e]=s)})}catch{}return t}function r(e){let t=e.headers||{},s=("string"==typeof t["x-forwarded-host"]?t["x-forwarded-host"]:void 0)||("string"==typeof t.host?t.host:void 0),a=("string"==typeof t["x-forwarded-proto"]?t["x-forwarded-proto"]:void 0)||e.protocol||(e.socket?.encrypted?"https":"http"),r=e.url||"",o=function({url:e,protocol:t,host:s}){return e?.startsWith("http")?e:e&&s?`${t}://${s}${e}`:void 0}({url:r,host:s,protocol:a}),l=e.body||void 0,c=e.cookies;return{url:o,method:e.method,query_string:i(r),headers:n(t),cookies:c,data:l}}function i(e){if(e)try{let t=new URL(e,"http://s.io").search.slice(1);return t.length?t:void 0}catch{return}}e.s(["headersToDict",0,n,"httpRequestToRequestData",0,r,"winterCGHeadersToDict",0,a,"winterCGRequestToRequestData",0,function(e){let t=a(e.headers);return{method:e.method,url:e.url,query_string:i(e.url),headers:t}}],996941);var o=e.i(817729),l=e.i(40108);function c(e){let t=l.GLOBAL_OBJ[Symbol.for("@vercel/request-context")],s=t?.get?.();s?.waitUntil&&s.waitUntil(e)}e.s(["vercelWaitUntil",0,c],835453);var u=e.i(521852);async function m(){try{t&&u.debug.log("Flushing events..."),await (0,o.flush)(2e3),t&&u.debug.log("Done flushing events")}catch(e){t&&u.debug.log("Error while flushing events:\n",e)}}async function d(e){let{req:t,res:a,err:n}=e,i=a?.statusCode||e.statusCode;if(i&&i<500||!e.pathname)return Promise.resolve();(0,s.withScope)(e=>{if(t){let s=r(t);e.setSDKProcessingMetadata({normalizedRequest:s})}(0,o.captureException)(n||`_error.js called with falsy error (${n})`,{mechanism:{type:"auto.function.nextjs.underscore_error",handled:!1,data:{function:"_error.getInitialProps"}}})}),c(m())}e.s(["flushSafelyWithTimeout",0,m],648596),e.s(["captureUnderscoreErrorException",0,d],479675)},113478,e=>{"use strict";var t=e.i(478902),s=e.i(875102),a=e.i(26898),n=e.i(370410),r=e.i(816467),i=e.i(786741),o=e.i(774803),l=e.i(544197),c=e.i(896975),u=e.i(46492),m=e.i(389959);e.i(128328);var d=e.i(947748),h=e.i(158639),p=e.i(232520),_=e.i(837710),g=e.i(375761),x=e.i(874311),f=e.i(710483),j=e.i(565066),y=e.i(455915),b=e.i(3036),v=e.i(710377),k=e.i(587433),w=e.i(843778);let S=(0,m.createContext)(null),E=({children:e,value:s})=>(0,t.jsx)(S.Provider,{value:s,children:e}),N=()=>{let e=(0,m.useContext)(S);if(!e)throw Error("useSchemaGraphContext must be used inside a <SchemaGraphContextProvider>");return e};var q=e.i(983783),P=e.i(804222);let A=({id:e,animated:a,data:n,deletable:r,selectable:i,source:o,sourceX:l,sourceY:c,sourceHandleId:u,sourcePosition:m=y.Position.Bottom,target:d,targetX:h,targetY:p,targetHandleId:_,targetPosition:g=y.Position.Top,selected:x,pathOptions:f,...j})=>{let{isDownloading:b}=N(),[v,k,S]=(0,y.getSmoothStepPath)({sourceX:l,sourceY:c,targetX:h,targetY:p,sourcePosition:m,targetPosition:g,borderRadius:f?.borderRadius,offset:f?.offset,stepPosition:f?.stepPosition});return(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(s.BaseEdge,{id:e,path:v,className:(0,w.cn)(x?"!stroke-brand":b?"!stroke-black":void 0),stroke:"#000000",...j}),n&&x?(0,t.jsx)(C,{source:o,target:d,edgePath:v,labelX:k,labelY:S,sourceX:l,targetX:h,data:n}):null]})},C=({data:e,edgePath:a,source:n,target:r,labelX:i,labelY:o,targetX:l,sourceX:c})=>{let[u,d]=(0,m.useState)(!1),h=(0,s.useReactFlow)(),p=(0,P.useStaticEffectEvent)(e=>{if(!e)return;let t=h.getNode(n),s=h.getNode(r);if(!t||!s)return;let a=e.getBoundingClientRect(),i=h.screenToFlowPosition({x:a.x,y:a.y}),o=h.screenToFlowPosition({x:a.x+a.width,y:a.y+a.height}),l={x:i.x,y:i.y,width:o.x-i.x,height:o.y-i.y},c=h.isNodeIntersecting(t,l),u=h.isNodeIntersecting(s,l);d(!c&&!u)});return(0,t.jsx)(s.EdgeLabelRenderer,{children:(0,t.jsx)(k.Badge,{ref:p,className:(0,w.cn)("absolute pointer-events-auto z-50 p-1 rounded-[4px] gap-1 outline outline-1 outline-brand",u?"opacity-100":"opacity-0"),style:{transform:`translate(-50%, -50%) translate(${i}px, ${o}px)`},children:c<l?(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(T,{schema:e.sourceSchemaName,table:e.sourceName,column:e.sourceColumnName}),(0,t.jsx)(v.ArrowRight,{size:12}),(0,t.jsx)(T,{schema:e.targetSchemaName,table:e.targetName,column:e.targetColumnName})]}):(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(T,{schema:e.targetSchemaName,table:e.targetName,column:e.targetColumnName}),(0,t.jsx)(b.ArrowLeft,{size:12}),(0,t.jsx)(T,{schema:e.sourceSchemaName,table:e.sourceName,column:e.sourceColumnName})]})})})},T=({schema:e,table:s,column:a})=>{let{selectedSchema:n}=(0,q.useQuerySchemaState)();return(0,t.jsxs)(k.Badge,{className:"normal-case text-[8px]",children:[n===e?"":`${e}.`,s,".",a]})};var R=e.i(722738),I=e.i(861439),D=e.i(116746),L=e.i(546024);let O=()=>(0,t.jsx)("div",{className:"absolute bottom-0 left-0 border-t flex justify-center px-1 py-2 shadow-md bg-surface-100 w-full z-10",children:(0,t.jsxs)("ul",{className:"flex flex-wrap  items-center justify-center gap-4",children:[(0,t.jsxs)("li",{className:"flex items-center text-xs font-mono gap-1",children:[(0,t.jsx)(L.Key,{size:15,strokeWidth:1.5,className:"flex-shrink-0 text-light"}),"Primary key"]}),(0,t.jsxs)("li",{className:"flex items-center text-xs font-mono gap-1",children:[(0,t.jsx)(D.Hash,{size:15,strokeWidth:1.5,className:"flex-shrink-0 text-light"}),"Identity"]}),(0,t.jsxs)("li",{className:"flex items-center text-xs font-mono gap-1",children:[(0,t.jsx)(I.Fingerprint,{size:15,strokeWidth:1.5,className:"flex-shrink-0 text-light"}),"Unique"]}),(0,t.jsxs)("li",{className:"flex items-center text-xs font-mono gap-1",children:[(0,t.jsx)(R.DiamondIcon,{size:15,strokeWidth:1.5,className:"flex-shrink-0 text-light"}),"Nullable"]}),(0,t.jsxs)("li",{className:"flex items-center text-xs font-mono gap-1",children:[(0,t.jsx)(R.DiamondIcon,{size:15,strokeWidth:1.5,fill:"currentColor",className:"flex-shrink-0 text-light"}),"Non-Nullable"]})]})});var M=e.i(971104),z=e.i(539256);e.i(481541);var $=e.i(71981),F=e.i(53071),B=e.i(870152),U=e.i(471998),W=e.i(219195),H=e.i(661416),Q=e.i(613580),G=e.i(19583),Y=e.i(2579),K=e.i(635494);let V=({id:e,data:n,targetPosition:i,sourcePosition:o,placeholder:l})=>{let c="!h-px !w-px !min-w-0 !min-h-0 !cursor-grab !border-0 !opacity-0",u=N(),{data:m}=(0,K.useSelectedProjectQuery)(),{can:d}=(0,Y.useAsyncCheckPermissions)(a.PermissionAction.TENANT_SQL_ADMIN_WRITE,"columns"),h=(0,H.useRouter)(),p="h-[22px]",f=u.selectedEdge?.source===e||u.selectedEdge?.target===e;return(0,t.jsx)("article",{children:n.isForeign?(0,t.jsxs)("header",{className:(0,w.cn)("text-[0.55rem] px-2 py-1 border-[0.5px] rounded-[4px] bg-alternative flex gap-1 items-center",f?"outline outline-1 outline-brand":void 0),children:[n.name,i&&(0,t.jsx)(s.Handle,{type:"target",id:n.name,position:i,className:(0,w.cn)(c)})]}):(0,t.jsxs)("div",{className:(0,w.cn)("border-[0.5px] overflow-hidden rounded-[4px] shadow-sm",f?"outline outline-1 outline-brand":void 0),style:{width:160},children:[(0,t.jsxs)("header",{className:(0,w.cn)("text-[0.55rem] pl-2 pr-1 bg-alternative flex gap-2 items-center justify-between",p),children:[(0,t.jsxs)("div",{className:"min-w-0 flex flex-shrink gap-x-1 items-center",children:[(0,t.jsx)(W.Table2,{strokeWidth:1,size:12,className:"text-light"}),(0,t.jsx)("span",{className:"whitespace-nowrap overflow-hidden text-ellipsis",title:n.name,children:n.name})]}),u.isDownloading?null:(0,t.jsxs)("div",{className:"flex flex-shrink-0 items-center gap-2",children:[n.description&&(0,t.jsxs)(Q.Tooltip,{children:[(0,t.jsx)(Q.TooltipTrigger,{asChild:!0,className:"cursor-default ",children:(0,t.jsx)(B.InfoIcon,{size:10,className:"text-light"})}),(0,t.jsx)(Q.TooltipContent,{side:"top",children:n.description})]}),!l&&(0,t.jsxs)(x.DropdownMenu,{children:[(0,t.jsx)(x.DropdownMenuTrigger,{asChild:!0,children:(0,t.jsxs)(_.Button,{type:"text",className:"px-0 w-[16px] h-[16px] rounded nodrag nopan",children:[(0,t.jsx)(U.MoreVertical,{size:10}),(0,t.jsxs)("span",{className:"sr-only",children:[n.name," actions"]})]})}),(0,t.jsxs)(x.DropdownMenuContent,{side:"bottom",align:"end",className:"w-40",children:[(0,t.jsxs)(x.DropdownMenuItem,{className:"flex items-center space-x-2 whitespace-nowrap",onClick:()=>u.onEditTable(n.id),children:[(0,t.jsx)(F.Edit,{size:12}),(0,t.jsx)("p",{children:"Edit table"})]}),(0,t.jsxs)(x.DropdownMenuItem,{className:"flex items-center space-x-2 whitespace-nowrap",onClick:e=>{e.stopPropagation(),(0,g.copyToClipboard)(n.name)},children:[(0,t.jsx)(r.Copy,{size:12}),(0,t.jsx)("span",{children:"Copy name"})]}),(0,t.jsxs)(x.DropdownMenuItem,{className:"flex items-center space-x-2 whitespace-nowrap",onClick:()=>h.push((0,G.buildTableEditorUrl)({projectRef:m?.ref,tableId:n.id,schema:n.schema})),children:[(0,t.jsx)($.TableEditor,{size:12}),(0,t.jsx)("p",{children:"View in Table Editor"})]})]})]})]})]}),n.columns.map(e=>(0,t.jsxs)("div",{className:(0,w.cn)("text-[8px] leading-5 relative flex flex-row justify-items-start","bg-surface-100","border-t","border-t-[0.5px]","hover:bg-scale-500 transition cursor-default","group","pr-1",p),"data-testid":`${n.name}/${e.name}`,children:[(0,t.jsxs)("div",{className:(0,w.cn)("gap-[0.24rem] flex mx-2 align-middle items-center justify-start",e.isPrimary&&"basis-1/5"),children:[e.isPrimary&&(0,t.jsx)(L.Key,{size:8,strokeWidth:1,className:(0,w.cn)("flex-shrink-0","text-light")}),e.isNullable&&(0,t.jsx)(R.DiamondIcon,{size:8,strokeWidth:1,className:"flex-shrink-0 text-light"}),!e.isNullable&&(0,t.jsx)(R.DiamondIcon,{size:8,strokeWidth:1,fill:"currentColor",className:"flex-shrink-0 text-light"}),e.isUnique&&(0,t.jsx)(I.Fingerprint,{size:8,strokeWidth:1,className:"flex-shrink-0 text-light"}),e.isIdentity&&(0,t.jsx)(D.Hash,{size:8,strokeWidth:1,className:"flex-shrink-0 text-light"})]}),(0,t.jsxs)("div",{className:"flex w-full justify-between min-w-0",children:[(0,t.jsx)("span",{className:(0,w.cn)("text-ellipsis overflow-hidden whitespace-nowrap min-w-0 max-w-[80%]",u.selectedEdge?.sourceHandle===e.id||u.selectedEdge?.targetHandle===e.id?"text-brand":void 0),title:e.name,children:e.name}),(0,t.jsx)("span",{className:"flex-shrink-0 pl-2 pr-1 inline-flex justify-end font-mono text-lighter text-[0.4rem] group-hover:hidden",children:e.format})]}),i&&(0,t.jsx)(s.Handle,{type:"target",id:e.id,position:i,className:(0,w.cn)(c)}),o&&(0,t.jsx)(s.Handle,{type:"source",id:e.id,position:o,className:(0,w.cn)(c)}),(0,t.jsxs)(x.DropdownMenu,{children:[(0,t.jsx)(x.DropdownMenuTrigger,{asChild:!0,children:(0,t.jsxs)(_.Button,{type:"text",className:"opacity-0 focus:opacity-100 group-hover:opacity-100 data-[state=open]:opacity-100 absolute right-0 top-1/2 -translate-y-1/2 px-0 mr-1 w-[16px] h-[16px] rounded",children:[(0,t.jsx)(U.MoreVertical,{size:10}),(0,t.jsxs)("span",{className:"sr-only",children:[n.name," ",e.name," actions"]})]})}),(0,t.jsxs)(x.DropdownMenuContent,{side:"bottom",align:"end",className:"w-32",children:[(0,t.jsxs)(Q.Tooltip,{children:[(0,t.jsx)(Q.TooltipTrigger,{asChild:!0,children:(0,t.jsxs)(x.DropdownMenuItem,{disabled:!d,onClick:()=>u.onEditColumn(n.id,e.id),className:"space-x-2",children:[(0,t.jsx)(F.Edit,{size:12}),(0,t.jsx)("p",{children:"Edit column"})]})}),!d&&(0,t.jsx)(Q.TooltipContent,{side:"bottom",children:"Additional permissions required to edit column"})]}),(0,t.jsxs)(x.DropdownMenuItem,{className:"space-x-2",onClick:t=>{t.stopPropagation(),(0,g.copyToClipboard)(e.name)},children:[(0,t.jsx)(r.Copy,{size:12}),(0,t.jsx)("span",{children:"Copy name"})]})]})]})]},e.id))]})})};var Z=e.i(48189);async function X(e,t,s){if(!s?.length)return{nodes:[],edges:[]};let a=s.map(t=>{let s=(t.columns||[]).map(e=>({id:e.id,isPrimary:t.primary_keys.some(t=>t.name===e.name),name:e.name,format:e.format,isNullable:e.is_nullable,isUnique:e.is_unique,isUpdateable:e.is_updatable,isIdentity:e.is_identity}));return{data:{ref:e,id:t.id,name:t.name,description:t.comment??"",schema:t.schema,isForeign:!1,columns:s},id:`${t.id}`,type:"table",position:{x:0,y:0}}}),n=[],r=s[0].schema;for(let t of(0,z.default)(s.flatMap(e=>e.relationships),"id")){if(t.source_schema!==r)continue;if(t.target_table_schema!==r){let r=`${t.target_table_schema}.${t.target_table_name}.${t.target_column_name}`;if(!a.find(e=>e.id===r)){let s={id:t.id,ref:e,schema:t.target_table_schema,name:r,description:"",isForeign:!0,columns:[]};a.push({id:r,type:"table",data:s,position:{x:0,y:0}})}let[i,o]=J(s,t.source_table_name,t.source_column_name);i&&n.push({id:String(t.id),source:i,sourceHandle:o,target:r,targetHandle:r,deletable:!1,data:{sourceName:t.source_table_name,sourceSchemaName:t.source_schema,sourceColumnName:t.source_column_name,targetName:t.target_table_name,targetSchemaName:t.target_table_schema,targetColumnName:t.target_column_name}});continue}let[i,o]=J(s,t.source_table_name,t.source_column_name),[l,c]=J(s,t.target_table_name,t.target_column_name);i&&l&&n.push({id:String(t.id),source:i,sourceHandle:o,target:l,targetHandle:c,type:"default",data:{sourceName:t.source_table_name,sourceSchemaName:t.source_schema,sourceColumnName:t.source_column_name,targetName:t.target_table_name,targetSchemaName:t.target_table_schema,targetColumnName:t.target_column_name}})}let i=localStorage.getItem(d.LOCAL_STORAGE_KEYS.SCHEMA_VISUALIZER_POSITIONS(e??"project",t?.id??0)),o=(0,Z.tryParseJson)(i);return o?et(a,n,o):ee(a,n)}function J(e,t,s){for(let a of e)if(t===a.name){for(let e of a.columns||[])if(s===e.name)return[String(a.id),e.id]}return[]}let ee=(e,t)=>{let s=new M.default.graphlib.Graph;return s.setDefaultEdgeLabel(()=>({})),s.setGraph({rankdir:"LR",align:"UR",nodesep:25,ranksep:50}),e.forEach(e=>{s.setNode(e.id,{width:160,height:20*(e.data.columns.length+1)})}),t.forEach(e=>{s.setEdge(e.source,e.target)}),M.default.layout(s),e.forEach(e=>{let t=s.node(e.id);return e.targetPosition=y.Position.Left,e.sourcePosition=y.Position.Right,e.position={x:t.x-t.width/2,y:t.y-t.height/2},e}),{nodes:e,edges:t}},et=(e,t,s)=>{let a=e.filter(e=>!(e.id in s)),n=0,r={x:0,y:-(65+10*a.length)};return e.forEach(e=>{let t=s?.[e.id];e.targetPosition=y.Position.Left,e.sourcePosition=y.Position.Right,t?e.position=t:(e.position={x:r.x+10*n,y:r.y+10*n},n+=1)}),{nodes:e,edges:t}};var es=e.i(750478),ea=e.i(355901),en=e.i(567558),er=e.i(215312),ei=e.i(300424),eo=e.i(801834),el=e.i(738196),ec=e.i(124416),eu=e.i(392491),em=e.i(636047);let ed=()=>{let{ref:e}=(0,h.useParams)(),{resolvedTheme:y}=(0,c.useTheme)(),{data:b}=(0,K.useSelectedProjectQuery)(),{selectedSchema:v,setSelectedSchema:k}=(0,q.useQuerySchemaState)(),[w,S]=(0,m.useState)(null),N=(0,em.useTableEditorStateSnapshot)(),{isDownloading:C,exportSchemaToImage:T}=(()=>{let[e,t]=(0,m.useState)(!1),s=(0,m.useMemo)(()=>(()=>{if("u"<typeof document||"u"<typeof getComputedStyle)return[];let e=[],t=getComputedStyle(document.documentElement);for(let s=0;s<t.length;s++){let a=t[s];a.startsWith("--")||e.push(a)}return e})(),[]),a=(0,P.useStaticEffectEvent)(async({element:e,projectRef:a,x:n,y:r,zoom:i,format:o})=>{t(!0);let l=e.clientWidth,c=e.clientHeight,u={includeStyleProperties:s,backgroundColor:"white",width:l,height:c,style:{width:l.toString(),height:c.toString(),transform:`translate(${n}px, ${r}px) scale(${i})`}};try{if("svg"===o){let t=await (0,es.toSvg)(e,u),s=document.createElement("a");s.setAttribute("download",`supabase-schema-${a}.svg`),s.setAttribute("href",t),s.click(),ea.toast.success("Successfully downloaded as SVG")}else if("png"===o){let t=await (0,es.toPng)(e,u),s=document.createElement("a");s.setAttribute("download",`supabase-schema-${a}.png`),s.setAttribute("href",t),s.click(),ea.toast.success("Successfully downloaded as PNG")}}catch(e){console.error("Failed to download:",e),ea.toast.error(`Failed to download current view: ${e.message}`)}finally{t(!1)}});return(0,m.useMemo)(()=>({isDownloading:e,exportSchemaToImage:a}),[e,a])})(),[R,I]=(0,m.useState)(!1);(0,m.useEffect)(()=>{R&&setTimeout(()=>I(!1),2e3)},[R]);let D=y?.includes("dark")?"rgb(17, 19, 24, .8)":"rgb(237, 237, 237, .8)",L=(0,s.useReactFlow)(),M=(0,m.useMemo)(()=>({table:V}),[]),z=(0,m.useMemo)(()=>({default:A}),[]),{data:$,error:F,isSuccess:B,isPending:U,isError:W}=(0,eo.useSchemasQuery)({projectRef:b?.ref,connectionString:b?.connectionString}),{data:H=[],error:Q,isSuccess:G,isPending:J,isError:et}=(0,el.useTablesQuery)({projectRef:b?.ref,connectionString:b?.connectionString,schema:v,includeColumns:!0}),ed=B&&0===H.length,eh=($??[]).find(e=>e.name===v),[,ep]=(0,ec.useLocalStorage)(d.LOCAL_STORAGE_KEYS.SCHEMA_VISUALIZER_POSITIONS(e,eh?.id??0),{}),{can:e_}=(0,Y.useAsyncCheckPermissions)(a.PermissionAction.TENANT_SQL_ADMIN_WRITE,"tables"),{isSchemaLocked:eg}=(0,eu.useIsProtectedSchema)({schema:v}),ex=async()=>{let e=L.getNodes(),t=L.getEdges();ee(e.filter(e=>"table"===e.type),t),L.setNodes(e),L.setEdges(t),await new Promise(e=>setTimeout(async()=>{await L.fitView({}),e()})),ef()},ef=(0,P.useStaticEffectEvent)(()=>{if(void 0===eh)return console.error("Schema is required");let e=L.getNodes();e.length>0&&ep(e.reduce((e,t)=>({...e,[t.id]:t.position}),{}))}),[ej,ey]=(0,m.useState)(void 0),eb=(0,P.useStaticEffectEvent)(e=>{1===e.edges.length?ey(e.edges[0]):ey(void 0);let t=new Set(e.nodes.map(e=>e.id));L.setEdges(L.getEdges().map(e=>({...e,animated:t.size>0&&(t.has(e.source)||t.has(e.target))})))}),ev=async t=>{let s=document.querySelector(".react-flow__viewport");if(!s||!e)return;let{x:a,y:n,zoom:r}=L.getViewport();T({element:s,format:t,x:a,y:n,zoom:r,projectRef:e})},ek=(0,m.useRef)(!0);(0,m.useEffect)(()=>{G&&B&&H.length>0&&X(e,$.find(e=>e.name===v),H).then(({nodes:e,edges:t})=>{L.setNodes(e),L.setEdges(t),ek.current&&(ek.current=!1,setTimeout(()=>L.fitView({})))})},[G,B,H,L,e,y,$,v]);let ew=(0,m.useMemo)(()=>({selectedEdge:ej,isDownloading:C,onEditColumn:(e,t)=>{let s=H.find(t=>t.id===e);if(!s||null==s.columns)return;let a=s.columns.find(e=>e.id===t);a&&(S(s),N.onEditColumn(a))},onEditTable:e=>{let t=H.find(t=>t.id===e);t&&null!=t.columns&&(S(t),N.onEditTable())}}),[H,N,C,ej]);return(0,t.jsxs)(t.Fragment,{children:[(0,t.jsxs)("div",{className:"flex items-center justify-between p-4 border-b border-muted h-[var(--header-height)]",children:[U&&(0,t.jsx)("div",{className:"h-[34px] w-[260px] bg-foreground-lighter rounded shimmering-loader"}),W&&(0,t.jsx)(en.default,{error:F,subject:"Failed to retrieve schemas"}),B&&(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(ei.default,{className:"w-[180px]",size:"tiny",showError:!1,selectedSchemaName:v,onSelectSchema:k}),!ed&&(0,t.jsxs)("div",{className:"flex items-center gap-x-2",children:[(0,t.jsx)(er.ButtonTooltip,{type:"outline",icon:R?(0,t.jsx)(n.Check,{"data-testid":"copy-sql-ready"}):(0,t.jsx)(r.Copy,{}),onClick:()=>{H&&((0,g.copyToClipboard)((0,Z.tablesToSQL)(H)),I(!0))},tooltip:{content:{side:"bottom",text:(0,t.jsxs)("div",{className:"max-w-[180px] space-y-2 text-foreground-light",children:[(0,t.jsx)("p",{className:"text-foreground",children:"Note"}),(0,t.jsx)("p",{children:"This schema is for context or debugging only. Table order and constraints may be invalid. Not meant to be run as-is."})]})}},children:"Copy as SQL"}),(0,t.jsxs)(x.DropdownMenu,{children:[(0,t.jsx)(x.DropdownMenuTrigger,{asChild:!0,children:(0,t.jsx)(er.ButtonTooltip,{"aria-label":"Download Schema",type:"default",loading:C,className:"px-1.5",icon:(0,t.jsx)(i.Download,{}),tooltip:{content:{side:"bottom",text:"Download current view"}}})}),(0,t.jsxs)(x.DropdownMenuContent,{className:"w-32",children:[(0,t.jsx)(x.DropdownMenuItem,{onClick:()=>ev("png"),children:"Download as PNG"}),(0,t.jsx)(x.DropdownMenuItem,{onClick:()=>ev("svg"),children:"Download as SVG"})]})]}),(0,t.jsxs)(p.AlertDialog,{children:[(0,t.jsx)(p.AlertDialogTrigger,{asChild:!0,children:(0,t.jsx)(er.ButtonTooltip,{type:"default",tooltip:{content:{side:"bottom",text:"Automatically arrange the layout of all nodes"}},children:"Auto layout"})}),(0,t.jsxs)(p.AlertDialogContent,{children:[(0,t.jsxs)(p.AlertDialogHeader,{children:[(0,t.jsx)(p.AlertDialogTitle,{children:"Confirm to rearrange all nodes"}),(0,t.jsx)(p.AlertDialogDescription,{children:"Auto layout will rearrange all nodes in the graph. This cannot be undone."})]}),(0,t.jsxs)(p.AlertDialogFooter,{children:[(0,t.jsx)(p.AlertDialogCancel,{children:"Cancel"}),(0,t.jsx)(p.AlertDialogAction,{onClick:ex,children:"Apply"})]})]})]})]})]})]}),J&&(0,t.jsxs)("div",{className:"w-full h-full flex items-center justify-center gap-x-2",children:[(0,t.jsx)(o.Loader2,{className:"animate-spin text-foreground-light",size:16}),(0,t.jsx)("p",{className:"text-sm text-foreground-light",children:"Loading tables"})]}),et&&(0,t.jsx)("div",{className:"w-full h-full flex items-center justify-center px-20",children:(0,t.jsx)(en.default,{subject:"Failed to retrieve tables",error:Q})}),G&&(0,t.jsx)(t.Fragment,{children:ed?(0,t.jsx)("div",{className:"flex items-center justify-center w-full h-full",children:(0,t.jsx)(f.Admonition,{type:"default",className:"max-w-md",title:"No tables in schema",description:eg?`The “${v}” schema is managed by Supabase and is read-only through
+                    the dashboard.`:e_?`The “${v}” schema doesn’t have any tables.`:"You need additional permissions to create tables",children:e_&&!eg&&(0,t.jsx)(_.Button,{asChild:!0,className:"mt-2",type:"default",icon:(0,t.jsx)(l.Plus,{}),children:(0,t.jsx)(u.default,{href:`/project/${e}/editor?create=table`,children:"New table"})})})}):(0,t.jsx)(E,{value:ew,children:(0,t.jsx)("div",{className:"w-full h-full",children:(0,t.jsxs)(s.ReactFlow,{colorMode:"",defaultNodes:[],defaultEdges:[],defaultEdgeOptions:{type:"default",animated:!1,deletable:!1},nodeTypes:M,edgeTypes:z,fitView:!0,minZoom:.8,maxZoom:1.8,proOptions:{hideAttribution:!0},onNodeDragStop:ef,onSelectionChange:eb,children:[(0,t.jsx)(s.Background,{gap:16,className:"[&>*]:stroke-foreground-muted opacity-[25%]",variant:s.BackgroundVariant.Dots,color:"inherit"}),(0,t.jsx)(s.MiniMap,{pannable:!0,zoomable:!0,nodeColor:"#111318",maskColor:D,className:"border rounded-md shadow-sm"}),(0,t.jsx)(O,{})]})})})}),(0,t.jsx)(j.SidePanelEditor,{selectedTable:w??void 0,includeColumns:!0})]})};var eh=e.i(812136),ep=e.i(448710);let e_=()=>(0,t.jsx)("div",{className:"flex w-full h-full flex-col",children:(0,t.jsx)(s.ReactFlowProvider,{children:(0,t.jsx)(ed,{})})});e_.getLayout=e=>(0,t.jsx)(ep.default,{children:(0,t.jsx)(eh.default,{title:"Schema Visualizer",children:e})}),e.s(["default",0,e_],113478)},382093,(e,t,s)=>{let a="/project/[ref]/database/schemas";(window.__NEXT_P=window.__NEXT_P||[]).push([a,()=>e.r(113478)]),t.hot&&t.hot.dispose(function(){window.__NEXT_P.push([a])})},111410,e=>{e.v(t=>Promise.all(["static/chunks/0fapkys0ri-_l.js","static/chunks/0~4sz39c_mg-o.js"].map(t=>e.l(t))).then(()=>t(677146)))},883471,e=>{e.v(t=>Promise.all(["static/chunks/06p2kpj04m4yn.js"].map(t=>e.l(t))).then(()=>t(518769)))},185405,e=>{e.v(t=>Promise.all(["static/chunks/0ejg6oxt2883u.js"].map(t=>e.l(t))).then(()=>t(10318)))},477628,e=>{e.v(t=>Promise.all(["static/chunks/037by8qwdoh.v.js"].map(t=>e.l(t))).then(()=>t(869039)))},25642,e=>{e.v(t=>Promise.all(["static/chunks/0s4.tvz40odip.js","static/chunks/0im44iodzjdh~.js","static/chunks/0vew0u_f7ll~r.js","static/chunks/0_dt14zinniox.js"].map(t=>e.l(t))).then(()=>t(207831)))},561602,e=>{e.v(t=>Promise.all(["static/chunks/0r5yuolx68e9j.js","static/chunks/0ux3t_o.l3zgo.js","static/chunks/0im44iodzjdh~.js","static/chunks/0_-.ilo-s.zcu.js"].map(t=>e.l(t))).then(()=>t(326204)))},877114,e=>{e.v(e=>Promise.resolve().then(()=>e(812136)))},540007,e=>{e.v(t=>Promise.all(["static/chunks/1747rhgtmk8q0.js"].map(t=>e.l(t))).then(()=>t(785951)))},593029,e=>{e.v(t=>Promise.all(["static/chunks/0wgsxhxvcom4e.js"].map(t=>e.l(t))).then(()=>t(755497)))},849654,e=>{e.v(t=>Promise.all(["static/chunks/08zsbbad.q54j.js"].map(t=>e.l(t))).then(()=>t(839941)))},639363,e=>{e.v(t=>Promise.all(["static/chunks/0~y.79kjuppbm.js"].map(t=>e.l(t))).then(()=>t(904340)))},425360,e=>{e.v(t=>Promise.all(["static/chunks/0tz_.3~4hb9q2.js"].map(t=>e.l(t))).then(()=>t(409222)))},548315,e=>{e.v(t=>Promise.all(["static/chunks/0~h4mrstj_b4g.js","static/chunks/0im44iodzjdh~.js"].map(t=>e.l(t))).then(()=>t(256337)))},661328,e=>{e.v(t=>Promise.all(["static/chunks/0pwygmm1ajtf-.js","static/chunks/0im44iodzjdh~.js"].map(t=>e.l(t))).then(()=>t(447400)))},265029,e=>{e.v(t=>Promise.all(["static/chunks/131zg_ohowfma.js"].map(t=>e.l(t))).then(()=>t(289339)))},151872,e=>{e.v(t=>Promise.all(["static/chunks/09.4eyo06c6.a.js"].map(t=>e.l(t))).then(()=>t(865389)))},329867,e=>{e.v(t=>Promise.all(["static/chunks/0o4.ms.k7-zrd.js"].map(t=>e.l(t))).then(()=>t(562380)))},643342,e=>{e.v(t=>Promise.all(["static/chunks/09c2mzamqtr~1.js","static/chunks/0~n_hci-ayug-.js","static/chunks/05aqehi1pt5vg.js","static/chunks/02qgmo0oymqsy.js","static/chunks/0c3.jvmb4~~nr.js","static/chunks/0_dt14zinniox.js","static/chunks/0ue8p923c2h.m.js"].map(t=>e.l(t))).then(()=>t(232258)))},804879,e=>{e.v(t=>Promise.all(["static/chunks/0qsrsmdz9zlp-.js","static/chunks/0_dt14zinniox.js","static/chunks/0snr7~1jc~hra.js"].map(t=>e.l(t))).then(()=>t(199687)))},95833,e=>{e.v(t=>Promise.all(["static/chunks/0sufrt0nee7gv.js"].map(t=>e.l(t))).then(()=>t(142543)))},846537,e=>{e.v(t=>Promise.all(["static/chunks/0uiwfut34793j.js"].map(t=>e.l(t))).then(()=>t(245201)))},50229,e=>{e.v(t=>Promise.all(["static/chunks/16xz18kc7hq8d.js"].map(t=>e.l(t))).then(()=>t(331248)))},263652,e=>{e.v(t=>Promise.all(["static/chunks/12zuiruewlelt.js"].map(t=>e.l(t))).then(()=>t(700224)))},822335,e=>{e.v(t=>Promise.all(["static/chunks/0hvtv2k_gyc4n.js"].map(t=>e.l(t))).then(()=>t(48216)))},827389,e=>{e.v(t=>Promise.all(["static/chunks/0y94t4lrqd1e2.js"].map(t=>e.l(t))).then(()=>t(780795)))},306465,e=>{e.v(t=>Promise.all(["static/chunks/0lqz2pygmhped.js"].map(t=>e.l(t))).then(()=>t(84223)))},320810,e=>{e.v(t=>Promise.all(["static/chunks/05s.1g~25k1xj.js"].map(t=>e.l(t))).then(()=>t(190529)))},44756,e=>{e.v(t=>Promise.all(["static/chunks/0vplc6y1zaqr..js"].map(t=>e.l(t))).then(()=>t(411609)))},77572,e=>{e.v(t=>Promise.all(["static/chunks/00pqayedocbxm.js"].map(t=>e.l(t))).then(()=>t(550910)))},299015,e=>{e.v(t=>Promise.all(["static/chunks/079uap8xq4bg7.js"].map(t=>e.l(t))).then(()=>t(956403)))},853832,e=>{e.v(t=>Promise.all(["static/chunks/02c00gwrtr3q-.js"].map(t=>e.l(t))).then(()=>t(523047)))},444444,e=>{e.v(t=>Promise.all(["static/chunks/0qzj0xvdh0vu_.js"].map(t=>e.l(t))).then(()=>t(306141)))},89982,e=>{e.v(t=>Promise.all(["static/chunks/0k9hxhriua38a.js"].map(t=>e.l(t))).then(()=>t(84181)))},439,e=>{e.v(t=>Promise.all(["static/chunks/0z3erud0~v-gi.js"].map(t=>e.l(t))).then(()=>t(585967)))},674055,e=>{e.v(t=>Promise.all(["static/chunks/0w0pthkpkqf_p.js"].map(t=>e.l(t))).then(()=>t(659864)))},801894,e=>{e.v(t=>Promise.all(["static/chunks/0rbs0vcft6we7.js"].map(t=>e.l(t))).then(()=>t(532683)))},578444,e=>{e.v(t=>Promise.all(["static/chunks/0ntkme-x2sy-x.js"].map(t=>e.l(t))).then(()=>t(221183)))},185608,e=>{e.v(t=>Promise.all(["static/chunks/0u4t88t~3q4-l.js"].map(t=>e.l(t))).then(()=>t(79472)))},612314,e=>{e.v(t=>Promise.all(["static/chunks/11q8z6iwcc9vc.js"].map(t=>e.l(t))).then(()=>t(980791)))},660943,e=>{e.v(t=>Promise.all(["static/chunks/11aq-s8qvqydi.js"].map(t=>e.l(t))).then(()=>t(620893)))},214615,e=>{e.v(t=>Promise.all(["static/chunks/0.7tkqydci.je.js"].map(t=>e.l(t))).then(()=>t(194742)))},877303,e=>{e.v(t=>Promise.all(["static/chunks/0j~ilo7_id8x1.js"].map(t=>e.l(t))).then(()=>t(85809)))},565731,e=>{e.v(t=>Promise.all(["static/chunks/10~tmk1k5j04..js"].map(t=>e.l(t))).then(()=>t(846526)))},439954,e=>{e.v(t=>Promise.all(["static/chunks/0z9jvmg907f6v.js"].map(t=>e.l(t))).then(()=>t(399358)))},646193,e=>{e.v(t=>Promise.all(["static/chunks/0.d9y7owdup.c.js"].map(t=>e.l(t))).then(()=>t(270671)))},470322,e=>{e.v(t=>Promise.all(["static/chunks/07els6~fo.u75.js"].map(t=>e.l(t))).then(()=>t(433215)))},310666,e=>{e.v(t=>Promise.all(["static/chunks/0i.uodz7kn9vk.js"].map(t=>e.l(t))).then(()=>t(191809)))},38970,e=>{e.v(t=>Promise.all(["static/chunks/12o2ich39dair.js","static/chunks/07i7rr-hwt94t.js","static/chunks/00g-f9lsw_91v.js"].map(t=>e.l(t))).then(()=>t(66554)))},68365,e=>{e.v(t=>Promise.all(["static/chunks/16r.tp0evwn4o.js"].map(t=>e.l(t))).then(()=>t(531769)))},705292,e=>{e.v(t=>Promise.all(["static/chunks/0pyws1a9jh749.js"].map(t=>e.l(t))).then(()=>t(147575)))},930188,e=>{e.v(t=>Promise.all(["static/chunks/09dtwf~q4-mfr.js"].map(t=>e.l(t))).then(()=>t(604919)))},736620,e=>{e.v(t=>Promise.all(["static/chunks/0zy3pj290j0cb.js"].map(t=>e.l(t))).then(()=>t(85022)))},101928,e=>{e.v(t=>Promise.all(["static/chunks/0oe8c~n7uuayn.js"].map(t=>e.l(t))).then(()=>t(846161)))},41375,e=>{e.v(t=>Promise.all(["static/chunks/0icy6n87yqupy.js"].map(t=>e.l(t))).then(()=>t(834473)))},715733,e=>{e.v(t=>Promise.all(["static/chunks/0x50c0npc307~.js"].map(t=>e.l(t))).then(()=>t(417897)))},268726,e=>{e.v(t=>Promise.all(["static/chunks/09sf-.ihjiocf.js"].map(t=>e.l(t))).then(()=>t(898187)))},740028,e=>{e.v(t=>Promise.all(["static/chunks/0r-oohpco5v9y.js"].map(t=>e.l(t))).then(()=>t(391060)))},134805,e=>{e.v(t=>Promise.all(["static/chunks/0x5qg~e.1cvzi.js"].map(t=>e.l(t))).then(()=>t(664336)))},597523,e=>{e.v(t=>Promise.all(["static/chunks/15-96t9x034oq.js"].map(t=>e.l(t))).then(()=>t(245099)))},678679,e=>{e.v(t=>Promise.all(["static/chunks/0wyo516tmq6xv.js"].map(t=>e.l(t))).then(()=>t(404154)))},73751,e=>{e.v(t=>Promise.all(["static/chunks/0-4ue8no85~h3.js"].map(t=>e.l(t))).then(()=>t(31724)))},909495,e=>{e.v(t=>Promise.all(["static/chunks/0dlwhv5ov-4ff.js"].map(t=>e.l(t))).then(()=>t(698380)))},548863,e=>{e.v(t=>Promise.all(["static/chunks/0un31rsezi.ix.js"].map(t=>e.l(t))).then(()=>t(79703)))},283398,e=>{e.v(t=>Promise.all(["static/chunks/09h7-19zvop5l.js"].map(t=>e.l(t))).then(()=>t(541970)))},274794,e=>{e.v(t=>Promise.all(["static/chunks/0evcmbm2qb3co.js","static/chunks/0vp4.37p~op8-.js","static/chunks/0xg-z9e9a.f-w.js","static/chunks/0_dt14zinniox.js"].map(t=>e.l(t))).then(()=>t(571538)))},248383,e=>{e.v(t=>Promise.all(["static/chunks/0k6etaoqvox4~.js"].map(t=>e.l(t))).then(()=>t(136003)))},579437,e=>{e.v(t=>Promise.all(["static/chunks/0t0vjnmb~5bg7.js","static/chunks/0u14zxax8a_wk.js","static/chunks/0_dt14zinniox.js"].map(t=>e.l(t))).then(()=>t(524943)))},609157,e=>{e.v(t=>Promise.all(["static/chunks/0d2qxnmddcrmo.js","static/chunks/05d9rp2oma0l6.js","static/chunks/0_dt14zinniox.js"].map(t=>e.l(t))).then(()=>t(323205)))},707643,e=>{e.v(t=>Promise.all(["static/chunks/08d2daw8i9o14.js"].map(t=>e.l(t))).then(()=>t(935100)))},467186,e=>{e.v(t=>Promise.all(["static/chunks/0hcvy-8rd9pk7.js"].map(t=>e.l(t))).then(()=>t(6777)))},639206,e=>{e.v(t=>Promise.all(["static/chunks/0htt60hcbieo1.js","static/chunks/0trag_z2-_jik.js"].map(t=>e.l(t))).then(()=>t(791713)))},250577,e=>{e.v(t=>Promise.all(["static/chunks/0xjyjx3pcvzu3.js"].map(t=>e.l(t))).then(()=>t(429091)))},610764,e=>{e.v(t=>Promise.all(["static/chunks/018e8t03u3i03.js","static/chunks/0lkn8veiquq0-.js"].map(t=>e.l(t))).then(()=>t(247311)))},818633,e=>{e.v(t=>Promise.all(["static/chunks/0cm5wu6jkmzyv.js","static/chunks/06jpod_9fw~g-.js"].map(t=>e.l(t))).then(()=>t(338481)))},500556,e=>{e.v(t=>Promise.all(["static/chunks/025j8h2g9orlt.css","static/chunks/08a65_ezh65f..css","static/chunks/13j5kf0nx4qgq.js","static/chunks/0r8jr98136zmp.js","static/chunks/0evcmbm2qb3co.js","static/chunks/0awxklwed3d1s.js","static/chunks/04h3x98ljp7ye.js","static/chunks/0iv41jpg81m~9.js"].map(t=>e.l(t))).then(()=>t(321608)))},596207,e=>{e.v(t=>Promise.all(["static/chunks/18cjkitn.vvz-.js","static/chunks/0m~u~exeaxq4r.js"].map(t=>e.l(t))).then(()=>t(865243)))},354946,e=>{e.v(t=>Promise.all(["static/chunks/0q9dze89yx2xt.js","static/chunks/0m~u~exeaxq4r.js"].map(t=>e.l(t))).then(()=>t(674412)))},943222,e=>{e.v(t=>Promise.all(["static/chunks/17i1u3nhg8ojh.js"].map(t=>e.l(t))).then(()=>t(140017)))},98740,e=>{e.v(t=>Promise.all(["static/chunks/0lfxrmxjq5o47.js"].map(t=>e.l(t))).then(()=>t(795776)))},356631,e=>{e.v(t=>Promise.all(["static/chunks/0g13js60t0coh.js"].map(t=>e.l(t))).then(()=>t(157592)))},429186,e=>{e.v(t=>Promise.all(["static/chunks/0v~.94autj1-e.js","static/chunks/14_i~su9sucw5.js","static/chunks/0w91ycn-t6h83.js","static/chunks/11oefwic59lb1.js","static/chunks/0uskxcnqwprck.js","static/chunks/0rxik69bqh-df.js"].map(t=>e.l(t))).then(()=>t(818996)))},488584,e=>{e.v(t=>Promise.all(["static/chunks/0owfo049_wdyi.js"].map(t=>e.l(t))).then(()=>t(851420)))}]);
+
+//# debugId=41c70229-3ae2-18e3-e8cf-ad536efae7ee
+//# sourceMappingURL=0fylspmq2c5~m.js.map

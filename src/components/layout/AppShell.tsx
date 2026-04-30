@@ -40,10 +40,9 @@ export function AppShell({ user, projects, activeProject, children }: Props) {
     { href: '/documents', label: 'Documents',   icon: iconDoc },
     { href: '/bids',      label: 'Bids',        icon: iconDollar },
     { href: '/subs',      label: 'Crew & Subs', icon: iconPeople },
-    { href: '/email',     label: 'Inbox',       icon: iconEmail },
   ]
 
-  const bottomNav = [
+  const = [
     { href: '/dashboard', label: 'Home',     icon: iconGrid },
     { href: '/jobs',      label: 'Jobs',     icon: iconBriefcase },
     { href: '/calendar',  label: 'Calendar', icon: iconCalendar },

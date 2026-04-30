@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/lib/supabase'
 import { AppShell } from '@/components/layout/AppShell'
 import { SubsClient } from './SubsClient'
-import type { User, Project, Subcontractor, EmailThread } from '@/types'
+import type { User, Project } from '@/types'
 
 export default async function SubsPage() {
   const supabase = createServerSupabase()
@@ -17,18 +17,18 @@ export default async function SubsPage() {
 
   const activeProject = projects?.[0] ?? null
 
-  const [subs, emails] = await (activeProject ? Promise.all([
-    supabase.from('subcontractors').select('*').eq('project_id', activeProject.id).order('created_at', { ascending: false }),
-    supabase.from('email_threads').select('*').eq('project_id', activeProject.id).order('created_at', { ascending: false }).limit(50),
-  ]) : [{ data: [] }, { data: [] }])
+  const [subs, jobs] = activeProject ? await Promise.all([
+    supabase.from('subcontractors').select('*').eq('project_id', activeProject.id).order('company_name'),
+    supabase.from('jobs').select('*').eq('project_id', activeProject.id).order('created_at', { ascending: false }),
+  ]) : [{ data: [] }, { data: [] }]
 
   return (
     <AppShell user={user as User} projects={(projects ?? []) as Project[]} activeProject={activeProject as Project | null}>
       <SubsClient
-        user={user as User}
-        project={activeProject as Project | null}
-        initialSubs={(subs.data ?? []) as Subcontractor[]}
-        initialEmails={(emails.data ?? []) as EmailThread[]}
+        user={user as any}
+        project={activeProject as any}
+        initialSubs={(subs.data ?? []) as any}
+        initialJobs={(jobs.data ?? []) as any}
       />
     </AppShell>
   )

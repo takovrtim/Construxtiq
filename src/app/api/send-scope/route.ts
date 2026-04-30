@@ -4,7 +4,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabase, createAdminSupabase } from '@/lib/supabase'
-import { generateScopeEmail } from '@/lib/ai'
+import { draftSubReply } from '@/lib/ai'
 import { z } from 'zod'
 
 const BodySchema = z.object({
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     emailBody = body.custom_body
   } else {
     try {
-      emailBody = await generateScopeEmail({
+      emailBody = await draftSubReply({
         subName: sub.company_name,
         trade: sub.trade,
         scopeSummary: doc.extracted_data?.scope_summary ?? '',

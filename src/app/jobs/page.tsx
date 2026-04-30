@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/lib/supabase'
 import { AppShell } from '@/components/layout/AppShell'
 import { JobsClient } from './JobsClient'
+import type { User, Project } from '@/types'
 
 export default async function JobsPage() {
   const supabase = createServerSupabase()
@@ -15,7 +16,7 @@ export default async function JobsPage() {
   if (!user) redirect('/auth/login')
 
   return (
-    <AppShell user={user as any} projects={(projects ?? []) as any} activeProject={projects?.[0] as any ?? null}>
+    <AppShell user={user as User} projects={(projects ?? []) as Project[]} activeProject={(projects?.[0] ?? null) as Project | null}>
       <JobsClient user={user as any} projects={(projects ?? []) as any} />
     </AppShell>
   )

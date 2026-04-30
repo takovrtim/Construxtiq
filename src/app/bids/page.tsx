@@ -1,10 +1,9 @@
 import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/lib/supabase'
 import { AppShell } from '@/components/layout/AppShell'
-import { CalendarClient } from './CalendarClient'
-import type { User, Project } from '@/types'
+import { BidsClient } from './BidsClient'
 
-export default async function CalendarPage() {
+export default async function BidsPage() {
   const supabase = createServerSupabase()
   const { data: { user: authUser } } = await supabase.auth.getUser()
   if (!authUser) redirect('/auth/login')
@@ -17,16 +16,22 @@ export default async function CalendarPage() {
 
   const activeProject = projects?.[0] ?? null
 
-  const permits = activeProject
-    ? (await supabase.from('permits').select('*').eq('project_id', activeProject.id).order('expiry_date')).data ?? []
-    : []
+  const [bids, subs] = await Promise.all([
+    activeProject
+      ? supabase.from('bid_line_items').select('*').eq('project_id', activeProject.id).order('sort_order')
+      : { data: [] },
+    activeProject
+      ? supabase.from('subcontractors').select('*').eq('project_id', activeProject.id).order('created_at')
+      : { data: [] },
+  ])
 
   return (
-    <AppShell user={user as User} projects={(projects ?? []) as Project[]} activeProject={activeProject as Project | null}>
-      <CalendarClient
+    <AppShell user={user as any} projects={(projects ?? []) as any} activeProject={activeProject as any}>
+      <BidsClient
         user={user as any}
         project={activeProject as any}
-        permits={permits as any}
+        initialBids={(bids.data ?? []) as any}
+        initialSubs={(subs.data ?? []) as any}
       />
     </AppShell>
   )

@@ -1,242 +1,122 @@
-// ─────────────────────────────────────────────────────────
-// POST /api/parse-document
-// Called after a file is uploaded to Supabase storage.
-// Fetches the file, extracts text, runs AI parse, saves result.
-// ─────────────────────────────────────────────────────────
-
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabase, createAdminSupabase, STORAGE_BUCKET } from '@/lib/supabase'
-import { parseDocument, generateDocumentNotes, analyzeBid } from '@/lib/ai'
-import { z } from 'zod'
+import { parseDocument, analyzeBlueprint } from '@/lib/ai'
 
-const BodySchema = z.object({
-  document_id: z.string().uuid(),
-  project_id: z.string().uuid(),
-})
+const MAX_FILE_SIZE = 20 * 1024 * 1024
+
+function inferDocType(fileName: string): string {
+  const lower = fileName.toLowerCase()
+  if (lower.includes('permit')) return 'permit'
+  if (lower.includes('blueprint') || lower.includes('plan') || lower.includes('drawing')) return 'blueprint'
+  if (lower.includes('contract')) return 'contract'
+  if (lower.includes('bid') || lower.includes('quote') || lower.includes('proposal')) return 'sub_bid'
+  if (lower.includes('inspection')) return 'inspection'
+  return 'other'
+}
 
 export async function POST(req: NextRequest) {
   const supabase = createServerSupabase()
-
-  // ── Auth check ─────────────────────────────────────────
   const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) {
-    return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
-  }
+  if (authError || !user) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
 
-  // ── Validate body ──────────────────────────────────────
-  let body: z.infer<typeof BodySchema>
-  try {
-    body = BodySchema.parse(await req.json())
-  } catch (e) {
-    return NextResponse.json({ success: false, error: 'Invalid request body' }, { status: 400 })
-  }
+  const formData = await req.formData().catch(() => null)
+  if (!formData) return NextResponse.json({ success: false, error: 'Invalid form data' }, { status: 400 })
+
+  const file = formData.get('file') as File | null
+  const projectId = formData.get('project_id') as string | null
+
+  if (!file) return NextResponse.json({ success: false, error: 'No file provided' }, { status: 400 })
+  if (!projectId) return NextResponse.json({ success: false, error: 'project_id required' }, { status: 400 })
+  if (file.size > MAX_FILE_SIZE) return NextResponse.json({ success: false, error: 'File too large (max 20MB)' }, { status: 413 })
+
+  const { data: project } = await supabase.from('projects').select('id, name, jurisdiction, city, state').eq('id', projectId).eq('user_id', user.id).single()
+  if (!project) return NextResponse.json({ success: false, error: 'Project not found' }, { status: 404 })
 
   const admin = createAdminSupabase()
+  const timestamp = Date.now()
+  const sanitizedName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
+  const filePath = `${user.id}/${projectId}/${timestamp}_${sanitizedName}`
 
-  try {
-    // ── Fetch document record ──────────────────────────────
-    const { data: doc, error: docError } = await supabase
-      .from('documents')
-      .select('*')
-      .eq('id', body.document_id)
-      .eq('user_id', user.id)
-      .single()
+  const arrayBuffer = await file.arrayBuffer()
+  const { error: uploadError } = await supabase.storage.from(STORAGE_BUCKET).upload(filePath, arrayBuffer, { contentType: file.type, upsert: false })
+  if (uploadError) return NextResponse.json({ success: false, error: `Storage upload failed: ${uploadError.message}` }, { status: 500 })
 
-    if (docError || !doc) {
-      return NextResponse.json({ success: false, error: 'Document not found' }, { status: 404 })
-    }
+  const docType = inferDocType(file.name)
+  const { data: doc, error: insertError } = await admin.from('documents').insert({
+    project_id: projectId, user_id: user.id, name: file.name,
+    file_path: filePath, file_size: file.size, file_type: file.type,
+    doc_type: docType, status: 'processing',
+  }).select().single()
 
-    // ── Update status to processing ────────────────────────
-    await admin.from('documents').update({ status: 'processing' }).eq('id', doc.id)
+  if (insertError || !doc) {
+    await supabase.storage.from(STORAGE_BUCKET).remove([filePath])
+    return NextResponse.json({ success: false, error: 'Failed to create document record' }, { status: 500 })
+  }
 
-    // ── Download file from Supabase storage ───────────────
-    const { data: fileData, error: downloadError } = await supabase.storage
-      .from(STORAGE_BUCKET)
-      .download(doc.file_path)
+  // AI parsing runs in background
+  ;(async () => {
+    try {
+      const aiTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'application/pdf']
+      if (!aiTypes.includes(file.type) && !file.type.startsWith('image/')) {
+        await admin.from('documents').update({ status: 'needs_review', ai_notes: 'Upload PDF or image for AI extraction.' }).eq('id', doc.id)
+        return
+      }
 
-    if (downloadError || !fileData) {
-      await admin.from('documents').update({ status: 'needs_review' }).eq('id', doc.id)
-      return NextResponse.json({ success: false, error: 'Failed to download file' }, { status: 500 })
-    }
+      const base64 = Buffer.from(arrayBuffer).toString('base64')
+      const jurisdiction = [project.jurisdiction, project.city, project.state].filter(Boolean).join(', ') || 'Nevada'
 
-    // ── Extract text from PDF ──────────────────────────────
-    let rawText = ''
-    if (doc.file_type === 'application/pdf') {
-      const arrayBuffer = await fileData.arrayBuffer()
-      const buffer = Buffer.from(arrayBuffer)
-      // Dynamic import to avoid build-time issues with pdf-parse
-      const pdfParse = (await import('pdf-parse')).default
-      const pdfData = await pdfParse(buffer)
-      rawText = pdfData.text
-    } else if (doc.file_type.startsWith('text/') || doc.file_type.includes('document')) {
-      rawText = await fileData.text()
-    } else {
-      // Image or unsupported — mark for manual review
-      await admin.from('documents').update({ status: 'needs_review' }).eq('id', doc.id)
-      return NextResponse.json({ success: false, error: 'Unsupported file type for auto-extraction' }, { status: 422 })
-    }
-
-    if (!rawText.trim()) {
-      await admin.from('documents').update({ status: 'needs_review' }).eq('id', doc.id)
-      return NextResponse.json({ success: false, error: 'No text could be extracted from document' }, { status: 422 })
-    }
-
-    // ── Fetch project context ──────────────────────────────
-    const { data: project } = await supabase
-      .from('projects')
-      .select('name, jurisdiction, address')
-      .eq('id', body.project_id)
-      .single()
-
-    const projectContext = project
-      ? `Project: ${project.name}, Location: ${project.address || ''}, Jurisdiction: ${project.jurisdiction || ''}`
-      : ''
-
-    // ── Run AI extraction ──────────────────────────────────
-    const [extractedData, aiNotes] = await Promise.all([
-      parseDocument(rawText, doc.name, doc.doc_type),
-      generateDocumentNotes(
-        await parseDocument(rawText, doc.name, doc.doc_type),
-        projectContext
-      ).catch(() => ''),
-    ])
-
-    // ── Determine if this is a permit ──────────────────────
-    const isPermit = doc.doc_type === 'permit' || !!extractedData.permit_number
-
-    // ── Save extracted data to documents table ─────────────
-    await admin.from('documents').update({
-      status: 'extracted',
-      extracted_data: extractedData,
-      ai_notes: aiNotes,
-      doc_type: isPermit ? 'permit' : doc.doc_type,
-    }).eq('id', doc.id)
-
-    // ── If permit, create/update permit record ─────────────
-    if (isPermit && extractedData.permit_number) {
-      const { error: permitError } = await admin.from('permits').upsert({
-        document_id: doc.id,
-        project_id: body.project_id,
-        user_id: user.id,
-        permit_number: extractedData.permit_number,
-        permit_type: extractedData.permit_type || 'General',
-        issued_date: extractedData.issued_date || null,
-        expiry_date: extractedData.expiry_date || null,
-        jurisdiction: extractedData.jurisdiction || project?.jurisdiction || null,
-        inspector_name: extractedData.inspector_name || null,
-        inspector_email: extractedData.inspector_email || null,
-        valuation: extractedData.valuation || null,
-        sq_footage: extractedData.sq_footage || null,
-        special_conditions: extractedData.special_conditions || [],
-      }, {
-        onConflict: 'document_id',
+      const result = await parseDocument({
+        fileBase64: base64, mimeType: file.type, fileName: file.name,
+        docType, projectName: project.name || 'Construction Project', jurisdiction,
       })
 
-      if (permitError) {
-        console.error('Permit upsert error:', permitError)
-      }
-    }
-
-    // ── If sub_bid, auto-create sub + bid line item ────────
-    let autoSubId: string | null = null
-    if (doc.doc_type === 'sub_bid' && extractedData.contractor_name) {
-      const trade = extractedData.trade || 'General'
-      const bidAmount = extractedData.total_amount ?? null
-
-      // Upsert subcontractor (match by company name + project)
-      const { data: existingSub } = await admin
-        .from('subcontractors')
-        .select('id')
-        .eq('project_id', body.project_id)
-        .ilike('company_name', extractedData.contractor_name)
-        .single()
-
-      let subId: string
-      if (existingSub) {
-        subId = existingSub.id
-        await admin.from('subcontractors').update({
-          bid_amount: bidAmount,
-          email: extractedData.contractor_email ?? undefined,
-          license_number: extractedData.contractor_license ?? undefined,
-          status: 'bidding',
-        }).eq('id', subId)
-      } else {
-        const { data: newSub } = await admin.from('subcontractors').insert({
-          project_id: body.project_id,
-          user_id: user.id,
-          company_name: extractedData.contractor_name,
-          email: extractedData.contractor_email ?? null,
-          license_number: extractedData.contractor_license ?? null,
-          trade,
-          status: 'bidding',
-          bid_amount: bidAmount,
-        }).select('id').single()
-        subId = newSub?.id ?? ''
-      }
-
-      autoSubId = subId
-
-      // Run AI bid analysis + create bid line item
-      if (subId && bidAmount) {
-        const projectContext = project
-          ? `${project.name}, ${project.address || ''}, ${project.jurisdiction || ''}`
-          : ''
-
-        const analysis = await analyzeBid({
-          subName: extractedData.contractor_name,
-          trade,
-          bidAmount,
-          scopeSummary: extractedData.scope_summary || '',
-          projectContext,
-          permitConditions: [],
-        }).catch(() => null)
-
-        if (analysis) {
-          await admin.from('subcontractors').update({
-            ai_score: analysis.score,
-            market_rate: (analysis.marketRateLow + analysis.marketRateHigh) / 2,
-            variance_pct: analysis.variancePct,
-            ai_notes: analysis.notes,
-          }).eq('id', subId)
-        }
-
-        // Create bid line item linked to this sub
-        await admin.from('bid_line_items').insert({
-          project_id: body.project_id,
-          user_id: user.id,
-          trade,
-          scope_summary: extractedData.scope_summary || '',
-          amount: bidAmount,
-          market_rate_low: analysis?.marketRateLow ?? null,
-          market_rate_high: analysis?.marketRateHigh ?? null,
-          variance_pct: analysis?.variancePct ?? null,
-          status: 'bidding',
-          ai_flag: analysis?.flagMessage ?? null,
-          ai_flag_severity: analysis?.flagSeverity ?? null,
-          sub_id: subId,
-          sort_order: 0,
+      let blueprintAnalysis = null
+      if (docType === 'blueprint') {
+        blueprintAnalysis = await analyzeBlueprint({
+          fileBase64: base64, mimeType: file.type,
+          projectName: project.name || 'Project', jurisdiction, jobType: 'both',
         })
       }
+
+      const extractedData = {
+        ...result.extracted_data,
+        ...(blueprintAnalysis ? {
+          what_to_add: blueprintAnalysis.what_to_add,
+          what_to_remove: blueprintAnalysis.what_to_remove,
+          code_issues: blueprintAnalysis.code_issues,
+          cost_saving_opportunities: blueprintAnalysis.cost_saving_opportunities,
+          safety_flags: blueprintAnalysis.safety_flags,
+        } : {}),
+        flags: result.flags,
+      }
+
+      await admin.from('documents').update({
+        status: 'extracted', extracted_data: extractedData,
+        ai_notes: result.ai_notes, doc_type: result.doc_type_confirmed || docType,
+      }).eq('id', doc.id)
+
+      if (result.doc_type_confirmed === 'permit' && result.extracted_data?.permit_number) {
+        const ed = result.extracted_data
+        await admin.from('permits').upsert({
+          document_id: doc.id, project_id: projectId, user_id: user.id,
+          permit_number: ed.permit_number, permit_type: ed.permit_type || 'Building Permit',
+          issued_date: ed.issued_date || null, expiry_date: ed.expiry_date || null,
+          jurisdiction: ed.jurisdiction || jurisdiction,
+          inspector_name: ed.inspector_name || null, inspector_phone: ed.inspector_phone || null,
+          valuation: ed.valuation ? parseFloat(String(ed.valuation).replace(/[$,]/g, '')) : null,
+          sq_footage: ed.sq_footage ? parseInt(String(ed.sq_footage).replace(/[,]/g, '')) : null,
+          special_conditions: ed.special_conditions || [], status: 'active',
+        }, { onConflict: 'permit_number,project_id' })
+      }
+
+      console.log(`✓ AI parsed: ${file.name} → ${result.doc_type_confirmed}`)
+    } catch (err: any) {
+      console.error(`✗ Parse failed: ${file.name}:`, err.message)
+      await admin.from('documents').update({
+        status: 'needs_review', ai_notes: `AI extraction failed: ${err.message}`,
+      }).eq('id', doc.id)
     }
+  })()
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        document_id: doc.id,
-        extracted_data: extractedData,
-        ai_notes: aiNotes,
-        is_permit: isPermit,
-        auto_sub_id: autoSubId,
-      },
-    })
-
-  } catch (err) {
-    console.error('Document parse error:', err)
-    // Reset document status so user can retry
-    await admin.from('documents').update({ status: 'needs_review' }).eq('id', body.document_id)
-    return NextResponse.json(
-      { success: false, error: 'AI parsing failed. Document marked for manual review.' },
-      { status: 500 }
-    )
-  }
+  return NextResponse.json({ success: true, data: { document_id: doc.id, name: doc.name, status: 'processing', doc_type: docType } })
 }

@@ -90,6 +90,15 @@ export interface ExtractedData {
   key_dates?: Array<{ label: string; date: string }>
   flags?: Array<{ severity: 'info' | 'warning' | 'critical'; message: string }>
   raw_fields?: Record<string, string>
+  // Blueprint analysis
+  what_to_add?: string[]
+  what_to_remove?: string[]
+  code_issues?: string[]
+  cost_saving_opportunities?: string[]
+  safety_flags?: string[]
+  blueprint_summary?: string
+  // Inspector phone (missing from original)
+  inspector_phone?: string
 }
 
 // ── PERMIT ────────────────────────────────────────────────

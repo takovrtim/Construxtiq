@@ -17,157 +17,267 @@ interface Props {
   isNewUser: boolean
 }
 
+// ── PROJECT CALCULATOR ────────────────────────────────────
+function ProjectCalculator() {
+  const [jobType, setJobType] = useState<'electrical' | 'plumbing'>('electrical')
+  const [sqft, setSqft] = useState('')
+  const [hours, setHours] = useState('')
+  const [laborRate, setLaborRate] = useState('85')
+  const [materials, setMaterials] = useState('')
+  const [overhead, setOverhead] = useState('15')
+  const [margin, setMargin] = useState('25')
+  const [shown, setShown] = useState(false)
+
+  const laborCost   = (parseFloat(hours) || 0) * (parseFloat(laborRate) || 0)
+  const materialCost = parseFloat(materials) || 0
+  const overheadCost = (laborCost + materialCost) * ((parseFloat(overhead) || 0) / 100)
+  const subtotal     = laborCost + materialCost + overheadCost
+  const profit       = subtotal * ((parseFloat(margin) || 0) / 100)
+  const total        = subtotal + profit
+  const perSqft      = sqft ? total / parseFloat(sqft) : 0
+
+  return (
+    <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 22, boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
+        <div>
+          <div style={{ fontSize: 14, fontWeight: 700, letterSpacing: '-0.3px' }}>Project Calculator</div>
+          <div style={{ fontSize: 12, color: '#9e9d99', marginTop: 2 }}>Estimate any job in 30 seconds</div>
+        </div>
+        <div style={{ display: 'flex', background: '#f8f7f4', borderRadius: 8, padding: 3 }}>
+          {(['electrical', 'plumbing'] as const).map(t => (
+            <button key={t} onClick={() => setJobType(t)} style={{ padding: '5px 12px', borderRadius: 6, fontSize: 12, fontWeight: 600, border: 'none', cursor: 'pointer', fontFamily: 'inherit', background: jobType === t ? 'white' : 'transparent', color: jobType === t ? '#0f0f0f' : '#9e9d99', boxShadow: jobType === t ? '0 1px 3px rgba(0,0,0,0.08)' : 'none', transition: 'all 0.15s' }}>
+              {t === 'electrical' ? '⚡ Electrical' : '🔧 Plumbing'}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 14 }}>
+        {[
+          { label: 'Labor Hours', value: hours, set: setHours, placeholder: '40', suffix: 'hrs' },
+          { label: 'Labor Rate ($/hr)', value: laborRate, set: setLaborRate, placeholder: '85', suffix: '/hr' },
+          { label: 'Materials ($)', value: materials, set: setMaterials, placeholder: '2500', suffix: '$' },
+          { label: 'Square Footage', value: sqft, set: setSqft, placeholder: '1200', suffix: 'sf' },
+          { label: 'Overhead %', value: overhead, set: setOverhead, placeholder: '15', suffix: '%' },
+          { label: 'Profit Margin %', value: margin, set: setMargin, placeholder: '25', suffix: '%' },
+        ].map(field => (
+          <div key={field.label}>
+            <label style={{ fontSize: 11, fontWeight: 600, color: '#9e9d99', display: 'block', marginBottom: 5, letterSpacing: '0.2px', textTransform: 'uppercase' }}>{field.label}</label>
+            <div style={{ position: 'relative' }}>
+              <input
+                type="number"
+                value={field.value}
+                onChange={e => field.set(e.target.value)}
+                placeholder={field.placeholder}
+                style={{ width: '100%', padding: '9px 11px', fontSize: 13, fontWeight: 500, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f', transition: 'border 0.15s' }}
+                onFocus={e => e.target.style.borderColor = '#0f0f0f'}
+                onBlur={e => e.target.style.borderColor = 'rgba(0,0,0,0.1)'}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Results */}
+      <div style={{ background: '#0f0f0f', borderRadius: 12, padding: 18, color: 'white' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 14, marginBottom: 14 }}>
+          {[
+            { label: 'Labor', value: `$${laborCost.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}` },
+            { label: 'Materials', value: `$${materialCost.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}` },
+            { label: 'Overhead', value: `$${overheadCost.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}` },
+            { label: 'Profit', value: `$${profit.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}`, accent: true },
+          ].map(item => (
+            <div key={item.label}>
+              <div style={{ fontSize: 10, fontWeight: 600, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: 5 }}>{item.label}</div>
+              <div style={{ fontSize: 18, fontWeight: 700, letterSpacing: '-0.5px', color: item.accent ? '#d95f2b' : 'white' }}>{item.value}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 14, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: 4 }}>Total Bid Price</div>
+            <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-1.5px', color: '#d95f2b' }}>
+              ${total.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}
+            </div>
+          </div>
+          {perSqft > 0 && (
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: 4 }}>Per Sq Ft</div>
+              <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.5px' }}>${perSqft.toFixed(2)}</div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── MAIN DASHBOARD ────────────────────────────────────────
 export function DashboardClient({ user, project, permits, bids, documents, subs, isNewUser }: Props) {
   const router = useRouter()
-  const [showNewProject, setShowNewProject] = useState(isNewUser)
   const [projName, setProjName]   = useState('')
-  const [projAddress, setProjAddress] = useState('')
-  const [projCity, setProjCity]   = useState('')
-  const [projState, setProjState] = useState('')
-  const [projJuris, setProjJuris] = useState('')
   const [creating, setCreating]   = useState(false)
+
+  const hour = new Date().getHours()
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
+  const firstName = (user.full_name || user.email || '').split(' ')[0] || 'there'
 
   async function createProject(e: React.FormEvent) {
     e.preventDefault()
     if (!projName.trim()) return
     setCreating(true)
-
     const { data, error } = await supabase.from('projects').insert({
       user_id: user.id,
       name: projName.trim(),
-      address: projAddress.trim() || null,
-      city: projCity.trim() || null,
-      state: projState.trim() || null,
-      jurisdiction: projJuris.trim() || null,
+      city: 'Las Vegas',
+      state: 'NV',
+      jurisdiction: 'Clark County, NV',
     }).select().single()
-
     if (!error && data) {
       if (typeof window !== 'undefined') localStorage.setItem('active_project_id', data.id)
       router.push('/documents')
       router.refresh()
-    } else {
-      setCreating(false)
     }
+    setCreating(false)
   }
 
-  // Compute priority alerts
   const today = new Date()
-  const alerts: Array<{ severity: 'critical' | 'warning' | 'info'; text: string; href: string }> = []
 
+  const alerts: Array<{ level: 'critical' | 'warning' | 'info'; text: string; href: string }> = []
   permits.forEach(p => {
     if (!p.expiry_date) return
     const days = differenceInDays(parseISO(p.expiry_date), today)
-    if (days < 0) alerts.push({ severity: 'critical', text: `Permit ${p.permit_number} expired ${Math.abs(days)} days ago — renew now`, href: '/documents' })
-    else if (days <= 7) alerts.push({ severity: 'critical', text: `Permit ${p.permit_number} expires in ${days} days`, href: '/documents' })
-    else if (days <= 30) alerts.push({ severity: 'warning', text: `Permit ${p.permit_number} expires in ${days} days`, href: '/documents' })
+    if (days < 0)   alerts.push({ level: 'critical', text: `Permit ${p.permit_number} expired ${Math.abs(days)}d ago — renew immediately`, href: '/documents' })
+    else if (days <= 7)  alerts.push({ level: 'critical', text: `Permit ${p.permit_number} expires in ${days} days`, href: '/documents' })
+    else if (days <= 30) alerts.push({ level: 'warning', text: `Permit ${p.permit_number} expires in ${days} days`, href: '/documents' })
   })
-
   bids.forEach(b => {
-    if (b.ai_flag && b.ai_flag_severity === 'critical') alerts.push({ severity: 'critical', text: b.ai_flag, href: '/bids' })
-    else if (b.ai_flag && b.ai_flag_severity === 'warning') alerts.push({ severity: 'warning', text: b.ai_flag, href: '/bids' })
+    if (b.ai_flag_severity === 'critical') alerts.push({ level: 'critical', text: `${b.trade}: ${b.ai_flag}`, href: '/bids' })
+    else if (b.ai_flag_severity === 'warning') alerts.push({ level: 'warning', text: `${b.trade}: ${b.ai_flag}`, href: '/bids' })
   })
+  if (alerts.length === 0 && project) alerts.push({ level: 'info', text: 'No urgent issues — all permits and bids look good ✓', href: '#' })
 
-  if (alerts.length === 0 && project) alerts.push({ severity: 'info', text: 'No urgent issues. All permits and bids look good.', href: '#' })
-
-  // Budget totals
   const totalBid = bids.reduce((s, b) => s + Number(b.amount), 0)
   const awarded  = bids.filter(b => b.status === 'awarded').reduce((s, b) => s + Number(b.amount), 0)
 
-  const alertClass = { critical: 'alert-r', warning: 'alert-a', info: 'alert-b' }
-  const alertIcon  = { critical: '🔴', warning: '⚠️', info: 'ℹ️' }
-
-  // New-project / empty state
-  if (showNewProject || !project) {
-    return (
-      <div style={{ maxWidth: 480, margin: '40px auto' }}>
-        <div className="ptitle">Create your first project</div>
-        <p className="psub">Add a project to start uploading documents and tracking permits.</p>
-        <div className="card">
-          <form onSubmit={createProject} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <div>
-              <label className="input-label">Project name *</label>
-              <input className="input" placeholder="e.g. Meridian Office Complex" value={projName} onChange={e => setProjName(e.target.value)} required autoFocus />
-            </div>
-            <div>
-              <label className="input-label">Address</label>
-              <input className="input" placeholder="4820 Flamingo Rd" value={projAddress} onChange={e => setProjAddress(e.target.value)} />
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 80px', gap: 10 }}>
-              <div>
-                <label className="input-label">City</label>
-                <input className="input" placeholder="Las Vegas" value={projCity} onChange={e => setProjCity(e.target.value)} />
-              </div>
-              <div>
-                <label className="input-label">State</label>
-                <input className="input" placeholder="NV" value={projState} onChange={e => setProjState(e.target.value)} maxLength={2} />
-              </div>
-            </div>
-            <div>
-              <label className="input-label">Jurisdiction</label>
-              <input className="input" placeholder="Clark County, NV" value={projJuris} onChange={e => setProjJuris(e.target.value)} />
-            </div>
-            <button type="submit" className="btn btn-p btn-full" disabled={creating} style={{ marginTop: 4 }}>
-              {creating ? 'Creating…' : 'Create Project →'}
-            </button>
-          </form>
-        </div>
-      </div>
-    )
+  const alertStyle = {
+    critical: { bg: '#fdf0f0', text: '#6e1a1a', border: '#b83232', icon: '🔴' },
+    warning:  { bg: '#fdf4e3', text: '#6b4010', border: '#b06e1a', icon: '⚠️' },
+    info:     { bg: '#eef3fb', text: '#0f3360', border: '#1f5fa6', icon: 'ℹ️' },
   }
+
+  // New user — create first project
+  if (!project) return (
+    <div style={{ maxWidth: 480, margin: '48px auto' }}>
+      <div style={{ textAlign: 'center', marginBottom: 32 }}>
+        <div style={{ fontSize: 40, marginBottom: 12 }}>🔧</div>
+        <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.5px', marginBottom: 6 }}>Welcome to ConstructIQ</div>
+        <div style={{ fontSize: 14, color: '#6b6a66' }}>Create your first project to get started</div>
+      </div>
+      <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 28, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+        <form onSubmit={createProject} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div>
+            <label style={{ fontSize: 12, fontWeight: 600, color: '#6b6a66', display: 'block', marginBottom: 6 }}>Project / Company name *</label>
+            <input
+              style={{ width: '100%', padding: '11px 14px', fontSize: 14, border: '1.5px solid rgba(0,0,0,0.12)', borderRadius: 10, fontFamily: 'inherit', outline: 'none' }}
+              placeholder="e.g. The Repair Crew — Main"
+              value={projName}
+              onChange={e => setProjName(e.target.value)}
+              required
+              autoFocus
+            />
+          </div>
+          <button type="submit" disabled={creating} style={{ padding: '13px', fontSize: 14, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#d95f2b', color: 'white', fontFamily: 'inherit', marginTop: 4, letterSpacing: '-0.2px' }}>
+            {creating ? 'Creating…' : 'Create Project →'}
+          </button>
+        </form>
+      </div>
+    </div>
+  )
 
   return (
     <>
-      <div className="ptitle">{project.name}</div>
-      <p className="psub">{[project.address, project.city, project.state].filter(Boolean).join(', ')}</p>
-
-      {/* STATS */}
-      <div className="g4" style={{ marginBottom: 22 }}>
-        <div className="stat"><div className="sl">Documents</div><div className="sv">{documents.length}</div></div>
-        <div className="stat"><div className="sl">Active Permits</div><div className="sv">{permits.filter(p => p.status === 'active').length}</div><div className="ss" style={permits.some(p=>p.status==='expiring_soon')?{color:'var(--orange)'}:{}}>{permits.filter(p=>p.status==='expiring_soon').length} expiring</div></div>
-        <div className="stat"><div className="sl">Total Bid</div><div className="sv">${totalBid > 0 ? (totalBid/1000000).toFixed(1)+'M' : '—'}</div></div>
-        <div className="stat"><div className="sl">Subcontractors</div><div className="sv">{subs.length}</div><div className="ss">{subs.filter(s=>s.status==='awarded').length} awarded</div></div>
+      {/* GREETING */}
+      <div style={{ marginBottom: 24 }}>
+        <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 2 }}>
+          {greeting}, {firstName} ☀️
+        </div>
+        <div style={{ fontSize: 13, color: '#9e9d99' }}>
+          {project.name} · {[project.city, project.state].filter(Boolean).join(', ')} · {format(today, 'EEEE, MMMM d')}
+        </div>
       </div>
 
-      <div className="g2">
-        {/* PRIORITY ALERTS */}
-        <div className="card">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-            <div style={{ fontSize: 14, fontWeight: 600 }}>Priority Actions</div>
-            <span style={{ fontSize: 11, color: 'var(--text-3)' }}>AI-identified</span>
+      {/* STAT CARDS */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 20 }}>
+        {[
+          { label: 'Documents', value: documents.length, sub: `${documents.filter(d => d.status === 'extracted' || d.status === 'saved').length} extracted`, accent: '' },
+          { label: 'Active Permits', value: permits.filter(p => p.status === 'active').length, sub: `${permits.filter(p => p.status === 'expiring_soon').length} expiring soon`, accent: permits.some(p => p.status === 'expiring_soon') ? '#b06e1a' : '' },
+          { label: 'Total Bid', value: totalBid > 0 ? `$${(totalBid/1000).toFixed(0)}K` : '—', sub: `$${(awarded/1000).toFixed(0)}K awarded`, accent: '' },
+          { label: 'Subcontractors', value: subs.length, sub: `${subs.filter(s => s.status === 'awarded').length} awarded`, accent: '' },
+        ].map(s => (
+          <div key={s.label} style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '16px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: s.accent || 'rgba(0,0,0,0.05)', borderRadius: '14px 14px 0 0' }} />
+            <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 8 }}>{s.label}</div>
+            <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-1px', color: '#0f0f0f', marginBottom: 3 }}>{s.value}</div>
+            <div style={{ fontSize: 11, color: s.accent ? s.accent : '#9e9d99' }}>{s.sub}</div>
           </div>
-          {alerts.slice(0, 5).map((a, i) => (
-            <Link key={i} href={a.href} style={{ textDecoration: 'none', display: 'block' }}>
-              <div className={`alert ${alertClass[a.severity]}`} style={{ marginBottom: i < alerts.length - 1 ? 7 : 0, cursor: 'pointer' }}>
-                {alertIcon[a.severity]} {a.text}
-              </div>
-            </Link>
-          ))}
+        ))}
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+        {/* PRIORITY ALERTS */}
+        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, letterSpacing: '-0.2px' }}>Priority Actions</div>
+            <span style={{ fontSize: 10, fontWeight: 600, color: '#9e9d99', letterSpacing: '0.4px', textTransform: 'uppercase' }}>AI-identified</span>
+          </div>
+          {alerts.slice(0, 5).map((a, i) => {
+            const s = alertStyle[a.level]
+            return (
+              <Link key={i} href={a.href} style={{ textDecoration: 'none', display: 'block', marginBottom: 8 }}>
+                <div style={{ background: s.bg, color: s.text, borderLeft: `3px solid ${s.border}`, borderRadius: '0 8px 8px 0', padding: '10px 13px', fontSize: 12, lineHeight: 1.55, transition: 'opacity 0.15s', cursor: 'pointer' }}>
+                  {s.icon} {a.text}
+                </div>
+              </Link>
+            )
+          })}
         </div>
 
         {/* RECENT DOCUMENTS */}
-        <div className="card">
+        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-            <div style={{ fontSize: 14, fontWeight: 600 }}>Recent Documents</div>
-            <Link href="/documents" style={{ fontSize: 12, color: 'var(--text-2)', textDecoration: 'none' }}>View all →</Link>
+            <div style={{ fontSize: 14, fontWeight: 700, letterSpacing: '-0.2px' }}>Recent Documents</div>
+            <Link href="/documents" style={{ fontSize: 12, color: '#9e9d99', textDecoration: 'none', fontWeight: 500 }}>View all →</Link>
           </div>
           {documents.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '20px 0', color: 'var(--text-3)', fontSize: 13 }}>
-              No documents yet.{' '}
-              <Link href="/documents" style={{ color: 'var(--orange)', fontWeight: 500, textDecoration: 'none' }}>Upload your first →</Link>
+            <div style={{ textAlign: 'center', padding: '24px 0' }}>
+              <div style={{ fontSize: 28, marginBottom: 10 }}>📄</div>
+              <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 12 }}>No documents yet</div>
+              <Link href="/documents" style={{ fontSize: 13, fontWeight: 600, color: '#d95f2b', textDecoration: 'none', background: '#fdf0e8', padding: '8px 16px', borderRadius: 8 }}>Upload first permit →</Link>
             </div>
           ) : (
             documents.slice(0, 5).map(doc => {
-              const statusClass: Record<string, string> = { extracted: 'p-green', processing: 'p-amber', needs_review: 'p-red', saved: 'p-green', uploading: 'p-gray' }
+              const icons: Record<string, string> = { permit: '📋', blueprint: '🏗️', contract: '📝', sub_bid: '💰', inspection: '🔍', other: '📄' }
+              const statusColors: Record<string, { bg: string; text: string }> = {
+                extracted: { bg: '#edf5f0', text: '#1a4d31' },
+                saved: { bg: '#edf5f0', text: '#1a4d31' },
+                processing: { bg: '#fdf4e3', text: '#6b4010' },
+                uploading: { bg: '#fdf4e3', text: '#6b4010' },
+                needs_review: { bg: '#fdf0f0', text: '#6e1a1a' },
+              }
+              const sc = statusColors[doc.status] || { bg: '#f1ede6', text: '#6b6a66' }
               return (
-                <div key={doc.id} style={{ display: 'flex', alignItems: 'center', gap: 11, padding: '9px 0', borderBottom: '1px solid var(--border)' }}>
-                  <div style={{ width: 33, height: 33, borderRadius: 8, background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, flexShrink: 0 }}>
-                    {doc.doc_type === 'permit' ? '📋' : doc.doc_type === 'blueprint' ? '🏗️' : doc.doc_type === 'sub_bid' ? '💰' : '📄'}
+                <div key={doc.id} style={{ display: 'flex', alignItems: 'center', gap: 11, padding: '9px 0', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+                  <div style={{ width: 34, height: 34, borderRadius: 9, background: '#f8f7f4', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>
+                    {icons[doc.doc_type] || '📄'}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 13, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.name}</div>
-                    <div style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 1 }}>{format(parseISO(doc.created_at), 'MMM d, h:mm a')}</div>
+                    <div style={{ fontSize: 11, color: '#9e9d99', marginTop: 1 }}>{format(parseISO(doc.created_at), 'MMM d, h:mm a')}</div>
                   </div>
-                  <span className={`pill ${statusClass[doc.status] || 'p-gray'}`}>{doc.status.replace('_', ' ')}</span>
+                  <span style={{ fontSize: 10, fontWeight: 600, padding: '3px 8px', borderRadius: 20, background: sc.bg, color: sc.text, whiteSpace: 'nowrap' }}>
+                    {doc.status === 'processing' || doc.status === 'uploading' ? '⏳ AI reading' : doc.status.replace('_', ' ')}
+                  </span>
                 </div>
               )
             })
@@ -175,35 +285,26 @@ export function DashboardClient({ user, project, permits, bids, documents, subs,
         </div>
       </div>
 
-      {/* BUDGET OVERVIEW */}
-      {bids.length > 0 && (
-        <div className="card" style={{ marginTop: 15 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-            <div style={{ fontSize: 14, fontWeight: 600 }}>Budget Overview</div>
-            <Link href="/bids" style={{ fontSize: 12, color: 'var(--text-2)', textDecoration: 'none' }}>Manage bids →</Link>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {bids.map(b => {
-              const pct = totalBid > 0 ? Math.round((Number(b.amount) / totalBid) * 100) : 0
-              const colors: Record<string, string> = { awarded: '#2d7a4f', bidding: '#b06e1a', revise: '#b83232', rejected: '#9e9d99', not_started: '#9e9d99' }
-              return (
-                <div key={b.id}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 3 }}>
-                    <span>{b.trade}</span>
-                    <span className="mono" style={{ color: 'var(--text-2)' }}>${Number(b.amount).toLocaleString()} · {pct}%</span>
-                  </div>
-                  <div className="pw"><div className="pf" style={{ width: `${Math.min(pct * 2, 100)}%`, background: colors[b.status] || '#9e9d99' }} /></div>
-                </div>
-              )
-            })}
-          </div>
-          <div className="dv" />
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
-            <span className="tm">Awarded</span>
-            <span className="mono bold">${awarded.toLocaleString()}</span>
-          </div>
-        </div>
-      )}
+      {/* PROJECT CALCULATOR */}
+      <ProjectCalculator />
+
+      {/* QUICK LINKS */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10, marginTop: 16 }}>
+        {[
+          { href: '/jobs', icon: '🔧', label: 'Job Board', desc: 'Track all active jobs' },
+          { href: '/documents', icon: '📋', label: 'Upload Permit', desc: 'AI reads it instantly' },
+          { href: '/subs', icon: '👥', label: 'Crew & Subs', desc: 'Message the team' },
+          { href: '/bids', icon: '💰', label: 'Bids', desc: 'Track project costs' },
+        ].map(item => (
+          <Link key={item.href} href={item.href} style={{ textDecoration: 'none', background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 12, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, transition: 'all 0.15s', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+            <div style={{ width: 38, height: 38, borderRadius: 10, background: '#f8f7f4', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>{item.icon}</div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#0f0f0f', letterSpacing: '-0.2px' }}>{item.label}</div>
+              <div style={{ fontSize: 11, color: '#9e9d99', marginTop: 1 }}>{item.desc}</div>
+            </div>
+          </Link>
+        ))}
+      </div>
     </>
   )
 }

@@ -1,7 +1,5 @@
 'use client'
 
-import { DelayPrediction } from './DelayPrediction'
-import { ClientShareButton } from './ClientShareButton'
 import { useState } from 'react'
 
 interface Prediction {

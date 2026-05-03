@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { format, parseISO, differenceInDays } from 'date-fns'
 import { PermitReadiness } from './PermitReadiness'
+import { JurisdictionChecklist } from './JurisdictionChecklist'
 import type { User, Project, Document, Permit, Subcontractor } from '@/types'
 
 interface Props {
@@ -53,7 +54,7 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
   const [permits, setPermits]           = useState<Permit[]>(initialPermits)
   const [selected, setSelected]         = useState<Document | null>(null)
   const [activeFolder, setActiveFolder] = useState('all')
-  const [activeTab, setActiveTab]       = useState<'documents' | 'readiness'>('documents')
+  const [activeTab, setActiveTab]       = useState<'documents' | 'readiness' | 'checklist'>('documents')
   const [selectedDocType, setSelectedDocType] = useState('auto')
   const [uploading, setUploading]       = useState(false)
   const [dragOver, setDragOver]         = useState(false)
@@ -206,12 +207,13 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
           {([
             ['documents', '📁 Documents'],
             ['readiness', '✓ Permit Readiness'],
+            ['checklist', '📋 Checklist'],
           ] as const).map(([tab, label]) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               style={{
-                padding: '7px 16px', fontSize: 13, borderRadius: 7, border: 'none',
+                padding: '7px 14px', fontSize: 12, borderRadius: 7, border: 'none',
                 cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap', transition: 'all 0.15s',
                 fontWeight: activeTab === tab ? 700 : 500,
                 background: activeTab === tab ? 'white' : 'transparent',
@@ -232,10 +234,16 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
         </div>
       )}
 
+      {/* CHECKLIST TAB */}
+      {activeTab === 'checklist' && (
+        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+          <JurisdictionChecklist projectId={project.id} />
+        </div>
+      )}
+
       {/* DOCUMENTS TAB */}
       {activeTab === 'documents' && (
         <>
-          {/* DOC TYPE SELECTOR */}
           <div style={{ marginBottom: 14 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>What are you uploading?</div>
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
@@ -259,7 +267,6 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
             )}
           </div>
 
-          {/* UPLOAD */}
           <div style={{ marginBottom: 16 }}>
             <button
               onClick={() => fileInputRef.current?.click()}
@@ -291,7 +298,6 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            {/* LEFT — folders + doc list */}
             <div>
               <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
                 {FOLDERS.map(folder => {
@@ -355,7 +361,6 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
               </div>
             </div>
 
-            {/* RIGHT — AI extraction + permit tracker */}
             <div>
               <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: 14 }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14 }}>
@@ -499,7 +504,6 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
                 )}
               </div>
 
-              {/* PERMIT TRACKER */}
               <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
                   <div style={{ fontSize: 14, fontWeight: 700 }}>Permit Tracker</div>

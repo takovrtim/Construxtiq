@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
+import { DelayPrediction } from './DelayPrediction'
+import { ClientShareButton } from './ClientShareButton'
 import {
   DndContext, DragOverlay, PointerSensor,
   useSensor, useSensors, useDroppable, useDraggable,
@@ -110,14 +112,15 @@ function Column({ status, jobs, selectedId, onCardClick }: { status: JobStatus; 
 }
 
 export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
-  const [jobs, setJobs]           = useState<Job[]>([])
-  const [loading, setLoading]     = useState(true)
-  const [selected, setSelected]   = useState<Job | null>(null)
-  const [showAdd, setShowAdd]     = useState(false)
-  const [toast, setToast]         = useState('')
-  const [saving, setSaving]       = useState(false)
-  const [message, setMessage]     = useState('')
-  const [activeJob, setActiveJob] = useState<Job | null>(null)
+  const [jobs, setJobs]             = useState<Job[]>([])
+  const [loading, setLoading]       = useState(true)
+  const [selected, setSelected]     = useState<Job | null>(null)
+  const [showAdd, setShowAdd]       = useState(false)
+  const [showDelay, setShowDelay]   = useState(false)
+  const [toast, setToast]           = useState('')
+  const [saving, setSaving]         = useState(false)
+  const [message, setMessage]       = useState('')
+  const [activeJob, setActiveJob]   = useState<Job | null>(null)
 
   const project = projects?.[0]
 
@@ -208,22 +211,40 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
   return (
     <>
       {/* HEADER */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 22 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
         <div>
           <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px' }}>Job Board</div>
           <div style={{ fontSize: 13, color: '#9e9d99', marginTop: 2 }}>
-            Drag cards between columns · {jobs.length} jobs · {jobs.filter(j => j.status === 'pending_permit').length} waiting on permit
+            {jobs.length} jobs · {jobs.filter(j => j.status === 'pending_permit').length} waiting on permit
           </div>
         </div>
-        <button onClick={() => setShowAdd(v => !v)} style={{ padding: '10px 20px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: showAdd ? '#0f0f0f' : '#d95f2b', color: 'white', fontFamily: 'inherit', transition: 'background 0.15s' }}>
-          {showAdd ? '✕ Cancel' : '+ New Job'}
-        </button>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+          {project && <ClientShareButton projectId={project.id} />}
+          <button
+            onClick={() => setShowDelay(v => !v)}
+            style={{ padding: '9px 16px', fontSize: 13, fontWeight: 600, borderRadius: 9, cursor: 'pointer', border: `1.5px solid ${showDelay ? '#b83232' : 'rgba(0,0,0,0.1)'}`, background: showDelay ? '#fdf0f0' : 'white', color: showDelay ? '#b83232' : '#6b6a66', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6 }}
+          >
+            🔮 {showDelay ? 'Hide Predictions' : 'Delay Predictions'}
+          </button>
+          <button
+            onClick={() => setShowAdd(v => !v)}
+            style={{ padding: '10px 20px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: showAdd ? '#0f0f0f' : '#d95f2b', color: 'white', fontFamily: 'inherit', transition: 'background 0.15s' }}
+          >
+            {showAdd ? '✕ Cancel' : '+ New Job'}
+          </button>
+        </div>
       </div>
+
+      {/* DELAY PREDICTION PANEL */}
+      {showDelay && project && (
+        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 22, marginBottom: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+          <DelayPrediction projectId={project.id} />
+        </div>
+      )}
 
       {/* ADD FORM */}
       {showAdd && (
         <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 24, marginBottom: 20, boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}>
-          {/* Job type toggle */}
           <div style={{ display: 'flex', gap: 10, marginBottom: 20 }}>
             {(['electrical', 'plumbing', 'both'] as JobType[]).map(t => (
               <button key={t} type="button" onClick={() => setJobType(t)} style={{ flex: 1, padding: '10px 8px', borderRadius: 10, border: `2px solid ${jobType === t ? (t === 'electrical' ? '#EF9F27' : t === 'plumbing' ? '#378ADD' : '#7F77DD') : 'rgba(0,0,0,0.08)'}`, background: jobType === t ? TYPE_COLOR[t] : 'white', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, transition: 'all 0.15s' }}>
@@ -234,17 +255,15 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
           </div>
 
           <form onSubmit={addJob} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <div style={{ gridColumn: '1/-1' }}>
+            <div>
               <label style={lbl}>Job Title *</label>
               <input style={{ ...inp, fontSize: 14, fontWeight: 500 }} placeholder="e.g. Panel Upgrade — Smith Residence" value={title} onChange={e => setTitle(e.target.value)} required autoFocus />
             </div>
-
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <div>
                 <label style={lbl}>Client Name</label>
                 <input style={inp} placeholder="John Smith" value={client} onChange={e => setClient(e.target.value)} />
               </div>
-
               <div>
                 <label style={lbl}>Client Phone</label>
                 <div style={{ position: 'relative' }}>
@@ -252,7 +271,6 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
                   <input style={{ ...inp, paddingLeft: 34 }} placeholder="(702) 555-0100" type="tel" value={phone} onChange={e => setPhone(formatPhone(e.target.value))} />
                 </div>
               </div>
-
               <div>
                 <label style={lbl}>Job Address</label>
                 <div style={{ position: 'relative' }}>
@@ -260,7 +278,6 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
                   <input style={{ ...inp, paddingLeft: 32 }} placeholder="456 Desert Rose Ln, Las Vegas NV" value={address} onChange={e => setAddress(e.target.value)} />
                 </div>
               </div>
-
               <div>
                 <label style={lbl}>Permit Number</label>
                 <div style={{ position: 'relative' }}>
@@ -268,14 +285,12 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
                   <input style={{ ...inp, paddingLeft: 32, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.5px' }} placeholder="NV-2025-1234" value={permitNum} onChange={e => setPermitNum(e.target.value.toUpperCase())} />
                 </div>
               </div>
-
               <div>
                 <label style={lbl}>Status</label>
                 <select style={{ ...inp, background: 'white', cursor: 'pointer' }} value={status} onChange={e => setStatus(e.target.value as JobStatus)}>
                   {Object.entries(STATUS_CONFIG).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
                 </select>
               </div>
-
               <div>
                 <label style={lbl}>Crew Members</label>
                 <input style={inp} placeholder="John, Mike, Sarah" value={crewInput} onChange={e => setCrewInput(e.target.value)} />
@@ -291,7 +306,6 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
                 )}
               </div>
             </div>
-
             <div>
               <label style={lbl}>Notes</label>
               <div style={{ position: 'relative' }}>
@@ -299,13 +313,11 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
                 <div style={{ position: 'absolute', bottom: 8, right: 12, fontSize: 10, color: notes.length > 250 ? '#d95f2b' : '#9e9d99', fontWeight: 500 }}>{notes.length}/300</div>
               </div>
             </div>
-
             <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-              <button type="submit" disabled={saving || !title.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: saving || !title.trim() ? 'not-allowed' : 'pointer', border: 'none', background: !title.trim() ? '#f1ede6' : '#0f0f0f', color: !title.trim() ? '#9e9d99' : 'white', fontFamily: 'inherit', transition: 'all 0.15s', letterSpacing: '-0.2px' }}>
+              <button type="submit" disabled={saving || !title.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: saving || !title.trim() ? 'not-allowed' : 'pointer', border: 'none', background: !title.trim() ? '#f1ede6' : '#0f0f0f', color: !title.trim() ? '#9e9d99' : 'white', fontFamily: 'inherit', transition: 'all 0.15s' }}>
                 {saving ? 'Saving...' : title.trim() ? `Save "${title.trim().slice(0,20)}${title.trim().length > 20 ? '…' : ''}"` : 'Enter a job title'}
               </button>
               <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit', color: '#6b6a66' }}>Cancel</button>
-              <span style={{ fontSize: 12, color: '#9e9d99', marginLeft: 4 }}>{TYPE_ICON[jobType]} {jobType} job</span>
             </div>
           </form>
         </div>

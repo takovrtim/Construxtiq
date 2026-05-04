@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { DelayPrediction } from './DelayPrediction'
 import { ClientShareButton } from './ClientShareButton'
+import { JobPhotos } from './JobPhotos'
 import {
   DndContext, DragOverlay, PointerSensor,
   useSensor, useSensors, useDroppable, useDraggable,
@@ -112,15 +113,16 @@ function Column({ status, jobs, selectedId, onCardClick }: { status: JobStatus; 
 }
 
 export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
-  const [jobs, setJobs]             = useState<Job[]>([])
-  const [loading, setLoading]       = useState(true)
-  const [selected, setSelected]     = useState<Job | null>(null)
-  const [showAdd, setShowAdd]       = useState(false)
-  const [showDelay, setShowDelay]   = useState(false)
-  const [toast, setToast]           = useState('')
-  const [saving, setSaving]         = useState(false)
-  const [message, setMessage]       = useState('')
-  const [activeJob, setActiveJob]   = useState<Job | null>(null)
+  const [jobs, setJobs]           = useState<Job[]>([])
+  const [loading, setLoading]     = useState(true)
+  const [selected, setSelected]   = useState<Job | null>(null)
+  const [showAdd, setShowAdd]     = useState(false)
+  const [showDelay, setShowDelay] = useState(false)
+  const [toast, setToast]         = useState('')
+  const [saving, setSaving]       = useState(false)
+  const [message, setMessage]     = useState('')
+  const [activeJob, setActiveJob] = useState<Job | null>(null)
+  const [activePanel, setActivePanel] = useState<'details' | 'photos'>('details')
 
   const project = projects?.[0]
 
@@ -166,7 +168,7 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
       msg(`✓ "${title.trim()}" added`)
       setTitle(''); setClient(''); setPhone(''); setAddress('')
       setPermitNum(''); setNotes(''); setCrewInput(''); setShowAdd(false)
-    } else { msg('Failed to save — check connection') }
+    } else msg('Failed to save — check connection')
     setSaving(false)
   }
 
@@ -220,22 +222,16 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
         </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
           {project && <ClientShareButton projectId={project.id} />}
-          <button
-            onClick={() => setShowDelay(v => !v)}
-            style={{ padding: '9px 16px', fontSize: 13, fontWeight: 600, borderRadius: 9, cursor: 'pointer', border: `1.5px solid ${showDelay ? '#b83232' : 'rgba(0,0,0,0.1)'}`, background: showDelay ? '#fdf0f0' : 'white', color: showDelay ? '#b83232' : '#6b6a66', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6 }}
-          >
+          <button onClick={() => setShowDelay(v => !v)} style={{ padding: '9px 16px', fontSize: 13, fontWeight: 600, borderRadius: 9, cursor: 'pointer', border: `1.5px solid ${showDelay ? '#b83232' : 'rgba(0,0,0,0.1)'}`, background: showDelay ? '#fdf0f0' : 'white', color: showDelay ? '#b83232' : '#6b6a66', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6 }}>
             🔮 {showDelay ? 'Hide Predictions' : 'Delay Predictions'}
           </button>
-          <button
-            onClick={() => setShowAdd(v => !v)}
-            style={{ padding: '10px 20px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: showAdd ? '#0f0f0f' : '#d95f2b', color: 'white', fontFamily: 'inherit', transition: 'background 0.15s' }}
-          >
+          <button onClick={() => setShowAdd(v => !v)} style={{ padding: '10px 20px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: showAdd ? '#0f0f0f' : '#d95f2b', color: 'white', fontFamily: 'inherit', transition: 'background 0.15s' }}>
             {showAdd ? '✕ Cancel' : '+ New Job'}
           </button>
         </div>
       </div>
 
-      {/* DELAY PREDICTION PANEL */}
+      {/* DELAY PREDICTION */}
       {showDelay && project && (
         <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 22, marginBottom: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <DelayPrediction projectId={project.id} />
@@ -253,7 +249,6 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
               </button>
             ))}
           </div>
-
           <form onSubmit={addJob} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div>
               <label style={lbl}>Job Title *</label>
@@ -344,7 +339,7 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
         <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,minmax(0,1fr))', gap: 12 }}>
             {(Object.keys(STATUS_CONFIG) as JobStatus[]).map(s => (
-              <Column key={s} status={s} jobs={jobs.filter(j => j.status === s)} selectedId={selected?.id ?? null} onCardClick={job => setSelected(prev => prev?.id === job.id ? null : job)} />
+              <Column key={s} status={s} jobs={jobs.filter(j => j.status === s)} selectedId={selected?.id ?? null} onCardClick={job => { setSelected(prev => prev?.id === job.id ? null : job); setActivePanel('details') }} />
             ))}
           </div>
           <DragOverlay dropAnimation={null}>
@@ -363,107 +358,137 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
       {selected && (
         <>
           <div onClick={() => setSelected(null)} style={{ position: 'fixed', inset: 0, zIndex: 90, background: 'rgba(0,0,0,0.25)', backdropFilter: 'blur(3px)' }} />
-          <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: 390, background: 'white', borderLeft: '1px solid rgba(0,0,0,0.08)', boxShadow: '-12px 0 48px rgba(0,0,0,0.15)', zIndex: 100, overflowY: 'auto', padding: 24 }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
-              <div>
-                <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-0.4px', marginBottom: 4 }}>{selected.title}</div>
-                <div style={{ fontSize: 12, color: '#9e9d99', display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <span>{TYPE_ICON[selected.job_type]}</span>
-                  <span style={{ textTransform: 'capitalize' }}>{selected.job_type}</span>
-                  <span>·</span>
-                  <span>{new Date(selected.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: 6 }}>
-                <button onClick={() => deleteJob(selected.id)} style={{ padding: '6px 12px', fontSize: 11, borderRadius: 7, border: '1px solid rgba(184,50,50,0.2)', background: '#fdf0f0', color: '#b83232', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 700 }}>Delete</button>
-                <button onClick={() => setSelected(null)} style={{ width: 30, height: 30, borderRadius: 8, border: '1px solid rgba(0,0,0,0.08)', background: '#f8f7f4', cursor: 'pointer', fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9e9d99' }}>×</button>
-              </div>
-            </div>
+          <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: 420, background: 'white', borderLeft: '1px solid rgba(0,0,0,0.08)', boxShadow: '-12px 0 48px rgba(0,0,0,0.15)', zIndex: 100, display: 'flex', flexDirection: 'column' }}>
 
-            <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 8 }}>Pipeline Status</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginBottom: 20 }}>
-              {(Object.keys(STATUS_CONFIG) as JobStatus[]).map(s => {
-                const cfg = STATUS_CONFIG[s]
-                const active = selected.status === s
-                return (
-                  <button key={s} onClick={() => updateJobStatus(selected.id, s)} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '10px 13px', borderRadius: 9, border: `1.5px solid ${active ? cfg.dot : 'rgba(0,0,0,0.07)'}`, background: active ? cfg.color : 'white', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left', transition: 'all .12s' }}>
-                    <div style={{ width: 9, height: 9, borderRadius: '50%', background: cfg.dot }} />
-                    <span style={{ fontSize: 12, fontWeight: active ? 700 : 400, color: active ? cfg.text : '#6b6a66', flex: 1 }}>{cfg.label}</span>
-                    {active && <span style={{ fontSize: 14, color: cfg.dot }}>✓</span>}
-                  </button>
-                )
-              })}
-            </div>
-
-            <div style={{ background: '#f8f7f4', borderRadius: 11, padding: 14, marginBottom: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {selected.client_name && (
-                <div style={{ display: 'flex', gap: 12, alignItems: 'center', fontSize: 13 }}>
-                  <span style={{ fontSize: 16 }}>👤</span>
-                  <span style={{ fontWeight: 600 }}>{selected.client_name}</span>
-                </div>
-              )}
-              {selected.client_phone && (
-                <div style={{ display: 'flex', gap: 12, alignItems: 'center', fontSize: 13 }}>
-                  <span style={{ fontSize: 16 }}>📞</span>
-                  <a href={`tel:${selected.client_phone.replace(/\D/g,'')}`} style={{ color: '#1f5fa6', textDecoration: 'none', fontWeight: 600 }}>{selected.client_phone}</a>
-                  <span style={{ fontSize: 11, color: '#9e9d99' }}>Tap to call</span>
-                </div>
-              )}
-              {selected.address && (
-                <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: 13 }}>
-                  <span style={{ fontSize: 16, flexShrink: 0 }}>📍</span>
-                  <a href={`https://maps.google.com?q=${encodeURIComponent(selected.address)}`} target="_blank" rel="noopener noreferrer" style={{ color: '#1f5fa6', textDecoration: 'none', fontWeight: 500, lineHeight: 1.4 }}>
-                    {selected.address} <span style={{ fontSize: 11 }}>↗ Maps</span>
-                  </a>
-                </div>
-              )}
-              {selected.permit_number && (
-                <div style={{ display: 'flex', gap: 12, alignItems: 'center', fontSize: 13 }}>
-                  <span style={{ fontSize: 16 }}>📋</span>
-                  <span style={{ fontFamily: 'monospace', fontWeight: 700, fontSize: 13, letterSpacing: '0.5px', background: '#e8e3da', padding: '2px 8px', borderRadius: 5 }}>{selected.permit_number}</span>
-                </div>
-              )}
-            </div>
-
-            {selected.notes && (
-              <div style={{ marginBottom: 18 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 7 }}>Notes</div>
-                <div style={{ fontSize: 13, color: '#6b6a66', lineHeight: 1.7, background: '#f8f7f4', borderRadius: 9, padding: '12px 14px' }}>{selected.notes}</div>
-              </div>
-            )}
-
-            <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 8 }}>
-                Crew {selected.crew?.length > 0 ? `(${selected.crew.length})` : ''}
-              </div>
-              {!selected.crew || selected.crew.length === 0 ? (
-                <div style={{ fontSize: 13, color: '#9e9d99', fontStyle: 'italic', padding: '8px 0' }}>No crew assigned yet</div>
-              ) : (
-                selected.crew.map((c, i) => (
-                  <div key={c} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 13px', background: '#f8f7f4', borderRadius: 10, marginBottom: 6 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={{ width: 32, height: 32, borderRadius: '50%', background: ['#0f0f0f','#d95f2b','#1f5fa6','#2d7a4f'][i%4], color: 'white', fontSize: 12, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{c[0]?.toUpperCase()}</div>
-                      <span style={{ fontSize: 13, fontWeight: 500 }}>{c}</span>
-                    </div>
-                    <a href="tel:" style={{ fontSize: 12, color: '#1f5fa6', textDecoration: 'none', fontWeight: 600, background: '#eef3fb', padding: '4px 10px', borderRadius: 6 }}>📞 Call</a>
+            {/* Panel header */}
+            <div style={{ padding: '20px 24px 0', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 16 }}>
+                <div>
+                  <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-0.4px', marginBottom: 4 }}>{selected.title}</div>
+                  <div style={{ fontSize: 12, color: '#9e9d99', display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <span>{TYPE_ICON[selected.job_type]}</span>
+                    <span style={{ textTransform: 'capitalize' }}>{selected.job_type}</span>
+                    <span>·</span>
+                    <span>{new Date(selected.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                   </div>
-                ))
-              )}
+                </div>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <button onClick={() => deleteJob(selected.id)} style={{ padding: '6px 12px', fontSize: 11, borderRadius: 7, border: '1px solid rgba(184,50,50,0.2)', background: '#fdf0f0', color: '#b83232', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 700 }}>Delete</button>
+                  <button onClick={() => setSelected(null)} style={{ width: 30, height: 30, borderRadius: 8, border: '1px solid rgba(0,0,0,0.08)', background: '#f8f7f4', cursor: 'pointer', fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9e9d99' }}>×</button>
+                </div>
+              </div>
+
+              {/* Tab switcher */}
+              <div style={{ display: 'flex', background: '#f8f7f4', borderRadius: 9, padding: 3, marginBottom: 0 }}>
+                {(['details', 'photos'] as const).map(tab => (
+                  <button key={tab} onClick={() => setActivePanel(tab)} style={{ flex: 1, padding: '7px', fontSize: 12, fontWeight: activePanel === tab ? 700 : 500, borderRadius: 7, border: 'none', cursor: 'pointer', fontFamily: 'inherit', background: activePanel === tab ? 'white' : 'transparent', color: activePanel === tab ? '#0f0f0f' : '#9e9d99', boxShadow: activePanel === tab ? '0 1px 4px rgba(0,0,0,0.08)' : 'none', transition: 'all 0.15s', textTransform: 'capitalize' }}>
+                    {tab === 'photos' ? '📸 Photo Proof' : '📋 Details'}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <div>
-              <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 8 }}>Message Whole Crew</div>
-              <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Job update, site change, schedule note..." rows={3} style={{ width: '100%', padding: '11px 13px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 10, fontFamily: 'inherit', outline: 'none', resize: 'none', marginBottom: 8, background: '#f8f7f4', lineHeight: 1.6 }} />
-              <button onClick={() => { msg('✓ Message sent to crew'); setMessage('') }} disabled={!message.trim()} style={{ width: '100%', padding: '11px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: message.trim() ? 'pointer' : 'not-allowed', border: 'none', background: message.trim() ? '#0f0f0f' : '#f1ede6', color: message.trim() ? 'white' : '#9e9d99', fontFamily: 'inherit', transition: 'all .15s' }}>
-                {message.trim() ? `Send to Crew (${selected.crew?.length || 0})` : 'Type a message first'}
-              </button>
+            {/* Panel content */}
+            <div style={{ flex: 1, overflowY: 'auto', padding: '16px 24px 24px' }}>
+
+              {/* DETAILS TAB */}
+              {activePanel === 'details' && (
+                <>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 8 }}>Pipeline Status</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginBottom: 20 }}>
+                    {(Object.keys(STATUS_CONFIG) as JobStatus[]).map(s => {
+                      const cfg = STATUS_CONFIG[s]
+                      const active = selected.status === s
+                      return (
+                        <button key={s} onClick={() => updateJobStatus(selected.id, s)} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '10px 13px', borderRadius: 9, border: `1.5px solid ${active ? cfg.dot : 'rgba(0,0,0,0.07)'}`, background: active ? cfg.color : 'white', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left', transition: 'all .12s' }}>
+                          <div style={{ width: 9, height: 9, borderRadius: '50%', background: cfg.dot }} />
+                          <span style={{ fontSize: 12, fontWeight: active ? 700 : 400, color: active ? cfg.text : '#6b6a66', flex: 1 }}>{cfg.label}</span>
+                          {active && <span style={{ fontSize: 14, color: cfg.dot }}>✓</span>}
+                        </button>
+                      )
+                    })}
+                  </div>
+
+                  <div style={{ background: '#f8f7f4', borderRadius: 11, padding: 14, marginBottom: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {selected.client_name && (
+                      <div style={{ display: 'flex', gap: 12, alignItems: 'center', fontSize: 13 }}>
+                        <span style={{ fontSize: 16 }}>👤</span><span style={{ fontWeight: 600 }}>{selected.client_name}</span>
+                      </div>
+                    )}
+                    {selected.client_phone && (
+                      <div style={{ display: 'flex', gap: 12, alignItems: 'center', fontSize: 13 }}>
+                        <span style={{ fontSize: 16 }}>📞</span>
+                        <a href={`tel:${selected.client_phone.replace(/\D/g,'')}`} style={{ color: '#1f5fa6', textDecoration: 'none', fontWeight: 600 }}>{selected.client_phone}</a>
+                        <span style={{ fontSize: 11, color: '#9e9d99' }}>Tap to call</span>
+                      </div>
+                    )}
+                    {selected.address && (
+                      <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: 13 }}>
+                        <span style={{ fontSize: 16, flexShrink: 0 }}>📍</span>
+                        <a href={`https://maps.google.com?q=${encodeURIComponent(selected.address)}`} target="_blank" rel="noopener noreferrer" style={{ color: '#1f5fa6', textDecoration: 'none', fontWeight: 500, lineHeight: 1.4 }}>
+                          {selected.address} <span style={{ fontSize: 11 }}>↗ Maps</span>
+                        </a>
+                      </div>
+                    )}
+                    {selected.permit_number && (
+                      <div style={{ display: 'flex', gap: 12, alignItems: 'center', fontSize: 13 }}>
+                        <span style={{ fontSize: 16 }}>📋</span>
+                        <span style={{ fontFamily: 'monospace', fontWeight: 700, fontSize: 13, letterSpacing: '0.5px', background: '#e8e3da', padding: '2px 8px', borderRadius: 5 }}>{selected.permit_number}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {selected.notes && (
+                    <div style={{ marginBottom: 18 }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 7 }}>Notes</div>
+                      <div style={{ fontSize: 13, color: '#6b6a66', lineHeight: 1.7, background: '#f8f7f4', borderRadius: 9, padding: '12px 14px' }}>{selected.notes}</div>
+                    </div>
+                  )}
+
+                  <div style={{ marginBottom: 20 }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 8 }}>
+                      Crew {selected.crew?.length > 0 ? `(${selected.crew.length})` : ''}
+                    </div>
+                    {!selected.crew || selected.crew.length === 0 ? (
+                      <div style={{ fontSize: 13, color: '#9e9d99', fontStyle: 'italic', padding: '8px 0' }}>No crew assigned yet</div>
+                    ) : (
+                      selected.crew.map((c, i) => (
+                        <div key={c} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 13px', background: '#f8f7f4', borderRadius: 10, marginBottom: 6 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                            <div style={{ width: 32, height: 32, borderRadius: '50%', background: ['#0f0f0f','#d95f2b','#1f5fa6','#2d7a4f'][i%4], color: 'white', fontSize: 12, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{c[0]?.toUpperCase()}</div>
+                            <span style={{ fontSize: 13, fontWeight: 500 }}>{c}</span>
+                          </div>
+                          <a href="tel:" style={{ fontSize: 12, color: '#1f5fa6', textDecoration: 'none', fontWeight: 600, background: '#eef3fb', padding: '4px 10px', borderRadius: 6 }}>📞 Call</a>
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 8 }}>Message Whole Crew</div>
+                    <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Job update, site change, schedule note..." rows={3} style={{ width: '100%', padding: '11px 13px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 10, fontFamily: 'inherit', outline: 'none', resize: 'none', marginBottom: 8, background: '#f8f7f4', lineHeight: 1.6 }} />
+                    <button onClick={() => { msg('✓ Message sent to crew'); setMessage('') }} disabled={!message.trim()} style={{ width: '100%', padding: '11px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: message.trim() ? 'pointer' : 'not-allowed', border: 'none', background: message.trim() ? '#0f0f0f' : '#f1ede6', color: message.trim() ? 'white' : '#9e9d99', fontFamily: 'inherit', transition: 'all .15s' }}>
+                      {message.trim() ? `Send to Crew (${selected.crew?.length || 0})` : 'Type a message first'}
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* PHOTOS TAB */}
+              {activePanel === 'photos' && project && (
+                <JobPhotos
+                  projectId={project.id}
+                  jobId={selected.id}
+                  jobTitle={selected.title}
+                />
+              )}
             </div>
           </div>
         </>
       )}
 
       {toast && (
-        <div style={{ position: 'fixed', bottom: 24, right: selected ? 414 : 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)', transition: 'right 0.2s' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: selected ? 444 : 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)', transition: 'right 0.2s' }}>
           {toast}
         </div>
       )}

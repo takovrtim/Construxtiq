@@ -197,7 +197,6 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
 
   return (
     <>
-      {/* HEADER + TABS */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 22, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 2 }}>Documents</div>
@@ -209,53 +208,32 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
             ['readiness', '✓ Permit Readiness'],
             ['checklist', '📋 Checklist'],
           ] as const).map(([tab, label]) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              style={{
-                padding: '7px 14px', fontSize: 12, borderRadius: 7, border: 'none',
-                cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap', transition: 'all 0.15s',
-                fontWeight: activeTab === tab ? 700 : 500,
-                background: activeTab === tab ? 'white' : 'transparent',
-                color: activeTab === tab ? '#0f0f0f' : '#9e9d99',
-                boxShadow: activeTab === tab ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
-              }}
-            >
+            <button key={tab} onClick={() => setActiveTab(tab)} style={{ padding: '7px 14px', fontSize: 12, borderRadius: 7, border: 'none', cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap', transition: 'all 0.15s', fontWeight: activeTab === tab ? 700 : 500, background: activeTab === tab ? 'white' : 'transparent', color: activeTab === tab ? '#0f0f0f' : '#9e9d99', boxShadow: activeTab === tab ? '0 1px 4px rgba(0,0,0,0.08)' : 'none' }}>
               {label}
             </button>
           ))}
         </div>
       </div>
 
-      {/* PERMIT READINESS TAB */}
       {activeTab === 'readiness' && (
         <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <PermitReadiness projectId={project.id} projectName={project.name} />
         </div>
       )}
 
-      {/* CHECKLIST TAB */}
       {activeTab === 'checklist' && (
         <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <JurisdictionChecklist projectId={project.id} />
         </div>
       )}
 
-      {/* DOCUMENTS TAB */}
       {activeTab === 'documents' && (
         <>
           <div style={{ marginBottom: 14 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>What are you uploading?</div>
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
               {DOC_TYPES.map(t => (
-                <button key={t.id} onClick={() => setSelectedDocType(t.id)} style={{
-                  display: 'flex', alignItems: 'center', gap: 6, padding: '6px 13px',
-                  fontSize: 12, fontWeight: selectedDocType === t.id ? 700 : 500,
-                  borderRadius: 20, cursor: 'pointer', fontFamily: 'inherit', transition: 'all 0.12s',
-                  border: `1.5px solid ${selectedDocType === t.id ? (t.id === 'blueprint' ? '#1f5fa6' : '#d95f2b') : 'rgba(0,0,0,0.1)'}`,
-                  background: selectedDocType === t.id ? (t.id === 'blueprint' ? '#eef3fb' : '#fdf0e8') : 'white',
-                  color: selectedDocType === t.id ? (t.id === 'blueprint' ? '#1f5fa6' : '#d95f2b') : '#6b6a66',
-                }}>
+                <button key={t.id} onClick={() => setSelectedDocType(t.id)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 13px', fontSize: 12, fontWeight: selectedDocType === t.id ? 700 : 500, borderRadius: 20, cursor: 'pointer', fontFamily: 'inherit', transition: 'all 0.12s', border: `1.5px solid ${selectedDocType === t.id ? (t.id === 'blueprint' ? '#1f5fa6' : '#d95f2b') : 'rgba(0,0,0,0.1)'}`, background: selectedDocType === t.id ? (t.id === 'blueprint' ? '#eef3fb' : '#fdf0e8') : 'white', color: selectedDocType === t.id ? (t.id === 'blueprint' ? '#1f5fa6' : '#d95f2b') : '#6b6a66' }}>
                   <span>{t.icon}</span><span>{t.label}</span>
                 </button>
               ))}
@@ -268,26 +246,8 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
           </div>
 
           <div style={{ marginBottom: 16 }}>
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              disabled={uploading}
-              onDragOver={e => { e.preventDefault(); setDragOver(true) }}
-              onDragEnter={e => { e.preventDefault(); setDragOver(true) }}
-              onDragLeave={() => setDragOver(false)}
-              onDrop={onDrop}
-              style={{
-                width: '100%', padding: '18px 20px', fontSize: 15, fontWeight: 700,
-                borderRadius: 14, cursor: uploading ? 'default' : 'pointer',
-                border: `2px dashed ${dragOver ? '#c2541f' : isBlueprint ? '#1f5fa6' : '#d95f2b'}`,
-                background: dragOver ? '#fdf0e8' : isBlueprint ? '#eef3fb' : '#d95f2b',
-                color: dragOver ? '#d95f2b' : isBlueprint ? '#1f5fa6' : 'white',
-                fontFamily: 'inherit', transition: 'all 0.15s',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-              }}
-            >
-              {uploading ? `⏳ ${isBlueprint ? 'Analyzing blueprint...' : 'Uploading...'}` :
-               dragOver ? '📂 Drop to upload' :
-               isBlueprint ? '🏗️ Upload Blueprint for AI Analysis' : '+ Add Document'}
+            <button onClick={() => fileInputRef.current?.click()} disabled={uploading} onDragOver={e => { e.preventDefault(); setDragOver(true) }} onDragEnter={e => { e.preventDefault(); setDragOver(true) }} onDragLeave={() => setDragOver(false)} onDrop={onDrop} style={{ width: '100%', padding: '18px 20px', fontSize: 15, fontWeight: 700, borderRadius: 14, cursor: uploading ? 'default' : 'pointer', border: `2px dashed ${dragOver ? '#c2541f' : isBlueprint ? '#1f5fa6' : '#d95f2b'}`, background: dragOver ? '#fdf0e8' : isBlueprint ? '#eef3fb' : '#d95f2b', color: dragOver ? '#d95f2b' : isBlueprint ? '#1f5fa6' : 'white', fontFamily: 'inherit', transition: 'all 0.15s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+              {uploading ? `⏳ ${isBlueprint ? 'Analyzing blueprint...' : 'Uploading...'}` : dragOver ? '📂 Drop to upload' : isBlueprint ? '🏗️ Upload Blueprint for AI Analysis' : '+ Add Document'}
             </button>
             {processingStep && (
               <div style={{ marginTop: 10, background: isBlueprint ? '#eef3fb' : '#E6F1FB', borderRadius: 9, padding: '10px 14px', fontSize: 13, color: '#0C447C', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -304,20 +264,13 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
                   const count = folderCounts[folder.id] || 0
                   if (folder.id !== 'all' && count === 0) return null
                   return (
-                    <button key={folder.id} onClick={() => setActiveFolder(folder.id)} style={{
-                      display: 'flex', alignItems: 'center', gap: 5, padding: '5px 11px',
-                      fontSize: 12, fontWeight: 500, borderRadius: 20, cursor: 'pointer', fontFamily: 'inherit',
-                      border: `1.5px solid ${activeFolder === folder.id ? '#0f0f0f' : 'rgba(0,0,0,0.1)'}`,
-                      background: activeFolder === folder.id ? '#0f0f0f' : 'white',
-                      color: activeFolder === folder.id ? 'white' : '#6b6a66', transition: 'all 0.12s',
-                    }}>
+                    <button key={folder.id} onClick={() => setActiveFolder(folder.id)} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 11px', fontSize: 12, fontWeight: 500, borderRadius: 20, cursor: 'pointer', fontFamily: 'inherit', border: `1.5px solid ${activeFolder === folder.id ? '#0f0f0f' : 'rgba(0,0,0,0.1)'}`, background: activeFolder === folder.id ? '#0f0f0f' : 'white', color: activeFolder === folder.id ? 'white' : '#6b6a66', transition: 'all 0.12s' }}>
                       <span>{folder.icon}</span><span>{folder.label}</span>
                       {count > 0 && <span style={{ background: activeFolder === folder.id ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.08)', borderRadius: 20, padding: '0 5px', fontSize: 10, fontWeight: 700 }}>{count}</span>}
                     </button>
                   )
                 })}
               </div>
-
               <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                   <div style={{ fontSize: 14, fontWeight: 700 }}>{FOLDERS.find(f => f.id === activeFolder)?.icon} {FOLDERS.find(f => f.id === activeFolder)?.label}</div>
@@ -328,11 +281,7 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
                     {activeFolder === 'all' ? 'No documents yet — upload your first above' : `No ${activeFolder}s uploaded yet`}
                   </div>
                 ) : filteredDocs.map(doc => (
-                  <div key={doc.id} onClick={() => setSelected(doc)} style={{
-                    display: 'flex', alignItems: 'center', gap: 10, padding: '10px 8px',
-                    borderBottom: '1px solid rgba(0,0,0,0.05)', cursor: 'pointer', borderRadius: 8,
-                    background: selected?.id === doc.id ? '#f8f7f4' : 'transparent', transition: 'background 0.1s',
-                  }}>
+                  <div key={doc.id} onClick={() => setSelected(doc)} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 8px', borderBottom: '1px solid rgba(0,0,0,0.05)', cursor: 'pointer', borderRadius: 8, background: selected?.id === doc.id ? '#f8f7f4' : 'transparent', transition: 'background 0.1s' }}>
                     <div style={{ width: 36, height: 36, borderRadius: 9, background: doc.doc_type === 'blueprint' ? '#eef3fb' : '#f8f7f4', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17, flexShrink: 0 }}>
                       {DOC_ICONS[doc.doc_type] || '📄'}
                     </div>
@@ -340,20 +289,10 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
                       <div style={{ fontSize: 13, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.name}</div>
                       <div style={{ fontSize: 11, color: '#9e9d99', marginTop: 2 }}>{format(parseISO(doc.created_at), 'MMM d · h:mm a')}</div>
                     </div>
-                    <span style={{
-                      fontSize: 10, fontWeight: 600, padding: '3px 8px', borderRadius: 20, whiteSpace: 'nowrap',
-                      background: doc.status === 'extracted' || doc.status === 'saved' ? '#edf5f0' : doc.status === 'needs_review' ? '#fdf0f0' : '#fdf4e3',
-                      color: doc.status === 'extracted' || doc.status === 'saved' ? '#1a4d31' : doc.status === 'needs_review' ? '#6e1a1a' : '#6b4010',
-                    }}>
+                    <span style={{ fontSize: 10, fontWeight: 600, padding: '3px 8px', borderRadius: 20, whiteSpace: 'nowrap', background: doc.status === 'extracted' || doc.status === 'saved' ? '#edf5f0' : doc.status === 'needs_review' ? '#fdf0f0' : '#fdf4e3', color: doc.status === 'extracted' || doc.status === 'saved' ? '#1a4d31' : doc.status === 'needs_review' ? '#6e1a1a' : '#6b4010' }}>
                       {doc.status === 'processing' || doc.status === 'uploading' ? '⏳ Reading' : doc.status.replace('_', ' ')}
                     </span>
-                    <button
-                      onClick={e => deleteDocument(doc, e)}
-                      disabled={deletingId === doc.id}
-                      style={{ width: 26, height: 26, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: '#9e9d99', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
-                      onMouseEnter={e => { (e.currentTarget.style.background = '#fdf0f0'); (e.currentTarget.style.color = '#b83232') }}
-                      onMouseLeave={e => { (e.currentTarget.style.background = 'transparent'); (e.currentTarget.style.color = '#9e9d99') }}
-                    >
+                    <button onClick={e => deleteDocument(doc, e)} disabled={deletingId === doc.id} style={{ width: 26, height: 26, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: '#9e9d99', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }} onMouseEnter={e => { (e.currentTarget.style.background = '#fdf0f0'); (e.currentTarget.style.color = '#b83232') }} onMouseLeave={e => { (e.currentTarget.style.background = 'transparent'); (e.currentTarget.style.color = '#9e9d99') }}>
                       {deletingId === doc.id ? '…' : '×'}
                     </button>
                   </div>
@@ -365,9 +304,7 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
               <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: 14 }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14 }}>
                   <div>
-                    <div style={{ fontSize: 14, fontWeight: 700 }}>
-                      {selected?.doc_type === 'blueprint' ? '🏗️ Blueprint Analysis' : 'AI Extraction Preview'}
-                    </div>
+                    <div style={{ fontSize: 14, fontWeight: 700 }}>{selected?.doc_type === 'blueprint' ? '🏗️ Blueprint Analysis' : 'AI Extraction Preview'}</div>
                     <div style={{ fontSize: 12, color: '#9e9d99', marginTop: 2 }}>{selected?.name || 'Select a document'}</div>
                     {selected && <div style={{ fontSize: 11, color: '#9e9d99', marginTop: 1 }}>{format(parseISO(selected.created_at), 'MMM d, yyyy · h:mm a')}</div>}
                   </div>
@@ -393,9 +330,7 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
                 ) : selected.status === 'processing' || selected.status === 'uploading' ? (
                   <div style={{ textAlign: 'center', padding: '32px 0' }}>
                     <div style={{ fontSize: 32, marginBottom: 10 }}>{selected.doc_type === 'blueprint' ? '🏗️' : '⚙️'}</div>
-                    <div style={{ fontSize: 13, color: '#6b6a66', marginBottom: 6 }}>
-                      {selected.doc_type === 'blueprint' ? 'AI is analyzing your blueprint...' : 'AI is reading this document...'}
-                    </div>
+                    <div style={{ fontSize: 13, color: '#6b6a66', marginBottom: 6 }}>{selected.doc_type === 'blueprint' ? 'AI is analyzing your blueprint...' : 'AI is reading this document...'}</div>
                     <div style={{ fontSize: 12, color: '#9e9d99' }}>{processingStep || 'Processing...'}</div>
                   </div>
                 ) : selected.status === 'needs_review' ? (
@@ -416,7 +351,7 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
                         {selected.extracted_data.inspector_name && <><span style={{ color: '#9e9d99' }}>Inspector</span><span>{selected.extracted_data.inspector_name}</span></>}
                       </div>
 
-                      {selected.extracted_data.what_to_add?.length > 0 && (
+                      {(selected.extracted_data.what_to_add?.length ?? 0) > 0 && (
                         <div style={{ marginTop: 12, padding: '10px 12px', background: '#edf5f0', borderRadius: 8, borderLeft: '3px solid #2d7a4f' }}>
                           <div style={{ fontSize: 11, fontWeight: 700, color: '#1a4d31', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.4px' }}>✓ What to Add</div>
                           {selected.extracted_data.what_to_add.map((item: string, i: number) => (
@@ -424,7 +359,7 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
                           ))}
                         </div>
                       )}
-                      {selected.extracted_data.what_to_remove?.length > 0 && (
+                      {(selected.extracted_data.what_to_remove?.length ?? 0) > 0 && (
                         <div style={{ marginTop: 8, padding: '10px 12px', background: '#fdf0f0', borderRadius: 8, borderLeft: '3px solid #b83232' }}>
                           <div style={{ fontSize: 11, fontWeight: 700, color: '#6e1a1a', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.4px' }}>✗ What to Remove</div>
                           {selected.extracted_data.what_to_remove.map((item: string, i: number) => (
@@ -432,7 +367,7 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
                           ))}
                         </div>
                       )}
-                      {selected.extracted_data.code_issues?.length > 0 && (
+                      {(selected.extracted_data.code_issues?.length ?? 0) > 0 && (
                         <div style={{ marginTop: 8, padding: '10px 12px', background: '#fdf4e3', borderRadius: 8, borderLeft: '3px solid #b06e1a' }}>
                           <div style={{ fontSize: 11, fontWeight: 700, color: '#6b4010', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.4px' }}>⚠ Code Issues</div>
                           {selected.extracted_data.code_issues.map((item: string, i: number) => (
@@ -440,7 +375,7 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
                           ))}
                         </div>
                       )}
-                      {selected.extracted_data.cost_saving_opportunities?.length > 0 && (
+                      {(selected.extracted_data.cost_saving_opportunities?.length ?? 0) > 0 && (
                         <div style={{ marginTop: 8, padding: '10px 12px', background: '#eef3fb', borderRadius: 8, borderLeft: '3px solid #1f5fa6' }}>
                           <div style={{ fontSize: 11, fontWeight: 700, color: '#0C447C', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.4px' }}>💡 Cost Savings</div>
                           {selected.extracted_data.cost_saving_opportunities.map((item: string, i: number) => (
@@ -448,7 +383,7 @@ export function DocumentsClient({ user, project, initialDocuments, initialPermit
                           ))}
                         </div>
                       )}
-                      {selected.extracted_data.flags?.length > 0 && (
+                      {(selected.extracted_data.flags?.length ?? 0) > 0 && (
                         <div style={{ marginTop: 10 }}>
                           {selected.extracted_data.flags.map((f: any, i: number) => (
                             <div key={i} style={{ marginTop: 6, padding: '8px 12px', borderRadius: 7, borderLeft: `3px solid ${f.severity === 'critical' ? '#b83232' : '#b06e1a'}`, background: f.severity === 'critical' ? '#fdf0f0' : '#fdf4e3', color: f.severity === 'critical' ? '#6e1a1a' : '#6b4010', fontSize: 12 }}>

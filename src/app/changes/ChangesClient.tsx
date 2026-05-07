@@ -18,6 +18,9 @@ interface ChangeOrder {
   revision_number: number
   requires_permit_revision: boolean
   ai_summary: string | null
+  approval_token: string | null
+  owner_notes: string | null
+  decided_at: string | null
   created_at: string
 }
 
@@ -55,6 +58,8 @@ export function ChangesClient({ user, project, initialChanges, jobs }: Props) {
   const [saving, setSaving]       = useState(false)
   const [aiLoading, setAiLoading] = useState(false)
   const [filterStatus, setFilterStatus] = useState('all')
+  const [approvalLoading, setApprovalLoading] = useState(false)
+  const [approvalLink, setApprovalLink] = useState('')
 
   // Form state
   const [title, setTitle]           = useState('')
@@ -149,6 +154,24 @@ export function ChangesClient({ user, project, initialChanges, jobs }: Props) {
     if (!confirm('Delete this change order?')) return
     const { error } = await supabase.from('change_orders').delete().eq('id', id)
     if (!error) { setChanges(prev => prev.filter(c => c.id !== id)); setSelected(null); msg('Deleted') }
+  }
+
+  async function generateApprovalLink(change: ChangeOrder) {
+    setApprovalLoading(true)
+    try {
+      const res = await fetch('/api/change-orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'generate_token', change_id: change.id }),
+      })
+      const json = await res.json()
+      if (json.success) {
+        setApprovalLink(json.approvalUrl)
+        await navigator.clipboard.writeText(json.approvalUrl)
+        msg('✓ Approval link copied — send to owner')
+      }
+    } catch { msg('Failed to generate link') }
+    setApprovalLoading(false)
   }
 
   const inp: React.CSSProperties = { width: '100%', padding: '10px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 9, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f' }
@@ -435,6 +458,22 @@ export function ChangesClient({ user, project, initialChanges, jobs }: Props) {
               })}
             </div>
 
+            {/* Send for Approval */}
+            <div style={{ marginBottom: 12 }}>
+              <button onClick={() => generateApprovalLink(selected)} disabled={approvalLoading} style={{ width: '100%', padding: '11px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: approvalLoading ? 'not-allowed' : 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit', marginBottom: 8 }}>
+                {approvalLoading ? '⏳ Generating...' : '🔗 Send for Owner Approval'}
+              </button>
+              {approvalLink && (
+                <div style={{ padding: '10px 12px', background: '#edf5f0', borderRadius: 9, fontSize: 12, color: '#1a4d31', wordBreak: 'break-all' }}>
+                  ✓ Link copied! <span style={{ opacity: 0.6 }}>{approvalLink}</span>
+                </div>
+              )}
+              {selected.owner_notes && (
+                <div style={{ marginTop: 8, padding: '10px 12px', background: '#f8f7f4', borderRadius: 9, fontSize: 12, color: '#6b6a66' }}>
+                  <strong>Owner notes:</strong> {selected.owner_notes}
+                </div>
+              )}
+            </div>
             <button onClick={() => deleteChange(selected.id)} style={{ width: '100%', padding: '10px', fontSize: 13, fontWeight: 600, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(184,50,50,0.2)', background: '#fdf0f0', color: '#b83232', fontFamily: 'inherit' }}>
               Delete Change Order
             </button>

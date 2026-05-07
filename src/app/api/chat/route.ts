@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
   try {
     const reply = await chatWithProject({
       userMessage: body.message,
-      conversationHistory: body.history,
+      conversationHistory: (body.history || []).map((m: any) => ({ role: m.role as 'user' | 'assistant', content: m.content as string })),
       projectContext: context,
     })
     return NextResponse.json({ success: true, reply })

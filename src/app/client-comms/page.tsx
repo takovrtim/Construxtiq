@@ -1,9 +1,10 @@
 import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/lib/supabase'
 import { AppShell } from '@/components/layout/AppShell'
-import { CalendarClient } from './CalendarClient'
+import { ClientCommsClient } from './ClientCommsClient'
+import type { User, Project } from '@/types'
 
-export default async function CalendarPage() {
+export default async function ClientCommsPage() {
   const supabase = createServerSupabase()
   const { data: { user: authUser } } = await supabase.auth.getUser()
   if (!authUser) redirect('/auth/login')
@@ -16,18 +17,18 @@ export default async function CalendarPage() {
 
   const activeProject = projects?.[0] ?? null
 
-  const permits = activeProject ? await supabase
-    .from('permits')
-    .select('*')
-    .eq('project_id', activeProject.id)
-    .order('expiry_date') : { data: [] }
+  const [logs, jobs] = activeProject ? await Promise.all([
+    supabase.from('client_comms').select('*').eq('project_id', activeProject.id).order('comm_date', { ascending: false }),
+    supabase.from('jobs').select('id, title, client_name, client_phone').eq('project_id', activeProject.id),
+  ]) : [{ data: [] }, { data: [] }]
 
   return (
-    <AppShell user={user as any} projects={(projects ?? []) as any} activeProject={activeProject as any}>
-      <CalendarClient
+    <AppShell user={user as User} projects={(projects ?? []) as Project[]} activeProject={activeProject as Project | null}>
+      <ClientCommsClient
         user={user as any}
         project={activeProject as any}
-        permits={(permits.data ?? []) as any}
+        initialLogs={(logs.data ?? []) as any}
+        jobs={(jobs.data ?? []) as any}
       />
     </AppShell>
   )

@@ -17,24 +17,34 @@ export default async function ReportsPage() {
 
   const activeProject = projects?.[0] ?? null
 
-  const [jobs, permits, bids, subs, documents] = activeProject ? await Promise.all([
-    supabase.from('jobs').select('*').eq('project_id', activeProject.id),
-    supabase.from('permits').select('*').eq('project_id', activeProject.id).order('expiry_date'),
-    supabase.from('bid_line_items').select('*').eq('project_id', activeProject.id),
-    supabase.from('subcontractors').select('*').eq('project_id', activeProject.id),
-    supabase.from('documents').select('*').eq('project_id', activeProject.id).order('created_at', { ascending: false }),
-  ]) : [{ data: [] }, { data: [] }, { data: [] }, { data: [] }, { data: [] }]
+  const [jobs, permits, inspections, changes, crewTime, materials, invoices, logs, safety] = activeProject
+    ? await Promise.all([
+        supabase.from('jobs').select('*').eq('project_id', activeProject.id),
+        supabase.from('permits').select('*').eq('project_id', activeProject.id),
+        supabase.from('inspections').select('*').eq('project_id', activeProject.id),
+        supabase.from('change_orders').select('*').eq('project_id', activeProject.id),
+        supabase.from('crew_time').select('*').eq('project_id', activeProject.id),
+        supabase.from('materials').select('*').eq('project_id', activeProject.id),
+        supabase.from('invoices').select('*').eq('project_id', activeProject.id),
+        supabase.from('job_logs').select('*').eq('project_id', activeProject.id),
+        supabase.from('safety_checklists').select('*').eq('project_id', activeProject.id),
+      ])
+    : Array(9).fill({ data: [] })
 
   return (
     <AppShell user={user as User} projects={(projects ?? []) as Project[]} activeProject={activeProject as Project | null}>
       <ReportsClient
         user={user as any}
         project={activeProject as any}
-        jobs={(jobs.data ?? []) as any}
-        permits={(permits.data ?? []) as any}
-        bids={(bids.data ?? []) as any}
-        subs={(subs.data ?? []) as any}
-        documents={(documents.data ?? []) as any}
+        jobs={(jobs?.data ?? []) as any}
+        permits={(permits?.data ?? []) as any}
+        inspections={(inspections?.data ?? []) as any}
+        changes={(changes?.data ?? []) as any}
+        crewTime={(crewTime?.data ?? []) as any}
+        materials={(materials?.data ?? []) as any}
+        invoices={(invoices?.data ?? []) as any}
+        logs={(logs?.data ?? []) as any}
+        safety={(safety?.data ?? []) as any}
       />
     </AppShell>
   )

@@ -17,12 +17,11 @@ export default async function InvoicesPage() {
 
   const activeProject = projects?.[0] ?? null
 
-  const [invoices, jobs, changes, bids] = activeProject ? await Promise.all([
+  const [invoices, jobs, changes] = activeProject ? await Promise.all([
     supabase.from('invoices').select('*').eq('project_id', activeProject.id).order('created_at', { ascending: false }),
-    supabase.from('jobs').select('id, title, client_name, client_phone, address').eq('project_id', activeProject.id),
-    supabase.from('change_orders').select('*').eq('project_id', activeProject.id).neq('status', 'rejected'),
-    supabase.from('bid_line_items').select('*').eq('project_id', activeProject.id),
-  ]) : [{ data: [] }, { data: [] }, { data: [] }, { data: [] }]
+    supabase.from('jobs').select('id, title, client_name, client_email, client_phone, contract_value').eq('project_id', activeProject.id),
+    supabase.from('change_orders').select('id, title, cost_impact, status').eq('project_id', activeProject.id).eq('status', 'approved'),
+  ]) : [{ data: [] }, { data: [] }, { data: [] }]
 
   return (
     <AppShell user={user as User} projects={(projects ?? []) as Project[]} activeProject={activeProject as Project | null}>
@@ -31,8 +30,7 @@ export default async function InvoicesPage() {
         project={activeProject as any}
         initialInvoices={(invoices.data ?? []) as any}
         jobs={(jobs.data ?? []) as any}
-        changes={(changes.data ?? []) as any}
-        bids={(bids.data ?? []) as any}
+        approvedChanges={(changes.data ?? []) as any}
       />
     </AppShell>
   )

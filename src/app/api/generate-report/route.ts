@@ -6,24 +6,43 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 export async function POST(req: NextRequest) {
   const supabase = createServerSupabase()
-  const { data: { user }, error } = await supabase.auth.getUser()
-  if (error || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const { data: { user }, error: authErr } = await supabase.auth.getUser()
+  if (authErr || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { context, projectName, gcName } = await req.json()
+  const body = await req.json()
 
   const response = await client.messages.create({
-    model: 'claude-opus-4-5',
+    model: 'claude-sonnet-4-5',
     max_tokens: 600,
-    system: `You are a senior construction project manager writing a concise weekly briefing for a General Contractor.
-Write in plain, direct language. No corporate jargon. Max 250 words.
-Structure: 1) Overall status (1 sentence), 2) Top 3 priorities this week, 3) Financial snapshot, 4) One recommendation.
-Be specific and actionable. This is private — speak candidly.`,
     messages: [{
       role: 'user',
-      content: `Write a weekly executive summary for ${gcName} at ${projectName}.\n\nProject data:\n${context}`,
+      content: `Write a professional project status report for a general contractor. Be specific, actionable, and highlight risks. Use plain paragraphs — no bullet points or markdown.
+
+Project: ${body.project.name}
+Address: ${body.project.address || 'Not specified'}
+
+Financial:
+- Total invoiced: $${body.stats.totalRevenue.toLocaleString()}
+- Collected: $${body.stats.totalPaid.toLocaleString()}
+- Total costs: $${body.stats.totalCosts.toLocaleString()}
+- Gross profit: $${(body.stats.totalRevenue - body.stats.totalCosts).toLocaleString()}
+- Change orders total: $${body.stats.totalChangeCost.toLocaleString()}
+
+Progress:
+- Total jobs: ${body.jobCount} (${body.stats.activeJobs} active, ${body.stats.completedJobs} completed)
+- Daily logs: ${body.logCount}
+- Total labor hours: ${body.stats.totalHours}h
+
+Compliance:
+- Permits: ${body.permitCount}
+- Inspections passed: ${body.stats.passedInspect}
+- Safety checklists: ${body.safetyCount} (${body.stats.safetyRate}% all-clear rate)
+- Change orders: ${body.changeCount}
+
+Write 3-4 sentences covering: overall project health, financial status, any concerns, and recommended next actions. Be direct and professional.`
     }],
   })
 
-  const summary = response.content[0].type === 'text' ? response.content[0].text : ''
-  return NextResponse.json({ success: true, summary })
+  const report = response.content[0].type === 'text' ? response.content[0].text.trim() : ''
+  return NextResponse.json({ success: true, report })
 }

@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/lib/supabase'
 import { AppShell } from '@/components/layout/AppShell'
-import { LogsClient } from './LogsClient'
+import { PhotosClient } from './PhotosClient'
 import type { User, Project } from '@/types'
 
-export default async function LogsPage() {
+export default async function PhotosPage() {
   const supabase = createServerSupabase()
   const { data: { user: authUser } } = await supabase.auth.getUser()
   if (!authUser) redirect('/auth/login')
@@ -17,17 +17,17 @@ export default async function LogsPage() {
 
   const activeProject = projects?.[0] ?? null
 
-  const [logs, jobs] = activeProject ? await Promise.all([
-    supabase.from('job_logs').select('*').eq('project_id', activeProject.id).order('log_date', { ascending: false }),
+  const [photos, jobs] = activeProject ? await Promise.all([
+    supabase.from('job_photos').select('*').eq('project_id', activeProject.id).order('created_at', { ascending: false }),
     supabase.from('jobs').select('id, title').eq('project_id', activeProject.id),
   ]) : [{ data: [] }, { data: [] }]
 
   return (
     <AppShell user={user as User} projects={(projects ?? []) as Project[]} activeProject={activeProject as Project | null}>
-      <LogsClient
+      <PhotosClient
         user={user as any}
         project={activeProject as any}
-        initialLogs={(logs.data ?? []) as any}
+        initialPhotos={(photos.data ?? []) as any}
         jobs={(jobs.data ?? []) as any}
       />
     </AppShell>

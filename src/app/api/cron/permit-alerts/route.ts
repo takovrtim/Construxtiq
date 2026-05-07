@@ -1,21 +1,11 @@
-// ─────────────────────────────────────────────────────────
-// GET /api/cron/permit-alerts
-// Called by a cron job (Vercel Cron or external).
-// Checks all permits, sends alerts for expiring ones.
-//
-// Vercel cron.json config:
-// { "crons": [{ "path": "/api/cron/permit-alerts", "schedule": "0 7 * * *" }] }
-//
-// Protected by CRON_SECRET env var.
-// ─────────────────────────────────────────────────────────
-
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminSupabase } from '@/lib/supabase'
-import { sendPermitExpiryAlert, sendDailyDigest } from '@/lib/email'
-import { differenceInDays, format, parseISO } from 'date-fns'
+import { Resend } from 'resend'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function GET(req: NextRequest) {
-  // Verify cron secret
+  // Verify this is a legitimate cron call
   const authHeader = req.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -23,156 +13,138 @@ export async function GET(req: NextRequest) {
 
   const admin = createAdminSupabase()
   const today = new Date()
-  const results = { alerts_sent: 0, digests_sent: 0, errors: 0 }
+  const in14Days = new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+  const in7Days  = new Date(today.getTime() + 7  * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+  const in1Day   = new Date(today.getTime() + 1  * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+  const todayStr = today.toISOString().split('T')[0]
 
-  // ── Fetch all active permits with expiry dates ──────────
-  const { data: permits, error } = await admin
+  // Find all permits expiring in the next 14 days
+  const { data: permits } = await admin
     .from('permits')
     .select(`
       *,
-      projects!inner(name, user_id),
-      users!inner(email, full_name, sms_alerts_enabled)
+      projects (
+        id, name, user_id,
+        users ( email, full_name )
+      )
     `)
-    .not('expiry_date', 'is', null)
-    .not('status', 'eq', 'expired')
-    .not('status', 'eq', 'revoked')
+    .gte('expiry_date', todayStr)
+    .lte('expiry_date', in14Days)
+    .eq('status', 'active')
 
-  if (error) {
-    console.error('Failed to fetch permits:', error)
-    return NextResponse.json({ error: 'DB error' }, { status: 500 })
+  if (!permits || permits.length === 0) {
+    return NextResponse.json({ success: true, sent: 0, message: 'No expiring permits' })
   }
 
-  // ── Update expired permit statuses ─────────────────────
-  const expiredIds = (permits || [])
-    .filter(p => parseISO(p.expiry_date) < today)
-    .map(p => p.id)
+  let sent = 0
+  const errors: string[] = []
 
-  if (expiredIds.length > 0) {
-    await admin.from('permits').update({ status: 'expired' }).in('id', expiredIds)
-  }
+  for (const permit of permits) {
+    const project = permit.projects as any
+    if (!project?.users?.email) continue
 
-  // ── Send alerts for each threshold ─────────────────────
-  for (const permit of permits || []) {
-    const expiryDate = parseISO(permit.expiry_date)
-    const daysUntil = differenceInDays(expiryDate, today)
+    const expiryDate = new Date(permit.expiry_date)
+    const daysLeft = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
 
-    if (daysUntil < 0) continue // Already expired
+    let urgency = 'expiring soon'
+    let color = '#b06e1a'
+    let emoji = '⚠️'
 
-    const user = permit.users as { email: string; full_name: string }
-    const project = permit.projects as { name: string }
+    if (daysLeft <= 1) { urgency = 'EXPIRING TOMORROW'; color = '#b83232'; emoji = '🚨' }
+    else if (daysLeft <= 7) { urgency = `expiring in ${daysLeft} days`; color = '#b83232'; emoji = '🔴' }
+
+    const subject = `${emoji} Permit ${permit.permit_number} ${urgency} — ${project.name}`
 
     try {
-      if (daysUntil <= 7 && !permit.alert_sent_7d) {
-        await sendPermitExpiryAlert({
-          to: user.email,
-          userName: user.full_name || 'there',
-          projectName: project.name,
-          permitNumber: permit.permit_number,
-          permitType: permit.permit_type,
-          expiryDate: format(expiryDate, 'MMMM d, yyyy'),
-          daysUntilExpiry: daysUntil,
-        })
-        await admin.from('permits').update({ alert_sent_7d: true, status: 'expiring_soon' }).eq('id', permit.id)
-        results.alerts_sent++
-      } else if (daysUntil <= 14 && !permit.alert_sent_14d) {
-        await sendPermitExpiryAlert({
-          to: user.email,
-          userName: user.full_name || 'there',
-          projectName: project.name,
-          permitNumber: permit.permit_number,
-          permitType: permit.permit_type,
-          expiryDate: format(expiryDate, 'MMMM d, yyyy'),
-          daysUntilExpiry: daysUntil,
-        })
-        await admin.from('permits').update({ alert_sent_14d: true, status: 'expiring_soon' }).eq('id', permit.id)
-        results.alerts_sent++
-      } else if (daysUntil <= 30 && !permit.alert_sent_30d) {
-        await sendPermitExpiryAlert({
-          to: user.email,
-          userName: user.full_name || 'there',
-          projectName: project.name,
-          permitNumber: permit.permit_number,
-          permitType: permit.permit_type,
-          expiryDate: format(expiryDate, 'MMMM d, yyyy'),
-          daysUntilExpiry: daysUntil,
-        })
-        await admin.from('permits').update({ alert_sent_30d: true, status: 'expiring_soon' }).eq('id', permit.id)
-        results.alerts_sent++
-      }
-    } catch (err) {
-      console.error(`Alert failed for permit ${permit.permit_number}:`, err)
-      results.errors++
-    }
-  }
+      await resend.emails.send({
+        from: process.env.RESEND_FROM_EMAIL || 'alerts@constructiq.app',
+        to: project.users.email,
+        subject,
+        html: `
+          <!DOCTYPE html>
+          <html>
+          <head><meta charset="utf-8"/></head>
+          <body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8f7f4;margin:0;padding:40px 20px;">
+            <div style="max-width:560px;margin:0 auto;">
+              <!-- Header -->
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:32px;">
+                <div style="width:36px;height:36px;background:#d95f2b;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;">🏗️</div>
+                <div style="font-size:18px;font-weight:800;letter-spacing:-0.5px;">ConstructIQ</div>
+              </div>
 
-  // ── Send daily digest to all active users ──────────────
-  const { data: users } = await admin
-    .from('users')
-    .select('id, email, full_name')
-    .in('subscription_status', ['trialing', 'active'])
+              <!-- Alert card -->
+              <div style="background:white;border-radius:16px;padding:32px;box-shadow:0 4px 24px rgba(0,0,0,0.08);margin-bottom:16px;border-top:4px solid ${color};">
+                <div style="font-size:28px;margin-bottom:12px;">${emoji}</div>
+                <div style="font-size:22px;font-weight:800;letter-spacing:-0.5px;margin-bottom:8px;color:${color};">
+                  Permit ${urgency}
+                </div>
+                <div style="font-size:15px;color:#6b6a66;margin-bottom:24px;">
+                  Action required for <strong>${project.name}</strong>
+                </div>
 
-  for (const user of users || []) {
-    try {
-      // Gather digest items for this user
-      const digestItems: Array<{ type: 'permit' | 'bid' | 'action'; text: string; severity: 'info' | 'warning' | 'critical' }> = []
+                <!-- Permit details -->
+                <div style="background:#f8f7f4;border-radius:12px;padding:20px;margin-bottom:24px;">
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div>
+                      <div style="font-size:11px;font-weight:700;color:#9e9d99;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Permit Number</div>
+                      <div style="font-size:16px;font-weight:700;font-family:monospace;">${permit.permit_number}</div>
+                    </div>
+                    <div>
+                      <div style="font-size:11px;font-weight:700;color:#9e9d99;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Expires</div>
+                      <div style="font-size:16px;font-weight:700;color:${color};">${new Date(permit.expiry_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+                    </div>
+                    <div>
+                      <div style="font-size:11px;font-weight:700;color:#9e9d99;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Type</div>
+                      <div style="font-size:14px;font-weight:500;">${permit.permit_type || 'General'}</div>
+                    </div>
+                    <div>
+                      <div style="font-size:11px;font-weight:700;color:#9e9d99;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Days Left</div>
+                      <div style="font-size:16px;font-weight:800;color:${color};">${daysLeft} day${daysLeft !== 1 ? 's' : ''}</div>
+                    </div>
+                  </div>
+                </div>
 
-      // Expiring permits
-      const userPermits = (permits || []).filter(p => {
-        const proj = p.projects as { user_id: string }
-        return proj.user_id === user.id
+                <!-- What to do -->
+                <div style="background:${daysLeft <= 7 ? '#fdf0f0' : '#fdf4e3'};border-radius:10px;padding:16px;border-left:3px solid ${color};margin-bottom:24px;">
+                  <div style="font-size:13px;font-weight:700;color:${color};margin-bottom:6px;">What you need to do:</div>
+                  <div style="font-size:13px;color:#6b6a66;line-height:1.6;">
+                    ${daysLeft <= 1
+                      ? '🚨 Contact the permit office immediately to request an extension. Do not let work continue without a valid permit.'
+                      : daysLeft <= 7
+                      ? '⚡ Contact your jurisdiction now to renew or extend this permit before it expires.'
+                      : '📋 Schedule your permit renewal or extension. Allow 3-5 business days for processing.'}
+                  </div>
+                </div>
+
+                <a href="${process.env.NEXT_PUBLIC_APP_URL}/documents" style="display:inline-block;background:#0f0f0f;color:white;text-decoration:none;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:700;">
+                  View in ConstructIQ →
+                </a>
+              </div>
+
+              <div style="text-align:center;font-size:12px;color:#9e9d99;margin-top:24px;">
+                ConstructIQ Permit Alert · ${project.name}<br/>
+                <a href="${process.env.NEXT_PUBLIC_APP_URL}/settings" style="color:#9e9d99;">Manage notifications</a>
+              </div>
+            </div>
+          </body>
+          </html>
+        `,
       })
+      sent++
 
-      for (const p of userPermits) {
-        const days = differenceInDays(parseISO(p.expiry_date), today)
-        if (days >= 0 && days <= 30) {
-          const proj = p.projects as { name: string }
-          digestItems.push({
-            type: 'permit',
-            text: `Permit ${p.permit_number} on ${proj.name} expires in ${days} days`,
-            severity: days <= 7 ? 'critical' : days <= 14 ? 'warning' : 'info',
-          })
-        }
+      // Mark permit as expiring_soon in DB
+      if (daysLeft <= 14) {
+        await admin.from('permits').update({ status: 'expiring_soon' }).eq('id', permit.id)
       }
-
-      // Over-budget bids
-      const { data: flaggedBids } = await admin
-        .from('bid_line_items')
-        .select('trade, ai_flag, ai_flag_severity, projects!inner(name)')
-        .eq('user_id', user.id)
-        .not('ai_flag', 'is', null)
-        .in('status', ['bidding', 'not_started'])
-        .limit(5)
-
-      for (const bid of flaggedBids || []) {
-        const proj = (bid.projects as unknown) as { name: string }
-        digestItems.push({
-          type: 'bid',
-          text: `${bid.trade} bid on ${proj.name}: ${bid.ai_flag}`,
-          severity: (bid.ai_flag_severity as 'info' | 'warning' | 'critical') || 'info',
-        })
-      }
-
-      if (digestItems.length > 0) {
-        const { data: projectCount } = await admin
-          .from('projects')
-          .select('id', { count: 'exact', head: true })
-          .eq('user_id', user.id)
-          .eq('status', 'active')
-
-        await sendDailyDigest({
-          to: user.email,
-          userName: user.full_name || 'there',
-          items: digestItems,
-          projectCount: (projectCount as unknown as { count: number })?.count || 0,
-        })
-        results.digests_sent++
-      }
-    } catch (err) {
-      console.error(`Digest failed for user ${user.id}:`, err)
-      results.errors++
+    } catch (err: any) {
+      errors.push(`${permit.permit_number}: ${err.message}`)
     }
   }
 
-  console.log('Cron completed:', results)
-  return NextResponse.json({ success: true, ...results })
+  return NextResponse.json({
+    success: true,
+    sent,
+    total: permits.length,
+    errors: errors.length > 0 ? errors : undefined,
+  })
 }

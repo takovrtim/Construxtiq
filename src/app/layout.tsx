@@ -1,11 +1,11 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { DM_Sans, DM_Mono } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
+  weight: ['300', '400', '500', '600', '700', '800'],
   variable: '--font-sans',
   display: 'swap',
 })
@@ -18,14 +18,37 @@ const dmMono = DM_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'ConstructIQ — General Contractor OS',
-  description: 'AI-powered document management, bid analysis, and subcontractor communication for General Contractors.',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://constructiq.io'),
-  openGraph: {
-    title: 'ConstructIQ — General Contractor OS',
-    description: 'Upload permits, AI extracts everything. Analyze bids, flag risks privately. Draft sub replies instantly.',
-    type: 'website',
+  title: 'ConstructIQ — Built for Contractors',
+  description: 'The operating system for electrical and plumbing contractors. Permits, crew, change orders, and invoices — all in one place.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://constructiq.app'),
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'ConstructIQ',
   },
+  openGraph: {
+    title: 'ConstructIQ — Built for Contractors',
+    description: 'Permits, crew, change orders, and invoices — all in one place. Built for electrical and plumbing contractors.',
+    type: 'website',
+    siteName: 'ConstructIQ',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ConstructIQ — Built for Contractors',
+    description: 'The operating system for electrical and plumbing contractors.',
+  },
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/icon-192.png',
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#d95f2b',
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

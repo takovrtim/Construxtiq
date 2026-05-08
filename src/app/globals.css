@@ -271,3 +271,91 @@ body { font-family: var(--font); background: var(--cream); color: var(--text-pri
 [data-theme="dark"] div[style*="background: #f1ede6"] { background: #1a1a1a !important; }
 [data-theme="dark"] div[style*="color: #0f0f0f"],
 [data-theme="dark"] span[style*="color: #0f0f0f"] { color: #f0ede8 !important; }
+
+/* ══════════════════════════════════════════════
+   MOBILE IMPROVEMENTS v2
+══════════════════════════════════════════════ */
+
+/* Better tap targets on mobile */
+@media (max-width: 768px) {
+  /* Bigger tap targets */
+  .nav-item { min-height: 44px; }
+  .btn { min-height: 44px; }
+  .bni { min-height: 52px; }
+
+  /* Stat grid — 2 col on mobile */
+  .g4 { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+  .g3 { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+
+  /* Morning card — compact on mobile */
+  .morning-card { padding: 20px 18px; border-radius: 16px; }
+  .morning-card .g4 { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
+
+  /* Cards full width */
+  .card { border-radius: 12px; }
+
+  /* Input bigger on mobile for easier tapping */
+  .input { min-height: 48px; font-size: 16px !important; } /* 16px prevents iOS zoom */
+
+  /* Side panels full screen on mobile */
+  .side-panel-mobile {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    border-radius: 0 !important;
+  }
+
+  /* Hide scrollbar on mobile */
+  .main-content { -webkit-overflow-scrolling: touch; }
+
+  /* Better bottom nav spacing */
+  .bottom-nav { padding-bottom: env(safe-area-inset-bottom); height: calc(58px + env(safe-area-inset-bottom)); }
+
+  /* Main content padding for bottom nav + safe area */
+  .main-content { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
+}
+
+/* Prevent text size adjust on iOS */
+@media (max-width: 768px) {
+  select, textarea, input[type="text"], input[type="email"], input[type="number"], input[type="date"], input[type="time"] {
+    font-size: 16px !important;
+  }
+}
+
+/* Smooth scrolling everywhere */
+* { scroll-behavior: smooth; }
+
+/* Better focus styles */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid #d95f2b;
+  outline-offset: 2px;
+}
+
+/* Pull-to-refresh feel */
+.main-content { overscroll-behavior-y: contain; }
+
+/* Loading states */
+.loading-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Swipeable cards */
+.swipe-card {
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Better select on mobile */
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239e9d99' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px !important;
+}

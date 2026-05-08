@@ -2,204 +2,260 @@
 
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { PLAN_LIMITS } from '@/types'
-import type { User, Project } from '@/types'
+import { useRouter } from 'next/navigation'
 
-interface Props {
-  user: User
-  projects: Project[]
-}
+interface Props { user: any; projects: any[] }
 
-const PLAN_DISPLAY = { starter: 'Starter', pro: 'Pro', company: 'Company' }
-const PLAN_PRICE   = { starter: '$49', pro: '$99', company: '$249' }
+const TABS = ['Profile', 'Notifications', 'Billing', 'Danger Zone']
 
-export function SettingsClient({ user: initialUser, projects }: Props) {
-  const [user, setUser]         = useState(initialUser)
-  const [fullName, setFullName] = useState(user.full_name || '')
-  const [company, setCompany]   = useState(user.company_name || '')
-  const [phone, setPhone]       = useState(user.phone || '')
-  const [smsEnabled, setSmsEnabled] = useState(user.sms_alerts_enabled)
+export function SettingsClient({ user, projects }: Props) {
+  const router = useRouter()
+  const [tab, setTab]           = useState('Profile')
   const [saving, setSaving]     = useState(false)
-  const [billing, setBilling]   = useState(false)
-  const [checkout, setCheckout] = useState(false)
   const [toast, setToast]       = useState('')
 
-  function showMsg(msg: string) { setToast(msg); setTimeout(() => setToast(''), 3200) }
+  // Profile
+  const [fullName, setFullName] = useState(user?.full_name || '')
+  const [email]                 = useState(user?.email || '')
+  const [companyName, setCompanyName] = useState(user?.company_name || '')
+  const [phone, setPhone]       = useState(user?.phone || '')
+  const [licenseNum, setLicenseNum] = useState(user?.license_number || '')
+  const [tradeType, setTradeType] = useState(user?.trade_type || 'electrical')
 
-  async function saveProfile(e: React.FormEvent) {
-    e.preventDefault()
+  // Notifications
+  const [emailPermits, setEmailPermits]       = useState(user?.notif_permits ?? true)
+  const [emailInspections, setEmailInspections] = useState(user?.notif_inspections ?? true)
+  const [emailChanges, setEmailChanges]       = useState(user?.notif_changes ?? true)
+  const [emailInvoices, setEmailInvoices]     = useState(user?.notif_invoices ?? true)
+  const [emailDaily, setEmailDaily]           = useState(user?.notif_daily ?? false)
+
+  function msg(t: string) { setToast(t); setTimeout(() => setToast(''), 3000) }
+
+  async function saveProfile() {
     setSaving(true)
     const { error } = await supabase.from('users').update({
       full_name: fullName.trim(),
-      company_name: company.trim(),
+      company_name: companyName.trim() || null,
       phone: phone.trim() || null,
-      sms_alerts_enabled: smsEnabled,
+      license_number: licenseNum.trim() || null,
+      trade_type: tradeType,
     }).eq('id', user.id)
-    if (!error) { showMsg('Profile saved') }
+    if (!error) msg('✓ Profile saved')
+    else msg('Failed to save')
     setSaving(false)
   }
 
-  async function openBillingPortal() {
-    setBilling(true)
-    const res = await fetch('/api/stripe/portal', { method: 'POST' })
-    const { url, error } = await res.json()
-    if (url) window.location.href = url
-    else showMsg(error || 'Billing portal unavailable')
-    setBilling(false)
+  async function saveNotifications() {
+    setSaving(true)
+    const { error } = await supabase.from('users').update({
+      notif_permits: emailPermits,
+      notif_inspections: emailInspections,
+      notif_changes: emailChanges,
+      notif_invoices: emailInvoices,
+      notif_daily: emailDaily,
+    }).eq('id', user.id)
+    if (!error) msg('✓ Notification preferences saved')
+    else msg('Failed to save')
+    setSaving(false)
   }
 
-  async function upgradePlan(plan: 'starter' | 'pro' | 'company') {
-    setCheckout(true)
-    const res = await fetch('/api/stripe/checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan }),
-    })
-    const { url, error } = await res.json()
-    if (url) window.location.href = url
-    else showMsg(error || 'Checkout failed')
-    setCheckout(false)
+  async function signOut() {
+    await supabase.auth.signOut()
+    router.push('/')
   }
 
-  const limits = PLAN_LIMITS[user.plan]
-  const isActive = user.subscription_status === 'active' || user.subscription_status === 'trialing'
+  async function deleteAccount() {
+    if (!confirm('Are you absolutely sure? This will delete your account and ALL project data. This cannot be undone.')) return
+    if (!confirm('Last chance — type DELETE in your head and click OK if you are sure.')) return
+    await supabase.auth.signOut()
+    router.push('/')
+  }
+
+  const inp: React.CSSProperties = { width: '100%', padding: '10px 13px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 9, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f' }
+  const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9e9d99', display: 'block', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
   return (
     <>
-      <div className="ptitle">Settings</div>
-      <p className="psub">Manage your account, billing, and notifications</p>
+      <div style={{ marginBottom: 28 }}>
+        <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px' }}>Settings</div>
+        <div style={{ fontSize: 13, color: '#9e9d99', marginTop: 2 }}>Manage your account, preferences, and billing</div>
+      </div>
 
-      <div className="g2">
-        {/* LEFT: Profile */}
-        <div>
-          <div className="card" style={{ marginBottom: 15 }}>
-            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 16 }}>Profile</div>
-            <form onSubmit={saveProfile} style={{ display: 'flex', flexDirection: 'column', gap: 13 }}>
-              <div>
-                <label className="input-label">Full name</label>
-                <input className="input" value={fullName} onChange={e => setFullName(e.target.value)} />
-              </div>
-              <div>
-                <label className="input-label">Company name</label>
-                <input className="input" value={company} onChange={e => setCompany(e.target.value)} />
-              </div>
-              <div>
-                <label className="input-label">Email</label>
-                <input className="input" value={user.email} readOnly style={{ opacity: 0.6 }} />
-              </div>
-              <div>
-                <label className="input-label">Phone (for SMS alerts)</label>
-                <input className="input" type="tel" placeholder="+1 702 555 0100" value={phone} onChange={e => setPhone(e.target.value)} />
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0', borderTop: '1px solid var(--border)' }}>
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 500 }}>SMS permit alerts</div>
-                  <div className="tsm tm">Receive texts when permits are expiring</div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSmsEnabled(v => !v)}
-                  style={{
-                    width: 36, height: 20, borderRadius: 10, border: 'none', cursor: 'pointer',
-                    background: smsEnabled ? 'var(--green)' : 'var(--border-md)', transition: 'background 0.2s',
-                    position: 'relative',
-                  }}
-                >
-                  <span style={{
-                    position: 'absolute', top: 2, left: smsEnabled ? 18 : 2, width: 16, height: 16,
-                    borderRadius: '50%', background: 'white', transition: 'left 0.2s',
-                  }} />
-                </button>
-              </div>
-              <button type="submit" className="btn btn-p btn-sm" disabled={saving} style={{ alignSelf: 'flex-start' }}>
-                {saving ? 'Saving…' : 'Save changes'}
-              </button>
-            </form>
-          </div>
-
-          {/* Projects list */}
-          <div className="card">
-            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 14 }}>Projects</div>
-            {projects.length === 0 ? (
-              <div className="tsm tm" style={{ textAlign: 'center', padding: '16px 0' }}>No projects yet</div>
-            ) : (
-              projects.map(p => (
-                <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 0', borderBottom: '1px solid var(--border)' }}>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 500 }}>{p.name}</div>
-                    <div className="tsm tm">{[p.city, p.state].filter(Boolean).join(', ')}</div>
-                  </div>
-                  <span className={`pill ${p.status === 'active' ? 'p-green' : 'p-gray'}`}>{p.status}</span>
-                </div>
-              ))
-            )}
-            <a href="/dashboard?new=1" style={{ display: 'block', textAlign: 'center', marginTop: 12, color: 'var(--orange)', fontSize: 13, fontWeight: 500, textDecoration: 'none' }}>+ Add Project</a>
-          </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 24, alignItems: 'start' }}>
+        {/* Sidebar tabs */}
+        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'sticky', top: 78 }}>
+          {TABS.map(t => (
+            <button key={t} onClick={() => setTab(t)} style={{ width: '100%', padding: '10px 12px', fontSize: 13, fontWeight: tab === t ? 700 : 400, borderRadius: 9, border: 'none', cursor: 'pointer', fontFamily: 'inherit', background: tab === t ? '#f1ede6' : 'transparent', color: tab === t ? '#0f0f0f' : '#6b6a66', textAlign: 'left', marginBottom: 2 }}>
+              {t === 'Danger Zone' ? <span style={{ color: tab === t ? '#b83232' : '#6b6a66' }}>{t}</span> : t}
+            </button>
+          ))}
         </div>
 
-        {/* RIGHT: Billing + plan */}
+        {/* Content */}
         <div>
-          <div className="card" style={{ marginBottom: 15 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-              <div style={{ fontSize: 14, fontWeight: 600 }}>Subscription</div>
-              <span className={`pill ${isActive ? 'p-green' : user.subscription_status === 'past_due' ? 'p-red' : 'p-gray'}`}>
-                {user.subscription_status}
-              </span>
-            </div>
 
-            <div style={{ background: 'var(--bg)', borderRadius: 'var(--radius)', padding: 14, marginBottom: 14 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
-                <div style={{ fontSize: 15, fontWeight: 600 }}>{PLAN_DISPLAY[user.plan]} Plan</div>
-                <div style={{ fontSize: 20, fontWeight: 600 }}>{PLAN_PRICE[user.plan]}<span className="tsm tm">/mo</span></div>
-              </div>
-              {user.trial_ends_at && user.subscription_status === 'trialing' && (
-                <div className="tsm" style={{ color: 'var(--orange)' }}>
-                  Trial ends {new Date(user.trial_ends_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+          {/* PROFILE */}
+          {tab === 'Profile' && (
+            <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 28, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+              <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 24 }}>Profile</div>
+
+              {/* Avatar */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 28, paddingBottom: 24, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <div style={{ width: 56, height: 56, borderRadius: '50%', background: '#0f0f0f', color: 'white', fontSize: 20, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', letterSpacing: '-0.5px' }}>
+                  {(fullName || email || 'U').slice(0, 2).toUpperCase()}
                 </div>
-              )}
-            </div>
+                <div>
+                  <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 2 }}>{fullName || email}</div>
+                  <div style={{ fontSize: 12, color: '#9e9d99' }}>{email}</div>
+                  <div style={{ marginTop: 6, display: 'inline-flex', alignItems: 'center', gap: 4, background: '#fdf0e8', color: '#d95f2b', fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                    {user?.plan || 'Trial'} plan
+                  </div>
+                </div>
+              </div>
 
-            <div style={{ fontSize: 12, display: 'flex', flexDirection: 'column', gap: 7, marginBottom: 16 }}>
-              <div className="fr"><span style={{ color: limits.projects === -1 || limits.projects > 1 ? 'var(--green)' : 'var(--text-3)', fontSize: 14 }}>✓</span><span>{limits.projects === -1 ? 'Unlimited' : limits.projects} project{limits.projects !== 1 ? 's' : ''}</span></div>
-              <div className="fr"><span style={{ color: 'var(--green)', fontSize: 14 }}>✓</span><span>{limits.docs_per_month === -1 ? 'Unlimited' : limits.docs_per_month} documents/month</span></div>
-              <div className="fr"><span style={{ color: limits.bid_analysis ? 'var(--green)' : 'var(--text-3)', fontSize: 14 }}>{limits.bid_analysis ? '✓' : '×'}</span><span style={{ color: limits.bid_analysis ? 'inherit' : 'var(--text-3)' }}>Bid analysis & flags</span></div>
-              <div className="fr"><span style={{ color: limits.ai_replies ? 'var(--green)' : 'var(--text-3)', fontSize: 14 }}>{limits.ai_replies ? '✓' : '×'}</span><span style={{ color: limits.ai_replies ? 'inherit' : 'var(--text-3)' }}>AI sub replies</span></div>
-              <div className="fr"><span style={{ color: limits.training_hub ? 'var(--green)' : 'var(--text-3)', fontSize: 14 }}>{limits.training_hub ? '✓' : '×'}</span><span style={{ color: limits.training_hub ? 'inherit' : 'var(--text-3)' }}>Training hub</span></div>
-              <div className="fr"><span style={{ color: limits.sms_alerts ? 'var(--green)' : 'var(--text-3)', fontSize: 14 }}>{limits.sms_alerts ? '✓' : '×'}</span><span style={{ color: limits.sms_alerts ? 'inherit' : 'var(--text-3)' }}>SMS permit alerts</span></div>
-            </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                  <div><label style={lbl}>Full Name</label><input style={inp} value={fullName} onChange={e => setFullName(e.target.value)} placeholder="John Rodriguez" /></div>
+                  <div><label style={lbl}>Email</label><input style={{ ...inp, opacity: 0.5 }} value={email} disabled /></div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                  <div><label style={lbl}>Company Name</label><input style={inp} value={companyName} onChange={e => setCompanyName(e.target.value)} placeholder="Rodriguez Electric LLC" /></div>
+                  <div><label style={lbl}>Phone</label><input style={inp} value={phone} onChange={e => setPhone(e.target.value)} placeholder="(702) 555-0100" /></div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                  <div><label style={lbl}>License Number</label><input style={inp} value={licenseNum} onChange={e => setLicenseNum(e.target.value)} placeholder="EC-12345" /></div>
+                  <div>
+                    <label style={lbl}>Trade Type</label>
+                    <select style={{ ...inp, background: 'white' }} value={tradeType} onChange={e => setTradeType(e.target.value)}>
+                      <option value="electrical">⚡ Electrical</option>
+                      <option value="plumbing">🔧 Plumbing</option>
+                      <option value="both">⚡🔧 Both</option>
+                      <option value="general">🏗️ General</option>
+                    </select>
+                  </div>
+                </div>
 
-            {user.stripe_customer_id ? (
-              <button className="btn btn-sm btn-p btn-full" onClick={openBillingPortal} disabled={billing}>
-                {billing ? 'Opening…' : 'Manage Billing →'}
-              </button>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <button className="btn btn-o btn-full" onClick={() => upgradePlan('pro')} disabled={checkout}>
-                  {checkout ? 'Loading…' : 'Upgrade to Pro — $99/mo'}
-                </button>
-                <button className="btn btn-full" onClick={() => upgradePlan('starter')} disabled={checkout}>
-                  Starter Plan — $49/mo
+                <div style={{ paddingTop: 8 }}>
+                  <button onClick={saveProfile} disabled={saving} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>
+                    {saving ? 'Saving...' : 'Save Profile'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* NOTIFICATIONS */}
+          {tab === 'Notifications' && (
+            <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 28, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+              <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>Email Notifications</div>
+              <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 24 }}>Choose what you get emailed about</div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+                {[
+                  { label: 'Permit expiry alerts', sub: 'Email at 14, 7, and 1 day before expiry', value: emailPermits, set: setEmailPermits },
+                  { label: 'Inspection reminders', sub: 'Day-before reminder for scheduled inspections', value: emailInspections, set: setEmailInspections },
+                  { label: 'Change order updates', sub: 'When an owner approves or rejects a change', value: emailChanges, set: setEmailChanges },
+                  { label: 'Invoice reminders', sub: 'When invoices become overdue', value: emailInvoices, set: setEmailInvoices },
+                  { label: 'Daily summary', sub: 'Morning briefing with today\'s alerts and tasks', value: emailDaily, set: setEmailDaily },
+                ].map((item, i) => (
+                  <div key={item.label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 0', borderBottom: i < 4 ? '1px solid rgba(0,0,0,0.06)' : 'none' }}>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 2 }}>{item.label}</div>
+                      <div style={{ fontSize: 12, color: '#9e9d99' }}>{item.sub}</div>
+                    </div>
+                    <button onClick={() => item.set((v: boolean) => !v)} style={{ width: 44, height: 26, borderRadius: 13, border: 'none', background: item.value ? '#0f0f0f' : '#e0ddd8', cursor: 'pointer', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
+                      <div style={{ position: 'absolute', top: 3, left: item.value ? 21 : 3, width: 20, height: 20, borderRadius: '50%', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.2s' }} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ paddingTop: 24 }}>
+                <button onClick={saveNotifications} disabled={saving} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>
+                  {saving ? 'Saving...' : 'Save Preferences'}
                 </button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
-          {/* Plan comparison for upsell */}
-          {user.plan !== 'company' && (
-            <div className="card">
-              <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 14 }}>Company Plan — $249/mo</div>
-              <div className="tsm tm" style={{ marginBottom: 12, lineHeight: 1.6 }}>
-                Unlimited projects, 5 team seats, sub portal with shareable links, priority support.
+          {/* BILLING */}
+          {tab === 'Billing' && (
+            <div>
+              <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 28, boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: 16 }}>
+                <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 20 }}>Current Plan</div>
+                <div style={{ background: '#0f0f0f', borderRadius: 14, padding: '20px 24px', color: 'white', marginBottom: 20 }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                    <div>
+                      <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 6 }}>Current Plan</div>
+                      <div style={{ fontSize: 22, fontWeight: 800, marginBottom: 4 }}>{user?.plan === 'pro' ? 'Pro' : user?.plan === 'company' ? 'Company' : 'Trial'}</div>
+                      <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>{user?.plan === 'trial' ? '14-day free trial' : 'Active subscription'}</div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontSize: 28, fontWeight: 800 }}>{user?.plan === 'pro' ? '$99' : user?.plan === 'company' ? '$249' : '$0'}</div>
+                      <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>{user?.plan === 'trial' ? 'during trial' : '/month'}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {user?.plan === 'trial' && (
+                  <div style={{ background: '#fdf4e3', border: '1px solid rgba(176,110,26,0.2)', borderRadius: 12, padding: '14px 18px', marginBottom: 20 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#6b4010', marginBottom: 4 }}>Trial ending soon</div>
+                    <div style={{ fontSize: 12, color: '#b06e1a' }}>Upgrade to keep your data and continue using ConstructIQ after your trial ends.</div>
+                  </div>
+                )}
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                  {[
+                    { name: 'Pro', price: '$99/mo', desc: '5 projects · Unlimited docs · AI features · SMS alerts', color: '#d95f2b' },
+                    { name: 'Company', price: '$249/mo', desc: 'Unlimited projects · 5 seats · Sub portal · Priority', color: '#7F77DD' },
+                  ].map(plan => (
+                    <div key={plan.name} style={{ border: '1px solid rgba(0,0,0,0.08)', borderRadius: 12, padding: '16px 18px' }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 4 }}>{plan.name}</div>
+                      <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 6, color: plan.color }}>{plan.price}</div>
+                      <div style={{ fontSize: 11, color: '#9e9d99', marginBottom: 14, lineHeight: 1.6 }}>{plan.desc}</div>
+                      <button style={{ width: '100%', padding: '9px', fontSize: 12, fontWeight: 700, borderRadius: 8, cursor: 'pointer', border: 'none', background: plan.color, color: 'white', fontFamily: 'inherit' }}>Upgrade to {plan.name}</button>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <button className="btn btn-sm btn-full" onClick={() => upgradePlan('company')} disabled={checkout}>
-                Upgrade to Company →
-              </button>
+
+              <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 28, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 16 }}>Your Projects</div>
+                {projects.length === 0 ? (
+                  <div style={{ fontSize: 13, color: '#9e9d99' }}>No projects yet</div>
+                ) : projects.map((p: any) => (
+                  <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 600 }}>{p.name}</div>
+                      <div style={{ fontSize: 11, color: '#9e9d99' }}>{[p.city, p.state].filter(Boolean).join(', ')}</div>
+                    </div>
+                    <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: '#edf5f0', color: '#1a4d31' }}>{p.status}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* DANGER ZONE */}
+          {tab === 'Danger Zone' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 28, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>Sign Out</div>
+                <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 16 }}>Sign out of your account on this device</div>
+                <button onClick={signOut} style={{ padding: '10px 20px', fontSize: 13, fontWeight: 600, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>Sign out</button>
+              </div>
+
+              <div style={{ background: 'white', border: '1px solid rgba(184,50,50,0.2)', borderRadius: 16, padding: 28, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#b83232', marginBottom: 4 }}>Delete Account</div>
+                <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 16 }}>Permanently delete your account and all project data. This cannot be undone.</div>
+                <button onClick={deleteAccount} style={{ padding: '10px 20px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(184,50,50,0.2)', background: '#fdf0f0', color: '#b83232', fontFamily: 'inherit' }}>Delete Account</button>
+              </div>
             </div>
           )}
         </div>
       </div>
 
-      {toast && <div className="toast toast-success">{toast}</div>}
+      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
     </>
   )
 }

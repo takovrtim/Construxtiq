@@ -16,8 +16,8 @@ export default async function SettingsPage() {
   if (!user) redirect('/auth/login')
 
   return (
-    <AppShell user={user as User} projects={(projects ?? []) as Project[]} activeProject={projects?.[0] as Project | null}>
-      <SettingsClient user={user as User} projects={(projects ?? []) as Project[]} />
+    <AppShell user={user as User} projects={(projects ?? []) as Project[]} activeProject={(projects?.[0] ?? null) as Project | null}>
+      <SettingsClient user={user as any} projects={(projects ?? []) as any} />
     </AppShell>
   )
 }

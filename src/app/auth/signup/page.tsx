@@ -1,36 +1,28 @@
 'use client'
 
 import { useState } from 'react'
+import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
 
 export default function SignupPage() {
   const router = useRouter()
-  const [fullName, setFullName]     = useState('')
-  const [company, setCompany]       = useState('')
-  const [email, setEmail]           = useState('')
-  const [password, setPassword]     = useState('')
-  const [error, setError]           = useState('')
-  const [loading, setLoading]       = useState(false)
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail]       = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading]   = useState(false)
+  const [error, setError]       = useState('')
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault()
     setError('')
-
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters.')
-      return
-    }
-
+    if (password.length < 8) { setError('Password must be at least 8 characters'); return }
     setLoading(true)
 
     const { data, error: signupError } = await supabase.auth.signUp({
-      email: email.trim(),
+      email,
       password,
-      options: {
-        data: { full_name: fullName.trim(), company_name: company.trim() },
-      },
+      options: { data: { full_name: fullName.trim() } },
     })
 
     if (signupError) {
@@ -40,79 +32,98 @@ export default function SignupPage() {
     }
 
     if (data.user) {
-      // Update profile with company name (the DB trigger creates the base row)
-      await supabase.from('users').update({
+      // Create user record
+      await supabase.from('users').upsert({
+        id: data.user.id,
+        email,
         full_name: fullName.trim(),
-        company_name: company.trim(),
-      }).eq('id', data.user.id)
-
-      // Send welcome email via our API
-      await fetch('/api/auth/welcome', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: data.user.id }),
+        plan: 'trial',
+        onboarded: false,
       })
-
-      router.push('/dashboard?welcome=1')
-      router.refresh()
+      router.push('/onboarding')
     }
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-      <div style={{ width: '100%', maxWidth: 400 }}>
-        {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 32, justifyContent: 'center' }}>
-          <div style={{ width: 32, height: 32, background: '#1a1a1a', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="17" height="17" viewBox="0 0 14 14" fill="none">
-              <rect x="1" y="1" width="5" height="5" rx="1" fill="white"/>
-              <rect x="8" y="1" width="5" height="5" rx="1" fill="white" opacity=".6"/>
-              <rect x="1" y="8" width="5" height="5" rx="1" fill="white" opacity=".5"/>
-              <rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity=".35"/>
-            </svg>
+    <div style={{ minHeight: '100vh', background: '#080808', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', fontFamily: "'DM Sans', -apple-system, sans-serif" }}>
+
+      <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 9, textDecoration: 'none', marginBottom: 48 }}>
+        <div style={{ width: 30, height: 30, background: '#d95f2b', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
+            <rect x="1" y="1" width="5" height="5" rx="1" fill="white"/>
+            <rect x="8" y="1" width="5" height="5" rx="1" fill="white" opacity=".7"/>
+            <rect x="1" y="8" width="5" height="5" rx="1" fill="white" opacity=".5"/>
+            <rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity=".3"/>
+          </svg>
+        </div>
+        <span style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-0.5px', color: 'white' }}>ConstructIQ</span>
+      </Link>
+
+      <div style={{ width: '100%', maxWidth: 380, background: '#111', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, padding: '36px 32px', boxShadow: '0 32px 80px rgba(0,0,0,0.5)' }}>
+        <div style={{ marginBottom: 28 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', color: 'white', marginBottom: 6 }}>Create your account</h1>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)' }}>14 days free · No credit card</p>
+        </div>
+
+        {error && (
+          <div style={{ background: 'rgba(184,50,50,0.12)', border: '1px solid rgba(184,50,50,0.2)', borderRadius: 10, padding: '11px 14px', fontSize: 13, color: '#f87171', marginBottom: 20 }}>
+            {error}
           </div>
-          <span style={{ fontSize: 18, fontWeight: 600, letterSpacing: '-0.3px' }}>ConstructIQ</span>
-        </div>
+        )}
 
-        <div className="card">
-          <h1 style={{ fontSize: 17, fontWeight: 600, marginBottom: 4 }}>Start your free trial</h1>
-          <p style={{ fontSize: 13, color: 'var(--text-2)', marginBottom: 22 }}>14 days free. No credit card required.</p>
+        <form onSubmit={handleSignup} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div>
+            <label style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.35)', display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Full Name</label>
+            <input
+              type="text"
+              required
+              autoFocus
+              value={fullName}
+              onChange={e => setFullName(e.target.value)}
+              placeholder="John Rodriguez"
+              style={{ width: '100%', padding: '12px 14px', fontSize: 14, border: '1.5px solid rgba(255,255,255,0.08)', borderRadius: 10, background: 'rgba(255,255,255,0.04)', color: 'white', fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }}
+            />
+          </div>
+          <div>
+            <label style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.35)', display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Email</label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="you@company.com"
+              style={{ width: '100%', padding: '12px 14px', fontSize: 14, border: '1.5px solid rgba(255,255,255,0.08)', borderRadius: 10, background: 'rgba(255,255,255,0.04)', color: 'white', fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }}
+            />
+          </div>
+          <div>
+            <label style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.35)', display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Password</label>
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="Min. 8 characters"
+              style={{ width: '100%', padding: '12px 14px', fontSize: 14, border: '1.5px solid rgba(255,255,255,0.08)', borderRadius: 10, background: 'rgba(255,255,255,0.04)', color: 'white', fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }}
+            />
+          </div>
 
-          {error && <div className="alert alert-r" style={{ marginBottom: 16 }}>{error}</div>}
+          <button type="submit" disabled={loading} style={{ width: '100%', padding: '13px', fontSize: 14, fontWeight: 700, borderRadius: 11, cursor: loading ? 'not-allowed' : 'pointer', border: 'none', background: loading ? 'rgba(217,95,43,0.5)' : '#d95f2b', color: 'white', fontFamily: 'inherit', marginTop: 4, letterSpacing: '-0.2px' }}>
+            {loading ? 'Creating account...' : 'Create account →'}
+          </button>
 
-          <form onSubmit={handleSignup} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <div>
-              <label className="input-label" htmlFor="name">Full name</label>
-              <input id="name" type="text" className="input" placeholder="John Smith" value={fullName} onChange={e => setFullName(e.target.value)} required autoFocus />
-            </div>
-            <div>
-              <label className="input-label" htmlFor="company">Company name</label>
-              <input id="company" type="text" className="input" placeholder="Smith General Contractors LLC" value={company} onChange={e => setCompany(e.target.value)} required />
-            </div>
-            <div>
-              <label className="input-label" htmlFor="email">Work email</label>
-              <input id="email" type="email" className="input" placeholder="john@smithgc.com" value={email} onChange={e => setEmail(e.target.value)} required autoComplete="email" />
-            </div>
-            <div>
-              <label className="input-label" htmlFor="password">Password</label>
-              <input id="password" type="password" className="input" placeholder="8+ characters" value={password} onChange={e => setPassword(e.target.value)} required autoComplete="new-password" minLength={8} />
-            </div>
-
-            <button type="submit" className="btn btn-o btn-full btn-lg" disabled={loading} style={{ marginTop: 4 }}>
-              {loading ? 'Creating account…' : 'Start free trial →'}
-            </button>
-          </form>
-
-          <p style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 14, textAlign: 'center', lineHeight: 1.5 }}>
-            By signing up you agree to our Terms of Service and Privacy Policy.
+          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)', textAlign: 'center', lineHeight: 1.6, marginTop: 4 }}>
+            By creating an account you agree to our{' '}
+            <Link href="/terms" style={{ color: 'rgba(255,255,255,0.35)', textDecoration: 'none' }}>Terms</Link>
+            {' '}and{' '}
+            <Link href="/privacy" style={{ color: 'rgba(255,255,255,0.35)', textDecoration: 'none' }}>Privacy Policy</Link>
           </p>
-        </div>
-
-        <p style={{ textAlign: 'center', marginTop: 20, fontSize: 13, color: 'var(--text-2)' }}>
-          Already have an account?{' '}
-          <Link href="/auth/login" style={{ color: 'var(--accent)', fontWeight: 500, textDecoration: 'none' }}>Sign in</Link>
-        </p>
+        </form>
       </div>
+
+      <p style={{ marginTop: 24, fontSize: 13, color: 'rgba(255,255,255,0.25)' }}>
+        Already have an account?{' '}
+        <Link href="/auth/login" style={{ color: '#d95f2b', textDecoration: 'none', fontWeight: 600 }}>Sign in</Link>
+      </p>
     </div>
   )
 }

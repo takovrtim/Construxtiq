@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/lib/supabase'
 import Link from 'next/link'
-import { DashboardDemo } from '@/components/DashboardDemo'
+
 
 export default async function HomePage() {
   const supabase = createServerSupabase()
@@ -103,7 +103,7 @@ export default async function HomePage() {
         </div>
 
         {/* ANIMATED DEMO */}
-        <DashboardDemo />
+        <div style={{ background: "#0a0a0a", borderRadius: 16, padding: "40px", textAlign: "center", color: "white", minHeight: 300, display: "flex", alignItems: "center", justifyContent: "center" }}><div><div style={{ fontSize: 40, marginBottom: 16 }}>???</div><div style={{ fontSize: 20, fontWeight: 800 }}>ConstructIQ Dashboard</div><div style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", marginTop: 8 }}>Permits · Crew · Change Orders · Invoices</div></div></div>
       </section>
 
       {/* â”€â”€ STATS â”€â”€ */}

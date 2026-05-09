@@ -15,12 +15,68 @@ interface Props {
   children: React.ReactNode
 }
 
+const NAV_GROUPS = [
+  {
+    label: 'Operations',
+    items: [
+      { href: '/dashboard',  label: 'Dashboard'      },
+      { href: '/jobs',       label: 'Job Board'      },
+      { href: '/timeline',   label: 'Timeline'       },
+      { href: '/calendar',   label: 'Calendar'       },
+    ],
+  },
+  {
+    label: 'Field',
+    items: [
+      { href: '/inspections', label: 'Inspections'   },
+      { href: '/safety',      label: 'Safety'        },
+      { href: '/logs',        label: 'Daily Log'     },
+      { href: '/crew-time',   label: 'Crew Time'     },
+      { href: '/materials',   label: 'Materials'     },
+      { href: '/photos',      label: 'Photos'        },
+    ],
+  },
+  {
+    label: 'Money',
+    items: [
+      { href: '/job-costing', label: 'Job Costing'   },
+      { href: '/changes',     label: 'Change Orders' },
+      { href: '/invoices',    label: 'Invoices'      },
+      { href: '/bids',        label: 'Bids'          },
+    ],
+  },
+  {
+    label: 'People & Docs',
+    items: [
+      { href: '/client-comms', label: 'Client Comms' },
+      { href: '/documents',    label: 'Documents'    },
+      { href: '/subs',         label: 'Crew & Subs'  },
+      { href: '/warranty',     label: 'Warranties'   },
+    ],
+  },
+  {
+    label: 'Insights',
+    items: [
+      { href: '/reports', label: 'Reports' },
+    ],
+  },
+]
+
+const BOTTOM_NAV = [
+  { href: '/dashboard', label: 'Home'    },
+  { href: '/jobs',      label: 'Jobs'    },
+  { href: '/logs',      label: 'Log'     },
+  { href: '/changes',   label: 'Changes' },
+  { href: '/invoices',  label: 'Invoice' },
+]
+
 export function AppShell({ user, projects, activeProject, children }: Props) {
   const pathname = usePathname()
-  const router = useRouter()
+  const router   = useRouter()
   const [showProjectDrop, setShowProjectDrop] = useState(false)
-  const [showUserDrop, setShowUserDrop] = useState(false)
-  const [currentProject, setCurrentProject] = useState<Project | null>(activeProject)
+  const [showUserDrop, setShowUserDrop]       = useState(false)
+  const [currentProject, setCurrentProject]   = useState<Project | null>(activeProject)
+  const [sidebarOpen, setSidebarOpen]         = useState(false)
 
   async function signOut() {
     await supabase.auth.signOut()
@@ -30,182 +86,247 @@ export function AppShell({ user, projects, activeProject, children }: Props) {
   function switchProject(p: Project) {
     setCurrentProject(p)
     setShowProjectDrop(false)
-    if (typeof window !== 'undefined') localStorage.setItem('active_project_id', p.id)
     router.refresh()
   }
 
-  const navItems = [
-    { href: '/dashboard', label: 'Dashboard',   icon: iconGrid },
-    { href: '/jobs',      label: 'Job Board',   icon: iconBriefcase },
-    { href: '/calendar',  label: 'Calendar',    icon: iconCalendar },
-    { href: '/documents', label: 'Documents',   icon: iconDoc },
-    { href: '/bids',      label: 'Bids',        icon: iconDollar },
-    { href: '/subs',      label: 'Crew & Subs', icon: iconPeople },
-  ]
-
-  const bottomNav = [
-    { href: '/dashboard', label: 'Home',     icon: iconGrid },
-    { href: '/jobs',      label: 'Jobs',     icon: iconBriefcase },
-    { href: '/calendar',  label: 'Calendar', icon: iconCalendar },
-    { href: '/documents', label: 'Docs',     icon: iconDoc },
-    { href: '/subs',      label: 'Crew',     icon: iconPeople },
-  ]
-
-  const initials = (user.full_name || user.email || 'CQ').slice(0, 2).toUpperCase()
-  const displayName = user.full_name || user.email || 'Account'
+  const firstName = (user.full_name || user.email || '').split(/[\s@]/)[0] || 'there'
+  const initials  = (user.full_name || user.email || 'U').slice(0, 2).toUpperCase()
 
   return (
-    <div className="app-shell">
-      {/* TOPBAR */}
-      <header className="topbar">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 9, fontSize: 15, fontWeight: 600, letterSpacing: '-0.3px' }}>
-          <div style={{ width: 26, height: 26, background: '#d95f2b', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <rect x="1" y="1" width="5" height="5" rx="1" fill="white"/>
-              <rect x="8" y="1" width="5" height="5" rx="1" fill="white" opacity=".7"/>
-              <rect x="1" y="8" width="5" height="5" rx="1" fill="white" opacity=".5"/>
-              <rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity=".3"/>
-            </svg>
-          </div>
-          <span className="hide-mob" style={{ letterSpacing: '-0.4px', color: 'var(--text-primary)' }}>ConstructIQ</span>
-        </div>
+    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--surface-2)', fontFamily: 'var(--font-sans, -apple-system, sans-serif)' }}>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      {/* ── SIDEBAR ── */}
+      <>
+        {/* Mobile overlay */}
+        {sidebarOpen && (
+          <div onClick={() => setSidebarOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 89, background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)' }} />
+        )}
+
+        <aside style={{
+          width: 220,
+          flexShrink: 0,
+          background: 'var(--surface)',
+          borderRight: '1px solid var(--border)',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'fixed',
+          top: 0,
+          left: sidebarOpen ? 0 : undefined,
+          bottom: 0,
+          zIndex: 90,
+          overflowY: 'auto',
+          transition: 'transform 0.25s ease',
+        }} className="sidebar">
+          <style>{`
+            .sidebar { }
+            @media (max-width: 768px) {
+              .sidebar { transform: translateX(${sidebarOpen ? '0' : '-100%'}); left: 0; }
+              .main-area { margin-left: 0 !important; }
+            }
+
+            .nav-group-label {
+              font-size: 9px;
+              font-weight: 700;
+              color: var(--text-tertiary);
+              text-transform: uppercase;
+              letter-spacing: 0.8px;
+              padding: 14px 14px 4px;
+            }
+            .nav-item {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              padding: 7px 12px;
+              border-radius: 8px;
+              margin: 1px 6px;
+              font-size: 13px;
+              font-weight: 400;
+              color: var(--text-secondary);
+              text-decoration: none;
+              transition: all 0.1s;
+            }
+            .nav-item:hover { background: var(--surface-2); color: var(--text-primary); }
+            .nav-item.active { background: var(--surface-2); color: var(--text-primary); font-weight: 600; }
+            .nav-item.active::before { content: ''; width: 3px; height: 16px; background: #d95f2b; border-radius: 2px; margin-left: -4px; margin-right: 1px; }
+
+            .bni {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 3px;
+              padding: 8px 4px;
+              border-radius: 10px;
+              font-size: 10px;
+              font-weight: 500;
+              color: var(--text-tertiary);
+              text-decoration: none;
+              flex: 1;
+              transition: all 0.1s;
+            }
+            .bni.active { color: #d95f2b; }
+            .bni:hover { color: var(--text-primary); }
+          `}</style>
+
+          {/* Logo */}
+          <div style={{ padding: '16px 14px 10px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+            <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
+              <div style={{ width: 26, height: 26, background: '#d95f2b', borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="white"/><rect x="8" y="1" width="5" height="5" rx="1" fill="white" opacity=".7"/><rect x="1" y="8" width="5" height="5" rx="1" fill="white" opacity=".5"/><rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity=".3"/></svg>
+              </div>
+              <span style={{ fontSize: 14, fontWeight: 800, letterSpacing: '-0.4px', color: 'var(--text-primary)' }}>ConstructIQ</span>
+            </Link>
+          </div>
+
           {/* Project switcher */}
-          <div style={{ position: 'relative' }}>
+          <div style={{ padding: '10px 8px', borderBottom: '1px solid var(--border)', flexShrink: 0, position: 'relative' }}>
             <button
-              onClick={() => { setShowProjectDrop(v => !v); setShowUserDrop(false) }}
-              style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: 20, padding: '5px 12px 5px 9px', fontSize: 12, display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 500, color: 'var(--text-primary)' }}
+              onClick={() => setShowProjectDrop(v => !v)}
+              style={{ width: '100%', padding: '8px 10px', borderRadius: 9, border: '1px solid var(--border)', background: 'var(--surface-2)', cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 8, textAlign: 'left' }}
             >
-              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#2d7a4f', flexShrink: 0 }} />
-              <span style={{ maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {currentProject?.name ?? 'Select project'}
-              </span>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              <div style={{ width: 20, height: 20, borderRadius: 5, background: '#d95f2b', fontSize: 9, fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                {currentProject?.name?.slice(0,1) || 'P'}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {currentProject?.name || 'Select project'}
+                </div>
+              </div>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
 
             {showProjectDrop && (
               <>
-                <div onClick={() => setShowProjectDrop(false)} style={{ position: 'fixed', inset: 0, zIndex: 400 }} />
-                <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 6, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, boxShadow: 'var(--shadow-lg)', minWidth: 230, zIndex: 500, overflow: 'hidden' }}>
-                  {projects.length === 0 && (
-                    <div style={{ padding: '12px 14px', fontSize: 13, color: 'var(--text-tertiary)' }}>No projects yet</div>
-                  )}
+                <div onClick={() => setShowProjectDrop(false)} style={{ position: 'fixed', inset: 0, zIndex: 98 }} />
+                <div style={{ position: 'absolute', top: '100%', left: 8, right: 8, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 8px 32px rgba(0,0,0,0.12)', zIndex: 99, overflow: 'hidden', marginTop: 4 }}>
                   {projects.map(p => (
-                    <button key={p.id} onClick={() => switchProject(p)} style={{ width: '100%', padding: '10px 14px', textAlign: 'left', border: 'none', background: p.id === currentProject?.id ? 'var(--surface-2)' : 'transparent', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, borderBottom: '1px solid var(--border)', color: 'var(--text-primary)' }}>
-                      <div style={{ fontWeight: 600 }}>{p.name}</div>
-                      <div style={{ fontSize: 11, color: 'var(--text-tertiary)', marginTop: 2 }}>{[p.city, p.state].filter(Boolean).join(', ')}</div>
+                    <button key={p.id} onClick={() => switchProject(p)} style={{ width: '100%', padding: '10px 14px', border: 'none', background: p.id === currentProject?.id ? 'var(--surface-2)' : 'transparent', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, color: 'var(--text-primary)', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <div style={{ width: 18, height: 18, borderRadius: 4, background: '#d95f2b', fontSize: 8, fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{p.name.slice(0,1)}</div>
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</span>
+                      {p.id === currentProject?.id && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{ marginLeft: 'auto', flexShrink: 0 }}><path d="M5 13l4 4L19 7" stroke="#d95f2b" strokeWidth="2.5" strokeLinecap="round"/></svg>}
                     </button>
                   ))}
-                  <Link href="/dashboard?new=1" onClick={() => setShowProjectDrop(false)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '10px 14px', fontSize: 13, color: '#d95f2b', fontWeight: 600, textDecoration: 'none' }}>
-                    + New Project
-                  </Link>
+                  <div style={{ borderTop: '1px solid var(--border)' }}>
+                    <Link href="/onboarding" onClick={() => setShowProjectDrop(false)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '10px 14px', fontSize: 12, color: '#d95f2b', fontWeight: 600, textDecoration: 'none' }}>
+                      + New project
+                    </Link>
+                  </div>
                 </div>
               </>
             )}
           </div>
 
-          {/* Theme toggle */}
-          <ThemeToggle />
+          {/* Nav groups */}
+          <nav style={{ flex: 1, paddingBottom: 80, overflowY: 'auto' }}>
+            {NAV_GROUPS.map(group => (
+              <div key={group.label}>
+                <div className="nav-group-label">{group.label}</div>
+                {group.items.map(item => {
+                  const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
+                  return (
+                    <Link key={item.href} href={item.href} className={`nav-item ${active ? 'active' : ''}`} onClick={() => setSidebarOpen(false)}>
+                      {item.label}
+                    </Link>
+                  )
+                })}
+              </div>
+            ))}
+          </nav>
 
-          {/* User avatar */}
-          <div style={{ position: 'relative' }}>
-            <button
-              onClick={() => { setShowUserDrop(v => !v); setShowProjectDrop(false) }}
-              title={displayName}
-              style={{ width: 32, height: 32, borderRadius: '50%', background: '#1a1a1a', color: 'white', fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', border: '2px solid var(--border)', fontFamily: 'inherit', letterSpacing: '0.3px' }}
-            >
-              {initials}
+          {/* Settings at bottom */}
+          <div style={{ borderTop: '1px solid var(--border)', padding: '8px 6px', flexShrink: 0 }}>
+            <Link href="/settings" className={`nav-item ${pathname === '/settings' ? 'active' : ''}`}>
+              ⚙️ Settings
+            </Link>
+          </div>
+        </aside>
+      </>
+
+      {/* ── MAIN ── */}
+      <div className="main-area" style={{ flex: 1, marginLeft: 220, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+
+        {/* Topbar */}
+        <header style={{ height: 56, background: 'var(--surface)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px', position: 'sticky', top: 0, zIndex: 80, flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            {/* Mobile menu button */}
+            <button onClick={() => setSidebarOpen(v => !v)} style={{ display: 'none', width: 32, height: 32, borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface-2)', cursor: 'pointer', alignItems: 'center', justifyContent: 'center' }} className="mobile-menu-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
             </button>
+            <style>{`
+              @media (max-width: 768px) {
+                .mobile-menu-btn { display: flex !important; }
+              }
+            `}</style>
+            <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>
+              {currentProject?.name || 'ConstructIQ'}
+            </div>
+          </div>
 
-            {showUserDrop && (
-              <>
-                <div onClick={() => setShowUserDrop(false)} style={{ position: 'fixed', inset: 0, zIndex: 400 }} />
-                <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 6, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, boxShadow: 'var(--shadow-lg)', minWidth: 210, zIndex: 500, overflow: 'hidden' }}>
-                  <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--border)' }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>{user.full_name || 'Your Account'}</div>
-                    <div style={{ fontSize: 11, color: 'var(--text-tertiary)' }}>{user.email}</div>
-                    <div style={{ marginTop: 8, display: 'inline-flex', alignItems: 'center', gap: 4, background: 'var(--action-light)', color: '#d95f2b', fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
-                      {user.plan || 'Pro'} plan
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <ThemeToggle />
+            <NotificationBell projectId={currentProject?.id || null} userId={user.id} />
+
+            {/* User avatar */}
+            <div style={{ position: 'relative' }}>
+              <button onClick={() => setShowUserDrop(v => !v)} style={{ width: 32, height: 32, borderRadius: '50%', background: '#0f0f0f', color: 'white', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {initials}
+              </button>
+              {showUserDrop && (
+                <>
+                  <div onClick={() => setShowUserDrop(false)} style={{ position: 'fixed', inset: 0, zIndex: 98 }} />
+                  <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 8, width: 200, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 8px 32px rgba(0,0,0,0.12)', zIndex: 99, overflow: 'hidden' }}>
+                    <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border)' }}>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{firstName}</div>
+                      <div style={{ fontSize: 11, color: 'var(--text-tertiary)', marginTop: 1 }}>{user.email}</div>
+                    </div>
+                    <Link href="/settings" onClick={() => setShowUserDrop(false)} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 16px', fontSize: 13, color: 'var(--text-primary)', textDecoration: 'none' }}>
+                      ⚙️ Settings
+                    </Link>
+                    <Link href="/settings?tab=billing" onClick={() => setShowUserDrop(false)} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 16px', fontSize: 13, color: 'var(--text-primary)', textDecoration: 'none' }}>
+                      💳 Billing
+                    </Link>
+                    <div style={{ borderTop: '1px solid var(--border)' }}>
+                      <button onClick={signOut} style={{ width: '100%', padding: '10px 16px', border: 'none', background: 'transparent', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, color: '#b83232', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 10 }}>
+                        🚪 Sign out
+                      </button>
                     </div>
                   </div>
-                  <div style={{ padding: '6px 0' }}>
-                    <Link href="/settings" onClick={() => setShowUserDrop(false)} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 16px', fontSize: 13, color: 'var(--text-primary)', textDecoration: 'none' }}
-                      onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-2)')}
-                      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                    >
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-                      Settings
-                    </Link>
-                    <Link href="/settings?tab=billing" onClick={() => setShowUserDrop(false)} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 16px', fontSize: 13, color: 'var(--text-primary)', textDecoration: 'none' }}
-                      onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-2)')}
-                      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                    >
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                      Billing
-                    </Link>
-                  </div>
-                  <div style={{ borderTop: '1px solid var(--border)', padding: '6px 0' }}>
-                    <button onClick={signOut} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10, padding: '9px 16px', fontSize: 13, color: '#b83232', background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left' }}
-                      onMouseEnter={e => (e.currentTarget.style.background = '#fdf0f0')}
-                      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                    >
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                      Sign out
-                    </button>
-                  </div>
-                </div>
-              </>
-            )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* SIDEBAR */}
-      <nav className="sidebar">
-        <div style={{ padding: '8px 18px 10px', fontSize: 10, fontWeight: 700, letterSpacing: '.8px', color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>
-          The Repair Crew
-        </div>
-        {navItems.map(item => {
-          const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
-          return (
-            <Link key={item.href} href={item.href} className={`nav-item ${active ? 'active' : ''}`}>
-              {item.icon}
-              {item.label}
-            </Link>
-          )
-        })}
-        <div style={{ marginTop: 'auto', padding: '12px 8px 4px', borderTop: '1px solid var(--border)' }}>
-          <Link href="/settings" className={`nav-item ${pathname === '/settings' ? 'active' : ''}`}>
-            {iconSettings}
-            Settings
-          </Link>
-        </div>
-      </nav>
+        {/* Page content */}
+        <main style={{ flex: 1, padding: '24px 20px', paddingBottom: 'calc(80px + env(safe-area-inset-bottom))' }} className="main-content">
+          {children}
+        </main>
 
-      {/* CONTENT */}
-      <main className="main-content">{children}</main>
-
-      {/* MOBILE BOTTOM NAV */}
-      <nav className="bottom-nav">
-        {bottomNav.map(item => {
-          const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
-          return (
-            <Link key={item.href} href={item.href} className={`bni ${active ? 'active' : ''}`}>
-              {item.icon}
-              {item.label}
-            </Link>
-          )
-        })}
-      </nav>
+        {/* Bottom nav (mobile) */}
+        <nav style={{ display: 'none', position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 80, background: 'var(--surface)', borderTop: '1px solid var(--border)', paddingBottom: 'env(safe-area-inset-bottom)' }} className="bottom-nav">
+          <style>{`
+            @media (max-width: 768px) {
+              .bottom-nav { display: flex !important; }
+              .main-area { margin-left: 0 !important; }
+            }
+          `}</style>
+          <div style={{ display: 'flex', width: '100%', padding: '4px 8px' }}>
+            {BOTTOM_NAV.map(item => {
+              const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
+              return (
+                <Link key={item.href} href={item.href} className={`bni ${active ? 'active' : ''}`}>
+                  <div style={{ fontSize: 18 }}>
+                    {item.href === '/dashboard' ? '🏠' :
+                     item.href === '/jobs'      ? '🔧' :
+                     item.href === '/logs'      ? '📝' :
+                     item.href === '/changes'   ? '🔄' : '💵'}
+                  </div>
+                  <span>{item.label}</span>
+                </Link>
+              )
+            })}
+          </div>
+        </nav>
+      </div>
     </div>
   )
 }
-
-const iconGrid      = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-const iconBriefcase = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
-const iconCalendar  = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-const iconDoc       = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-const iconDollar    = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-const iconPeople    = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-const iconSettings  = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>

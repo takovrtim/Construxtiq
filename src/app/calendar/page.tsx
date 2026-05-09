@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/lib/supabase'
 import { AppShell } from '@/components/layout/AppShell'
 import { CalendarClient } from './CalendarClient'
+import type { User, Project } from '@/types'
 
 export default async function CalendarPage() {
   const supabase = createServerSupabase()
@@ -16,18 +17,22 @@ export default async function CalendarPage() {
 
   const activeProject = projects?.[0] ?? null
 
-  const permits = activeProject ? await supabase
-    .from('permits')
-    .select('*')
-    .eq('project_id', activeProject.id)
-    .order('expiry_date') : { data: [] }
+  const [permits, inspections, jobs, changes] = activeProject ? await Promise.all([
+    supabase.from('permits').select('*').eq('project_id', activeProject.id).order('expiry_date'),
+    supabase.from('inspections').select('*').eq('project_id', activeProject.id),
+    supabase.from('jobs').select('id,title,start_date,end_date,status').eq('project_id', activeProject.id),
+    supabase.from('change_orders').select('id,title,created_at').eq('project_id', activeProject.id),
+  ]) : [{ data: [] }, { data: [] }, { data: [] }, { data: [] }]
 
   return (
-    <AppShell user={user as any} projects={(projects ?? []) as any} activeProject={activeProject as any}>
+    <AppShell user={user as User} projects={(projects ?? []) as Project[]} activeProject={activeProject as Project | null}>
       <CalendarClient
         user={user as any}
         project={activeProject as any}
         permits={(permits.data ?? []) as any}
+        inspections={(inspections.data ?? []) as any}
+        jobs={(jobs.data ?? []) as any}
+        changes={(changes.data ?? []) as any}
       />
     </AppShell>
   )

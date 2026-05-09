@@ -103,7 +103,52 @@ export default async function HomePage() {
         </div>
 
         {/* ANIMATED DEMO */}
-        <div style={{ background: "#0a0a0a", borderRadius: 16, padding: "40px", textAlign: "center", color: "white", minHeight: 300, display: "flex", alignItems: "center", justifyContent: "center" }}><div><div style={{ fontSize: 40, marginBottom: 16 }}>???</div><div style={{ fontSize: 20, fontWeight: 800 }}>ConstructIQ Dashboard</div><div style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", marginTop: 8 }}>Permits � Crew � Change Orders � Invoices</div></div></div>
+        <div style={{ background: '#0a0a0a', borderRadius: 18, overflow: 'hidden', boxShadow: '0 40px 100px rgba(0,0,0,0.12)' }}>
+          <div style={{ background: '#111', borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#ff5f57' }} />
+            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#febc2e' }} />
+            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#28c840' }} />
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+              <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 6, padding: '3px 16px', fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>construxtiq.app/dashboard</div>
+            </div>
+          </div>
+          <div style={{ padding: '32px 28px', display: 'grid', gridTemplateColumns: '160px 1fr', gap: 0, minHeight: 380 }}>
+            <div style={{ borderRight: '1px solid rgba(255,255,255,0.06)', paddingRight: 0, paddingTop: 8 }}>
+              {[['Operations', ['Dashboard','Job Board','Timeline']], ['Field', ['Safety','Crew Time','Materials']], ['Money', ['Invoices','Changes']]].map(([g, items]: any) => (
+                <div key={g}>
+                  <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.2)', letterSpacing: '1px', textTransform: 'uppercase', padding: '8px 12px 4px' }}>{g}</div>
+                  {items.map((item: string, idx: number) => (
+                    <div key={item} style={{ padding: '7px 12px', fontSize: 11, color: g === 'Operations' && idx === 0 ? '#E8520A' : 'rgba(255,255,255,0.3)', background: g === 'Operations' && idx === 0 ? 'rgba(232,82,10,0.1)' : 'transparent', borderRadius: 6, margin: '1px 4px', fontWeight: g === 'Operations' && idx === 0 ? 700 : 400 }}>{item}</div>
+                  ))}
+                </div>
+              ))}
+            </div>
+            <div style={{ padding: '0 0 0 20px' }}>
+              <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 12, padding: '16px 20px', marginBottom: 14 }}>
+                <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 8 }}>Thursday, May 8</div>
+                <div style={{ fontSize: 16, fontWeight: 800, color: 'white', marginBottom: 16 }}>Good morning, John 👋</div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 8 }}>
+                  {[['Active Jobs','3'],['Crew Today','5'],['Alerts','2'],['Revenue','$54k']].map(([l,v]: any) => (
+                    <div key={l} style={{ background: 'rgba(255,255,255,0.06)', borderRadius: 9, padding: '9px 11px' }}>
+                      <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>{l}</div>
+                      <div style={{ fontSize: 16, fontWeight: 800, color: l === 'Alerts' ? '#E8520A' : 'white' }}>{v}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                <div style={{ background: 'rgba(232,82,10,0.08)', border: '1px solid rgba(232,82,10,0.2)', borderRadius: 10, padding: '11px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 16 }}>📋</span>
+                  <div><div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.7)' }}>Permit expires in 3 days</div><div style={{ fontSize: 10, color: '#E8520A', marginTop: 2 }}>PLM-2024-891</div></div>
+                </div>
+                <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, padding: '11px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 16 }}>🦺</span>
+                  <div><div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.7)' }}>No safety check today</div><div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginTop: 2 }}>Do before crew starts</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ── STATS ── */}

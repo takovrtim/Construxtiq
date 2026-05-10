@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation'
+﻿import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/lib/supabase'
 import Link from 'next/link'
 
@@ -76,13 +76,13 @@ export default async function HomePage() {
           <span style={{ color: '#E8520A' }}>Not your paperwork.</span>
         </h1>
         <p style={{ fontSize: 18, color: '#666', lineHeight: 1.7, maxWidth: 480, margin: '0 auto 40px' }}>
-          ConstructIQ is the operating system for contractors. Permits, crew, change orders, invoices — one place.
+          ConstructIQ is the operating system for contractors. Permits, crew, change orders, invoices â€” one place.
         </p>
         <div className="cta-row" style={{ display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 16, flexWrap: 'wrap' }}>
-          <Link href="/auth/signup" className="btn-orange">Start free — 14 days</Link>
+          <Link href="/auth/signup" className="btn-orange">Start free â€” 14 days</Link>
           <a href="#how-it-works" className="btn-outline">See how it works</a>
         </div>
-        <p style={{ fontSize: 12, color: '#bbb' }}>No credit card · 2 minute setup · Cancel anytime</p>
+        <p style={{ fontSize: 12, color: '#bbb' }}>No credit card Â· 2 minute setup Â· Cancel anytime</p>
 
         {/* DASHBOARD MOCKUP */}
         <div style={{ marginTop: 64, background: '#0a0a0a', borderRadius: 18, overflow: 'hidden', boxShadow: '0 40px 100px rgba(0,0,0,0.12)', textAlign: 'left' }}>
@@ -126,11 +126,11 @@ export default async function HomePage() {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 <div style={{ background: 'rgba(232,82,10,0.08)', border: '1px solid rgba(232,82,10,0.2)', borderRadius: 10, padding: '11px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontSize: 16 }}>📋</span>
+                  <span style={{ fontSize: 16 }}>ðŸ“‹</span>
                   <div><div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.7)' }}>Permit expires in 3 days</div><div style={{ fontSize: 10, color: '#E8520A', marginTop: 2 }}>PLM-2024-891</div></div>
                 </div>
                 <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, padding: '11px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontSize: 16 }}>🦺</span>
+                  <span style={{ fontSize: 16 }}>ðŸ¦º</span>
                   <div><div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.7)' }}>No safety check today</div><div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginTop: 2 }}>Complete before crew starts</div></div>
                 </div>
               </div>
@@ -159,12 +159,12 @@ export default async function HomePage() {
       <section id="how-it-works" style={{ maxWidth: 1100, margin: '0 auto', padding: '96px 24px' }}>
         <div style={{ marginBottom: 56 }}>
           <div className="tag" style={{ marginBottom: 16 }}>How it works</div>
-          <h2 style={{ fontSize: 'clamp(28px,4vw,52px)', fontWeight: 900, letterSpacing: '-2px', lineHeight: 1.08, maxWidth: 540 }}>From job site to invoiced — one place.</h2>
+          <h2 style={{ fontSize: 'clamp(28px,4vw,52px)', fontWeight: 900, letterSpacing: '-2px', lineHeight: 1.08, maxWidth: 540 }}>From job site to invoiced â€” one place.</h2>
         </div>
         <div className="steps-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 48 }}>
           {[
-            { n: '01', title: 'Create a project', body: 'Add your job details. Track permits, blueprints, and contracts — everything organized from day one.' },
-            { n: '02', title: 'Manage daily ops', body: 'Log crew time, run safety checks, track materials, take photos — all from your phone on the job site.' },
+            { n: '01', title: 'Create a project', body: 'Add your job details. Track permits, blueprints, and contracts â€” everything organized from day one.' },
+            { n: '02', title: 'Manage daily ops', body: 'Log crew time, run safety checks, track materials, take photos â€” all from your phone on the job site.' },
             { n: '03', title: 'Invoice and get paid', body: 'Build invoices in seconds. Approved changes import automatically. Track every dollar you are owed.' },
           ].map(s => (
             <div key={s.n} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -188,15 +188,15 @@ export default async function HomePage() {
           </div>
           <div className="features-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12 }}>
             {[
-              { icon: '📋', title: 'Permit Tracking', body: 'Auto alerts at 14, 7, and 1 day before expiry. Never get a stop-work order again.', dark: true },
-              { icon: '📅', title: 'Delay Tracker', body: 'Log every delay and who caused it. GC-caused days tracked separately. Export PDF for your next meeting.' },
-              { icon: '📊', title: 'Scope Change Log', body: 'Every spec change from the GC documented with original scope, new scope, cost and time impact.' },
-              { icon: '⏱️', title: 'Crew Time Tracking', body: 'Clock in/out per job. Overtime alerts. Auto labor cost calc. Know what every job costs.' },
-              { icon: '🦺', title: 'Safety Checklists', body: '17-item pre-job checklist. Timestamped legal record. Protects you in disputes.' },
-              { icon: '💵', title: 'Invoice Builder', body: 'Professional invoices in seconds. Approved change orders import automatically.' },
-              { icon: '📸', title: 'Photo Documentation', body: 'Before, during, after — tied to each job. Your proof when anything goes sideways.' },
-              { icon: '🔄', title: 'Change Orders', body: 'Send a link. GC taps approve or reject. Every change documented with timestamps.' },
-              { icon: '🛡️', title: 'Warranty Tracker', body: 'Log warranties on every material and job. Get alerted before they expire.' },
+              { icon: 'ðŸ“‹', title: 'Permit Tracking', body: 'Auto alerts at 14, 7, and 1 day before expiry. Never get a stop-work order again.', dark: true },
+              { icon: 'ðŸ“…', title: 'Delay Tracker', body: 'Log every delay and who caused it. GC-caused days tracked separately. Export PDF for your next meeting.' },
+              { icon: 'ðŸ“Š', title: 'Scope Change Log', body: 'Every spec change from the GC documented with original scope, new scope, cost and time impact.' },
+              { icon: 'â±ï¸', title: 'Crew Time Tracking', body: 'Clock in/out per job. Overtime alerts. Auto labor cost calc. Know what every job costs.' },
+              { icon: 'ðŸ¦º', title: 'Safety Checklists', body: '17-item pre-job checklist. Timestamped legal record. Protects you in disputes.' },
+              { icon: 'ðŸ’µ', title: 'Invoice Builder', body: 'Professional invoices in seconds. Approved change orders import automatically.' },
+              { icon: 'ðŸ“¸', title: 'Photo Documentation', body: 'Before, during, after â€” tied to each job. Your proof when anything goes sideways.' },
+              { icon: 'ðŸ”„', title: 'Change Orders', body: 'Send a link. GC taps approve or reject. Every change documented with timestamps.' },
+              { icon: 'ðŸ›¡ï¸', title: 'Warranty Tracker', body: 'Log warranties on every material and job. Get alerted before they expire.' },
             ].map(f => (
               <div key={f.title} className={f.dark ? 'feature-dark' : 'feature-card'}>
                 <div style={{ fontSize: 24, marginBottom: 12 }}>{f.icon}</div>
@@ -315,7 +315,7 @@ export default async function HomePage() {
               <Link href="/auth/signup" className="btn-orange" style={{ boxShadow: '0 0 60px rgba(232,82,10,0.28)' }}>Start free today</Link>
               <Link href="/auth/login" className="btn-outline" style={{ background: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.6)' }}>Sign in</Link>
             </div>
-            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', marginTop: 20 }}>14 days free · No credit card · Cancel anytime</p>
+            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', marginTop: 20 }}>14 days free Â· No credit card Â· Cancel anytime</p>
           </div>
         </div>
       </section>
@@ -336,5 +336,3 @@ export default async function HomePage() {
     </div>
   )
 }
- 
- 

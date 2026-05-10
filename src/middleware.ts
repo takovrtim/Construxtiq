@@ -1,8 +1,6 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// Public routes — no auth required
 const PUBLIC_ROUTES = [
   '/',
   '/auth/login',
@@ -10,46 +8,38 @@ const PUBLIC_ROUTES = [
   '/auth/forgot-password',
   '/auth/reset-password',
   '/auth/callback',
-  '/approve',
 ]
 
 export async function middleware(req: NextRequest) {
-  const res = NextResponse.next()
-  const supabase = createMiddlewareClient({ req, res })
-
-  // Refresh session if expired
-  const { data: { session } } = await supabase.auth.getSession()
-
   const { pathname } = req.nextUrl
 
   // Allow public routes
-  const isPublic = PUBLIC_ROUTES.some(route =>
-    pathname === route || pathname.startsWith(route + '/')
-  )
-
-  // Allow API routes (they handle their own auth)
+  const isPublic = PUBLIC_ROUTES.some(r => pathname === r || pathname.startsWith(r + '/'))
+  const isApprove = pathname.startsWith('/approve/')
   const isApi = pathname.startsWith('/api/')
+  const isInternal = pathname.startsWith('/_next/') || pathname.includes('favicon')
 
-  // Allow Next.js internals
-  const isInternal = pathname.startsWith('/_next/') || pathname.startsWith('/favicon')
-
-  if (isPublic || isApi || isInternal) {
-    return res
+  if (isPublic || isApprove || isApi || isInternal) {
+    return NextResponse.next()
   }
 
-  // No session — redirect to login
-  if (!session) {
+  // Check for Supabase auth cookie
+  const token =
+    req.cookies.get('sb-access-token')?.value ||
+    req.cookies.get(`sb-${process.env.NEXT_PUBLIC_SUPABASE_URL?.split('//')[1]?.split('.')[0]}-auth-token`)?.value ||
+    req.cookies.get('supabase-auth-token')?.value
+
+  // Look for any supabase session cookie
+  const hasSession = Array.from(req.cookies.getAll()).some(
+    c => c.name.includes('auth-token') || c.name.includes('sb-')
+  )
+
+  if (!hasSession) {
     const loginUrl = new URL('/auth/login', req.url)
-    loginUrl.searchParams.set('redirect', pathname)
     return NextResponse.redirect(loginUrl)
   }
 
-  // Logged-in user hitting auth pages — redirect to dashboard
-  if (pathname.startsWith('/auth/')) {
-    return NextResponse.redirect(new URL('/dashboard', req.url))
-  }
-
-  return res
+  return NextResponse.next()
 }
 
 export const config = {

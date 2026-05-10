@@ -57,9 +57,26 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: 'Financial',
+    items: [
+      { href: '/retention',    label: 'Retention Tracker' },
+      { href: '/lien-waivers', label: 'Lien Waivers'      },
+    ],
+  },
+  {
+    label: 'GC Management',
+    items: [
+      { href: '/rfi',          label: 'RFI Tracker'       },
+      { href: '/submittals',   label: 'Submittals'        },
+      { href: '/manpower',     label: 'Daily Manpower'    },
+    ],
+  },
+  {
     label: 'Insights',
     items: [
-      { href: '/reports', label: 'Reports' },
+      { href: '/reports',      label: 'Reports'           },
+      { href: '/delay-tracker',label: 'Delay Tracker'     },
+      { href: '/scope-changes',label: 'Scope Changes'     },
     ],
   },
 ]

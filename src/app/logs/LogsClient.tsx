@@ -11,52 +11,59 @@ interface JobLog {
   hours_worked: number | null; progress_pct: number | null; flagged: boolean
   ai_summary: string | null; created_at: string
 }
-
 interface Props { user: any; project: any; initialLogs: JobLog[]; jobs: { id: string; title: string }[] }
 
-const WEATHER = ['☀️ Clear', '⛅ Cloudy', '🌧️ Rain', '💨 Windy', '🌡️ Hot', '❄️ Cold']
+const WEATHER_OPTIONS = ['☀️ Clear', '⛅ Partly Cloudy', '🌧️ Rain', '💨 Windy', '🌡️ Hot (100°+)', '❄️ Cold']
 
 export function LogsClient({ user, project, initialLogs, jobs }: Props) {
-  const [logs, setLogs]           = useState<JobLog[]>(initialLogs)
-  const [showAdd, setShowAdd]     = useState(false)
-  const [selected, setSelected]   = useState<JobLog | null>(null)
-  const [toast, setToast]         = useState('')
-  const [saving, setSaving]       = useState(false)
+  const [logs, setLogs]         = useState<JobLog[]>(initialLogs)
+  const [showAdd, setShowAdd]   = useState(false)
+  const [selected, setSelected] = useState<JobLog | null>(null)
+  const [toast, setToast]       = useState('')
+  const [saving, setSaving]     = useState(false)
   const [aiLoading, setAiLoading] = useState(false)
-  const [logDate, setLogDate]     = useState(new Date().toISOString().split('T')[0])
-  const [weather, setWeather]     = useState('')
-  const [crewPresent, setCrewPresent] = useState('')
-  const [workCompleted, setWorkCompleted] = useState('')
-  const [materialsUsed, setMaterialsUsed] = useState('')
-  const [issues, setIssues]       = useState('')
-  const [inspections, setInspections] = useState('')
-  const [hoursWorked, setHoursWorked] = useState('')
-  const [progressPct, setProgressPct] = useState('')
-  const [jobId, setJobId]         = useState(jobs[0]?.id || '')
-  const [flagged, setFlagged]     = useState(false)
+
+  // Form state
+  const [logDate, setLogDate]               = useState(new Date().toISOString().split('T')[0])
+  const [jobId, setJobId]                   = useState(jobs[0]?.id || '')
+  const [weather, setWeather]               = useState('')
+  const [crewPresent, setCrewPresent]       = useState('')
+  const [hoursWorked, setHoursWorked]       = useState('')
+  const [workCompleted, setWorkCompleted]   = useState('')
+  const [materialsUsed, setMaterialsUsed]   = useState('')
+  const [issues, setIssues]                 = useState('')
+  const [inspections, setInspections]       = useState('')
+  const [progressPct, setProgressPct]       = useState('0')
+  const [flagged, setFlagged]               = useState(false)
 
   function msg(t: string) { setToast(t); setTimeout(() => setToast(''), 3000) }
-  const todayLog = logs.find(l => isToday(parseISO(l.log_date)))
-  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f' }
-  const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9e9d99', display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
-  async function addLog(e: React.FormEvent) {
-    e.preventDefault()
+  const todayLogged = logs.some(l => isToday(parseISO(l.log_date)))
+  const totalHours  = logs.reduce((s, l) => s + (l.hours_worked || 0), 0)
+  const flaggedCount = logs.filter(l => l.flagged).length
+
+  async function saveLog() {
     if (!project || !workCompleted.trim()) return
     setSaving(true)
     const { data, error } = await supabase.from('job_logs').insert({
       project_id: project.id, user_id: user.id, job_id: jobId || null,
-      log_date: logDate, weather: weather || null, crew_present: crewPresent.trim() || null,
-      work_completed: workCompleted.trim(), materials_used: materialsUsed.trim() || null,
-      issues: issues.trim() || null, inspections: inspections.trim() || null,
-      hours_worked: parseFloat(hoursWorked) || null, progress_pct: parseInt(progressPct) || null, flagged,
+      log_date: logDate, weather: weather || null,
+      crew_present: crewPresent.trim() || null,
+      hours_worked: parseFloat(hoursWorked) || null,
+      work_completed: workCompleted.trim(),
+      materials_used: materialsUsed.trim() || null,
+      issues: issues.trim() || null,
+      inspections: inspections.trim() || null,
+      progress_pct: parseInt(progressPct) || 0,
+      flagged,
     }).select().single()
     if (!error && data) {
       setLogs(prev => [data as JobLog, ...prev])
-      msg('✓ Daily log saved')
+      msg('✓ Log saved')
+      setShowAdd(false)
       setWorkCompleted(''); setMaterialsUsed(''); setIssues('')
-      setInspections(''); setHoursWorked(''); setProgressPct('')
-      setFlagged(false); setShowAdd(false)
+      setInspections(''); setHoursWorked(''); setCrewPresent('')
+      setWeather(''); setProgressPct('0'); setFlagged(false)
     } else msg('Failed to save')
     setSaving(false)
   }
@@ -64,14 +71,24 @@ export function LogsClient({ user, project, initialLogs, jobs }: Props) {
   async function generateAISummary(log: JobLog) {
     setAiLoading(true)
     try {
-      const res = await fetch('/api/logs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ log_id: log.id, action: 'summarize' }) })
+      const res = await fetch('/api/logs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          log_date: log.log_date, work_completed: log.work_completed,
+          issues: log.issues, materials_used: log.materials_used,
+          hours_worked: log.hours_worked, crew_present: log.crew_present,
+          weather: log.weather, project_name: project.name,
+        }),
+      })
       const json = await res.json()
       if (json.success) {
+        await supabase.from('job_logs').update({ ai_summary: json.summary }).eq('id', log.id)
         setLogs(prev => prev.map(l => l.id === log.id ? { ...l, ai_summary: json.summary } : l))
         if (selected?.id === log.id) setSelected(prev => prev ? { ...prev, ai_summary: json.summary } : null)
         msg('✓ AI summary generated')
       }
-    } catch { msg('AI summary failed') }
+    } catch { msg('Failed to generate summary') }
     setAiLoading(false)
   }
 
@@ -81,131 +98,223 @@ export function LogsClient({ user, project, initialLogs, jobs }: Props) {
     if (!error) { setLogs(prev => prev.filter(l => l.id !== id)); setSelected(null); msg('Deleted') }
   }
 
-  if (!project) return <div style={{ textAlign: 'center', padding: '60px 20px' }}><div style={{ fontSize: 40 }}>📝</div><a href="/dashboard" style={{ color: '#d95f2b', textDecoration: 'none', fontSize: 13 }}>Create a project first →</a></div>
+  const inp: React.CSSProperties = { width: '100%', padding: '10px 13px', fontSize: 13, border: '1.5px solid var(--border)', borderRadius: 9, fontFamily: 'inherit', outline: 'none', background: 'var(--surface-2)', color: 'var(--text-primary)' }
+  const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: 'var(--text-tertiary)', display: 'block', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.4px' }
+
+  if (!project) return (
+    <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+      <div style={{ fontSize: 40 }}>📝</div>
+      <a href="/dashboard" style={{ color: '#d95f2b', textDecoration: 'none', fontSize: 13 }}>Create a project first →</a>
+    </div>
+  )
 
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 22, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px' }}>Daily Log</div>
-          <div style={{ fontSize: 13, color: '#9e9d99', marginTop: 2 }}>Document every day on site — your legal and financial record</div>
+          <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 2 }}>Document every day on site — your legal record</div>
         </div>
         <button onClick={() => setShowAdd(v => !v)} style={{ padding: '10px 20px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: showAdd ? '#0f0f0f' : '#d95f2b', color: 'white', fontFamily: 'inherit' }}>
           {showAdd ? '✕ Cancel' : '+ Log Today'}
         </button>
       </div>
 
+      {/* STATS */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 20 }}>
         {[
-          { label: 'Total Entries', value: logs.length, sub: 'days logged', accent: '' },
-          { label: "Today's Log", value: todayLog ? '✓' : '—', sub: todayLog ? 'completed' : 'not done', accent: todayLog ? '#2d7a4f' : '#b06e1a' },
-          { label: 'Flagged Days', value: logs.filter(l => l.flagged).length, sub: 'had issues', accent: logs.filter(l => l.flagged).length > 0 ? '#b83232' : '' },
-          { label: 'Avg Hours', value: logs.filter(l => l.hours_worked).length > 0 ? `${(logs.reduce((s,l) => s+(l.hours_worked||0),0)/logs.filter(l=>l.hours_worked).length).toFixed(1)}h` : '—', sub: 'per day', accent: '' },
+          { label: 'Total Logs', value: logs.length, sub: 'days documented', accent: '' },
+          { label: 'Today', value: todayLogged ? '✓ Done' : '⚠️ Missing', sub: todayLogged ? 'logged' : 'not logged yet', accent: !todayLogged ? '#b06e1a' : '#2d7a4f' },
+          { label: 'Total Hours', value: `${totalHours}h`, sub: 'on site', accent: '' },
+          { label: 'Flagged Days', value: flaggedCount, sub: 'issues noted', accent: flaggedCount > 0 ? '#b83232' : '' },
         ].map(s => (
-          <div key={s.label} style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+          <div key={s.label} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: s.accent || 'rgba(0,0,0,0.05)', borderRadius: '14px 14px 0 0' }} />
-            <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
-            <div style={{ fontSize: 24, fontWeight: 800, color: s.accent || '#0f0f0f', marginBottom: 2 }}>{s.value}</div>
-            <div style={{ fontSize: 11, color: s.accent || '#9e9d99' }}>{s.sub}</div>
+            <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-tertiary)', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
+            <div style={{ fontSize: 20, fontWeight: 800, color: s.accent || 'var(--text-primary)', marginBottom: 2 }}>{s.value}</div>
+            <div style={{ fontSize: 11, color: s.accent || 'var(--text-tertiary)' }}>{s.sub}</div>
           </div>
         ))}
       </div>
 
-      {!todayLog && !showAdd && (
-        <div style={{ background: '#fdf4e3', border: '1px solid rgba(176,110,26,0.2)', borderRadius: 12, padding: '14px 18px', marginBottom: 16, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ fontSize: 22 }}>📝</span>
+      {/* TODAY ALERT */}
+      {!todayLogged && !showAdd && (
+        <div style={{ background: '#fdf4e3', border: '1px solid rgba(176,110,26,0.2)', borderRadius: 12, padding: '14px 18px', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontSize: 22 }}>📝</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: '#6b4010' }}>No log for today yet</div>
+            <div style={{ fontSize: 12, color: '#b06e1a' }}>Log before end of day — it protects you if anything gets disputed</div>
+          </div>
+          <button onClick={() => setShowAdd(true)} style={{ padding: '8px 16px', fontSize: 12, fontWeight: 700, borderRadius: 8, cursor: 'pointer', border: 'none', background: '#b06e1a', color: 'white', fontFamily: 'inherit', flexShrink: 0 }}>Log Now</button>
+        </div>
+      )}
+
+      {/* ADD LOG FORM */}
+      {showAdd && (
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+          <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 18 }}>New Daily Log</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 14 }}>
             <div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: '#6b4010' }}>No daily log today</div>
-              <div style={{ fontSize: 12, color: '#b06e1a' }}>Document what happened on site before you forget</div>
+              <label style={lbl}>Date</label>
+              <input type="date" style={inp} value={logDate} onChange={e => setLogDate(e.target.value)} />
+            </div>
+            <div>
+              <label style={lbl}>Job</label>
+              <select style={{ ...inp, background: 'var(--surface)' }} value={jobId} onChange={e => setJobId(e.target.value)}>
+                <option value="">All jobs</option>
+                {jobs.map(j => <option key={j.id} value={j.id}>{j.title}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={lbl}>Hours Worked</label>
+              <input type="number" style={inp} placeholder="8" min="0" step="0.5" value={hoursWorked} onChange={e => setHoursWorked(e.target.value)} />
             </div>
           </div>
-          <button onClick={() => setShowAdd(true)} style={{ padding: '8px 16px', fontSize: 12, fontWeight: 700, borderRadius: 8, cursor: 'pointer', border: 'none', background: '#b06e1a', color: 'white', fontFamily: 'inherit' }}>Log Now</button>
+
+          {/* Weather picker */}
+          <div style={{ marginBottom: 14 }}>
+            <label style={lbl}>Weather</label>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              {WEATHER_OPTIONS.map(w => (
+                <button key={w} type="button" onClick={() => setWeather(weather === w ? '' : w)} style={{ padding: '6px 12px', fontSize: 12, fontWeight: weather === w ? 700 : 400, borderRadius: 20, border: `1px solid ${weather === w ? '#d95f2b' : 'var(--border)'}`, background: weather === w ? '#fdf0e8' : 'var(--surface)', color: weather === w ? '#d95f2b' : 'var(--text-secondary)', cursor: 'pointer', fontFamily: 'inherit' }}>
+                  {w}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ marginBottom: 14 }}>
+            <label style={lbl}>Crew Present</label>
+            <input style={inp} placeholder="John, Mike, Carlos — 3 workers" value={crewPresent} onChange={e => setCrewPresent(e.target.value)} />
+          </div>
+
+          <div style={{ marginBottom: 14 }}>
+            <label style={lbl}>Work Completed *</label>
+            <textarea style={{ ...inp, resize: 'none' }} rows={3} placeholder="Describe exactly what was done today. Be specific — this is your legal record if anything gets disputed." value={workCompleted} onChange={e => setWorkCompleted(e.target.value)} autoFocus />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
+            <div>
+              <label style={lbl}>Materials Used</label>
+              <textarea style={{ ...inp, resize: 'none' }} rows={2} placeholder="Wire, conduit, breakers..." value={materialsUsed} onChange={e => setMaterialsUsed(e.target.value)} />
+            </div>
+            <div>
+              <label style={lbl}>Issues / Delays</label>
+              <textarea style={{ ...inp, resize: 'none' }} rows={2} placeholder="GC changed panel location at 2pm..." value={issues} onChange={e => setIssues(e.target.value)} />
+            </div>
+          </div>
+
+          <div style={{ marginBottom: 14 }}>
+            <label style={lbl}>Inspections / Meetings</label>
+            <input style={inp} placeholder="Rough-in inspection passed at 11am" value={inspections} onChange={e => setInspections(e.target.value)} />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 18 }}>
+            <div>
+              <label style={lbl}>Progress % Complete</label>
+              <input type="number" style={inp} placeholder="65" min="0" max="100" value={progressPct} onChange={e => setProgressPct(e.target.value)} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 22 }}>
+              <button type="button" onClick={() => setFlagged(v => !v)} style={{ width: 44, height: 26, borderRadius: 13, border: 'none', background: flagged ? '#b83232' : '#e0ddd8', cursor: 'pointer', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
+                <div style={{ position: 'absolute', top: 3, left: flagged ? 21 : 3, width: 20, height: 20, borderRadius: '50%', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.2s' }} />
+              </button>
+              <span style={{ fontSize: 13, color: flagged ? '#b83232' : 'var(--text-secondary)', fontWeight: flagged ? 700 : 400 }}>Flag this day (issue occurred)</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button onClick={saveLog} disabled={saving || !workCompleted.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>
+              {saving ? 'Saving...' : 'Save Log'}
+            </button>
+            <button onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 10, cursor: 'pointer', border: '1px solid var(--border)', background: 'var(--surface)', fontFamily: 'inherit', color: 'var(--text-primary)' }}>Cancel</button>
+          </div>
         </div>
       )}
 
-      {showAdd && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
-          <form onSubmit={addLog} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
-              <div><label style={lbl}>Date</label><input type="date" style={inp} value={logDate} onChange={e => setLogDate(e.target.value)} max={new Date().toISOString().split('T')[0]} /></div>
-              <div><label style={lbl}>Job</label>
-                <select style={{ ...inp, background: 'white' }} value={jobId} onChange={e => setJobId(e.target.value)}>
-                  <option value="">No specific job</option>
-                  {jobs.map(j => <option key={j.id} value={j.id}>{j.title}</option>)}
-                </select>
-              </div>
-              <div><label style={lbl}>Weather</label>
-                <select style={{ ...inp, background: 'white' }} value={weather} onChange={e => setWeather(e.target.value)}>
-                  <option value="">Select...</option>
-                  {WEATHER.map(w => <option key={w} value={w}>{w}</option>)}
-                </select>
-              </div>
-            </div>
-            <div><label style={lbl}>Work Completed Today *</label><textarea style={{ ...inp, resize: 'none' }} rows={3} placeholder="What did the crew actually do today?" value={workCompleted} onChange={e => setWorkCompleted(e.target.value)} required autoFocus /></div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-              <div><label style={lbl}>Crew Present</label><input style={inp} placeholder="John, Mike, Sub: Garcia Electric" value={crewPresent} onChange={e => setCrewPresent(e.target.value)} /></div>
-              <div><label style={lbl}>Materials Used</label><input style={inp} placeholder="200ft 12/2 romex, 4 junction boxes" value={materialsUsed} onChange={e => setMaterialsUsed(e.target.value)} /></div>
-              <div><label style={lbl}>Hours Worked</label><input type="number" style={inp} placeholder="8" min="0" step="0.5" value={hoursWorked} onChange={e => setHoursWorked(e.target.value)} /></div>
-              <div><label style={lbl}>Job Progress %</label><input type="number" style={inp} placeholder="45" min="0" max="100" value={progressPct} onChange={e => setProgressPct(e.target.value)} /></div>
-            </div>
-            <div><label style={lbl}>Issues / Problems</label><input style={inp} placeholder="Any problems, disputes, or unexpected discoveries..." value={issues} onChange={e => setIssues(e.target.value)} /></div>
-            <div><label style={lbl}>Inspections</label><input style={inp} placeholder="Rough electrical passed at 2pm, inspector: Jim Rodriguez" value={inspections} onChange={e => setInspections(e.target.value)} /></div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: flagged ? '#fdf0f0' : '#f8f7f4', borderRadius: 10, cursor: 'pointer' }} onClick={() => setFlagged(v => !v)}>
-              <input type="checkbox" checked={flagged} onChange={() => setFlagged(v => !v)} style={{ width: 16, height: 16, accentColor: '#b83232', cursor: 'pointer' }} />
-              <span style={{ fontSize: 13, fontWeight: 500, color: flagged ? '#b83232' : '#6b6a66' }}>🚩 Flag this day — problems, disputes, or important events</span>
-            </div>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button type="submit" disabled={saving || !workCompleted.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>{saving ? 'Saving...' : 'Save Log'}</button>
-              <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>Cancel</button>
-            </div>
-          </form>
-        </div>
-      )}
-
+      {/* LOG LIST */}
       {logs.length === 0 && !showAdd ? (
-        <div style={{ textAlign: 'center', padding: '52px 20px', background: 'white', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
+        <div style={{ textAlign: 'center', padding: '52px 20px', background: 'var(--surface)', borderRadius: 16, border: '2px dashed var(--border)' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>📝</div>
-          <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>No daily logs yet</div>
-          <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 20 }}>Log every day on site — your legal record if anything goes wrong</div>
-          <button onClick={() => setShowAdd(true)} style={{ padding: '10px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#d95f2b', color: 'white', fontFamily: 'inherit' }}>+ Log First Entry</button>
+          <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>No logs yet</div>
+          <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginBottom: 20 }}>Log every day on site. It's your timestamped record when anything gets disputed.</div>
+          <button onClick={() => setShowAdd(true)} style={{ padding: '10px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#d95f2b', color: 'white', fontFamily: 'inherit' }}>+ Log Today</button>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {logs.map(log => {
             const job = jobs.find(j => j.id === log.job_id)
-            const today_ = isToday(parseISO(log.log_date))
+            const isSelected = selected?.id === log.id
+            const todayLog = isToday(parseISO(log.log_date))
             return (
-              <div key={log.id} onClick={() => setSelected(log === selected ? null : log)} style={{ background: 'white', border: `1.5px solid ${log.flagged ? 'rgba(184,50,50,0.3)' : selected?.id === log.id ? '#0f0f0f' : 'rgba(0,0,0,0.07)'}`, borderRadius: 14, padding: '16px 20px', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                  <div style={{ width: 44, height: 44, borderRadius: 10, background: log.flagged ? '#fdf0f0' : today_ ? '#fdf0e8' : '#f8f7f4', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
-                    {log.flagged ? '🚩' : today_ ? '📝' : '📋'}
+              <div key={log.id} onClick={() => setSelected(isSelected ? null : log)} style={{ background: 'var(--surface)', border: `1.5px solid ${isSelected ? '#0f0f0f' : log.flagged ? 'rgba(184,50,50,0.25)' : 'var(--border)'}`, borderRadius: 14, padding: '16px 20px', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                  <div style={{ flexShrink: 0, textAlign: 'center', width: 44, height: 44, borderRadius: 12, background: todayLog ? '#0f0f0f' : 'var(--surface-2)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ fontSize: 16, fontWeight: 800, color: todayLog ? 'white' : 'var(--text-primary)', lineHeight: 1 }}>{format(parseISO(log.log_date), 'd')}</div>
+                    <div style={{ fontSize: 9, fontWeight: 700, color: todayLog ? 'rgba(255,255,255,0.5)' : 'var(--text-tertiary)', textTransform: 'uppercase' }}>{format(parseISO(log.log_date), 'MMM')}</div>
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
-                      <span style={{ fontSize: 14, fontWeight: 700 }}>{format(parseISO(log.log_date), 'EEEE, MMM d, yyyy')}</span>
-                      {today_ && <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: '#fdf0e8', color: '#d95f2b' }}>TODAY</span>}
-                      {log.flagged && <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: '#fdf0f0', color: '#b83232' }}>🚩</span>}
-                      {log.weather && <span style={{ fontSize: 11, color: '#9e9d99' }}>{log.weather}</span>}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
+                      <span style={{ fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{log.work_completed.slice(0, 80)}{log.work_completed.length > 80 ? '...' : ''}</span>
+                      {log.flagged && <span style={{ fontSize: 10, fontWeight: 700, padding: '1px 7px', borderRadius: 20, background: '#fdf0f0', color: '#b83232', flexShrink: 0 }}>⚠️ Flagged</span>}
                     </div>
-                    <div style={{ fontSize: 13, color: '#6b6a66', lineHeight: 1.5, marginBottom: 4 }}>{log.work_completed.slice(0, 120)}{log.work_completed.length > 120 ? '...' : ''}</div>
-                    <div style={{ fontSize: 11, color: '#9e9d99' }}>
-                      {log.crew_present ? `👷 ${log.crew_present.slice(0, 40)} · ` : ''}{log.hours_worked ? `${log.hours_worked}h` : ''}{job ? ` · ${job.title}` : ''}
+                    <div style={{ fontSize: 11, color: 'var(--text-tertiary)' }}>
+                      {format(parseISO(log.log_date), 'EEEE, MMMM d')}
+                      {log.hours_worked ? ` · ${log.hours_worked}h` : ''}
+                      {log.weather ? ` · ${log.weather}` : ''}
+                      {job ? ` · ${job.title}` : ''}
                     </div>
                   </div>
-                  {log.progress_pct && <div style={{ textAlign: 'right', flexShrink: 0 }}><div style={{ fontSize: 18, fontWeight: 800 }}>{log.progress_pct}%</div><div style={{ fontSize: 10, color: '#9e9d99' }}>progress</div></div>}
+                  {log.progress_pct !== null && log.progress_pct > 0 && (
+                    <div style={{ flexShrink: 0, textAlign: 'right' }}>
+                      <div style={{ fontSize: 16, fontWeight: 800, color: '#2d7a4f' }}>{log.progress_pct}%</div>
+                      <div style={{ fontSize: 10, color: 'var(--text-tertiary)' }}>complete</div>
+                    </div>
+                  )}
                 </div>
 
-                {selected?.id === log.id && (
-                  <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid rgba(0,0,0,0.06)' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12 }}>
-                      {log.materials_used && <div style={{ background: '#f8f7f4', borderRadius: 9, padding: '10px 12px', fontSize: 13 }}><div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', marginBottom: 4 }}>Materials</div>{log.materials_used}</div>}
-                      {log.issues && <div style={{ background: '#fdf0f0', borderRadius: 9, padding: '10px 12px', fontSize: 13, borderLeft: '3px solid #b83232' }}><div style={{ fontSize: 10, fontWeight: 700, color: '#b83232', textTransform: 'uppercase', marginBottom: 4 }}>Issues</div>{log.issues}</div>}
-                      {log.inspections && <div style={{ background: '#edf5f0', borderRadius: 9, padding: '10px 12px', fontSize: 13, borderLeft: '3px solid #2d7a4f' }}><div style={{ fontSize: 10, fontWeight: 700, color: '#2d7a4f', textTransform: 'uppercase', marginBottom: 4 }}>Inspections</div>{log.inspections}</div>}
+                {isSelected && (
+                  <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
+                      <div style={{ background: 'var(--surface-2)', borderRadius: 10, padding: 14 }}>
+                        <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 8 }}>Work Done</div>
+                        <div style={{ fontSize: 13, lineHeight: 1.6 }}>{log.work_completed}</div>
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                        {log.crew_present && (
+                          <div style={{ background: 'var(--surface-2)', borderRadius: 10, padding: 12 }}>
+                            <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 4 }}>Crew</div>
+                            <div style={{ fontSize: 12 }}>{log.crew_present}</div>
+                          </div>
+                        )}
+                        {log.materials_used && (
+                          <div style={{ background: 'var(--surface-2)', borderRadius: 10, padding: 12 }}>
+                            <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 4 }}>Materials</div>
+                            <div style={{ fontSize: 12 }}>{log.materials_used}</div>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    {log.ai_summary && <div style={{ background: '#eef3fb', borderRadius: 9, padding: '10px 12px', fontSize: 13, color: '#0C447C', marginBottom: 10, borderLeft: '3px solid #1f5fa6' }}><div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>✨ AI Summary</div>{log.ai_summary}</div>}
+
+                    {log.issues && (
+                      <div style={{ background: '#fdf4e3', border: '1px solid rgba(176,110,26,0.15)', borderRadius: 10, padding: 12, marginBottom: 12 }}>
+                        <div style={{ fontSize: 10, fontWeight: 700, color: '#b06e1a', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 4 }}>Issues / Delays</div>
+                        <div style={{ fontSize: 13, color: '#6b4010' }}>{log.issues}</div>
+                      </div>
+                    )}
+
+                    {log.ai_summary && (
+                      <div style={{ background: '#eef3fb', border: '1px solid rgba(31,95,166,0.15)', borderRadius: 10, padding: 12, marginBottom: 12 }}>
+                        <div style={{ fontSize: 10, fontWeight: 700, color: '#1f5fa6', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 4 }}>AI Summary</div>
+                        <div style={{ fontSize: 13, color: '#0C447C', lineHeight: 1.5 }}>{log.ai_summary}</div>
+                      </div>
+                    )}
+
                     <div style={{ display: 'flex', gap: 8 }}>
-                      {!log.ai_summary && <button onClick={e => { e.stopPropagation(); generateAISummary(log) }} disabled={aiLoading} style={{ padding: '8px 14px', fontSize: 12, fontWeight: 600, borderRadius: 8, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>{aiLoading ? '⏳...' : '✨ AI Summary'}</button>}
+                      {!log.ai_summary && (
+                        <button onClick={e => { e.stopPropagation(); generateAISummary(log) }} disabled={aiLoading} style={{ padding: '8px 16px', fontSize: 12, fontWeight: 600, borderRadius: 8, cursor: 'pointer', border: 'none', background: '#1f5fa6', color: 'white', fontFamily: 'inherit' }}>
+                          {aiLoading ? '⏳ Generating...' : '✨ AI Summary'}
+                        </button>
+                      )}
                       <button onClick={e => { e.stopPropagation(); deleteLog(log.id) }} style={{ padding: '8px 14px', fontSize: 12, fontWeight: 600, borderRadius: 8, cursor: 'pointer', border: '1px solid rgba(184,50,50,0.2)', background: '#fdf0f0', color: '#b83232', fontFamily: 'inherit' }}>Delete</button>
                     </div>
                   </div>

@@ -24,8 +24,8 @@
   --info: #1f5fa6;
   --info-light: rgba(31,95,166,0.1);
   --text-primary: #0f0f0f;
-  --text-secondary: #6b6a66;
-  --text-tertiary: #9e9d99;
+  --text-secondary: #3d3d3d;
+  --text-tertiary: #6b6a66;
   --text-inverse: #ffffff;
   --border: rgba(0,0,0,0.07);
   --border-md: rgba(0,0,0,0.11);
@@ -359,3 +359,4 @@ select {
   background-position: right 12px center;
   padding-right: 36px !important;
 }
+

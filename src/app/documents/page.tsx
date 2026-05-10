@@ -17,11 +17,10 @@ export default async function DocumentsPage() {
 
   const activeProject = projects?.[0] ?? null
 
-  const [documents, permits, subs] = activeProject ? await Promise.all([
+  const [documents, permits] = activeProject ? await Promise.all([
     supabase.from('documents').select('*').eq('project_id', activeProject.id).order('created_at', { ascending: false }),
     supabase.from('permits').select('*').eq('project_id', activeProject.id).order('expiry_date'),
-    supabase.from('subcontractors').select('id, company_name, trade, email').eq('project_id', activeProject.id),
-  ]) : [{ data: [] }, { data: [] }, { data: [] }]
+  ]) : [{ data: [] }, { data: [] }]
 
   return (
     <AppShell user={user as User} projects={(projects ?? []) as Project[]} activeProject={activeProject as Project | null}>
@@ -30,7 +29,6 @@ export default async function DocumentsPage() {
         project={activeProject as any}
         initialDocuments={(documents.data ?? []) as any}
         initialPermits={(permits.data ?? []) as any}
-        subs={(subs.data ?? []) as any}
       />
     </AppShell>
   )

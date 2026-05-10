@@ -65,11 +65,11 @@ const NAV_GROUPS = [
 ]
 
 const BOTTOM_NAV = [
-  { href: '/dashboard', label: 'Home'    },
-  { href: '/jobs',      label: 'Jobs'    },
-  { href: '/logs',      label: 'Log'     },
-  { href: '/changes',   label: 'Changes' },
-  { href: '/invoices',  label: 'Invoice' },
+  { href: '/dashboard',    label: 'Home',    icon: '🏠' },
+  { href: '/jobs',         label: 'Jobs',    icon: '🔧' },
+  { href: '/safety',       label: 'Safety',  icon: '🦺' },
+  { href: '/changes',      label: 'Changes', icon: '🔄' },
+  { href: '/delay-tracker',label: 'Delays',  icon: '📅' },
 ]
 
 export function AppShell({ user, projects, activeProject, children }: Props) {
@@ -316,12 +316,7 @@ export function AppShell({ user, projects, activeProject, children }: Props) {
               const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
               return (
                 <Link key={item.href} href={item.href} className={`bni ${active ? 'active' : ''}`}>
-                  <div style={{ fontSize: 18 }}>
-                    {item.href === '/dashboard' ? '🏠' :
-                     item.href === '/jobs'      ? '🔧' :
-                     item.href === '/logs'      ? '📝' :
-                     item.href === '/changes'   ? '🔄' : '💵'}
-                  </div>
+                  <div style={{ fontSize: 20 }}>{item.icon}</div>
                   <span>{item.label}</span>
                 </Link>
               )

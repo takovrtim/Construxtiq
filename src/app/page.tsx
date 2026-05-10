@@ -1,4 +1,4 @@
-﻿import { redirect } from 'next/navigation'
+﻿﻿import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/lib/supabase'
 import Link from 'next/link'
 

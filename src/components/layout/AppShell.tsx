@@ -21,7 +21,9 @@ const NAV_GROUPS = [
     items: [
       { href: '/dashboard',  label: 'Dashboard'      },
       { href: '/jobs',       label: 'Job Board'      },
-      { href: '/timeline',   label: 'Timeline'       },
+      { href: '/timeline',      label: 'Timeline'          },
+      { href: '/delay-tracker', label: 'Delay Tracker'     },
+      { href: '/scope-changes', label: 'Scope Changes'     },
       { href: '/calendar',   label: 'Calendar'       },
     ],
   },

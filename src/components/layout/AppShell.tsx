@@ -79,10 +79,18 @@ export function AppShell({ user, projects, activeProject, children }: Props) {
           background: var(--white);
           border-right: 1px solid var(--border);
           display: flex; flex-direction: column;
-          height: 100vh; overflow-y: auto;
-          scrollbar-width: none;
+          height: 100vh; overflow: hidden;
         }
-        .sidebar::-webkit-scrollbar { display: none; }
+        .sidebar-nav {
+          flex: 1; overflow-y: auto; overflow-x: hidden;
+          scrollbar-width: none; padding-bottom: 8px;
+        }
+        .sidebar-nav::-webkit-scrollbar { display: none; }
+        .sidebar-footer {
+          flex-shrink: 0;
+          border-top: 1px solid var(--border);
+          background: var(--white);
+        }
 
         /* ── MAIN ── */
         .main-area { flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
@@ -201,41 +209,39 @@ export function AppShell({ user, projects, activeProject, children }: Props) {
             </div>
           )}
 
-          {/* ── CORE 5 ── */}
-          <div style={{ marginTop: 8 }}>
-            <div className="section-label">Core</div>
-            {CORE_NAV.map(item => (
-              <Link key={item.href} href={item.href} className={`nav-core ${isActive(item.href) ? 'active' : ''}`}>
-                <span className="nav-icon">{item.icon}</span>
-                <span>{item.label}</span>
-              </Link>
-            ))}
+          {/* ── SCROLLABLE NAV ── */}
+          <div className="sidebar-nav">
+            <div style={{ marginTop: 8 }}>
+              <div className="section-label">Core</div>
+              {CORE_NAV.map(item => (
+                <Link key={item.href} href={item.href} className={`nav-core ${isActive(item.href) ? 'active' : ''}`}>
+                  <span className="nav-icon">{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+            </div>
+            <div style={{ marginTop: 12 }}>
+              <div className="section-label">Protection</div>
+              {POWER_NAV.map(item => (
+                <Link key={item.href} href={item.href} className={`nav-power ${isActive(item.href) ? 'active' : ''}`}>
+                  <span className="nav-icon">{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+            </div>
+            <div style={{ marginTop: 12 }}>
+              <div className="section-label">Field & Admin</div>
+              {BACK_OFFICE.map(item => (
+                <Link key={item.href} href={item.href} className={`nav-power ${isActive(item.href) ? 'active' : ''}`}>
+                  <span className="nav-icon">{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+            </div>
           </div>
 
-          {/* ── POWER TOOLS ── */}
-          <div style={{ marginTop: 12 }}>
-            <div className="section-label">Protection</div>
-            {POWER_NAV.map(item => (
-              <Link key={item.href} href={item.href} className={`nav-power ${isActive(item.href) ? 'active' : ''}`}>
-                <span className="nav-icon">{item.icon}</span>
-                <span>{item.label}</span>
-              </Link>
-            ))}
-          </div>
-
-          {/* ── BACK OFFICE ── */}
-          <div style={{ marginTop: 12 }}>
-            <div className="section-label">Field & Admin</div>
-            {BACK_OFFICE.map(item => (
-              <Link key={item.href} href={item.href} className={`nav-power ${isActive(item.href) ? 'active' : ''}`}>
-                <span className="nav-icon">{item.icon}</span>
-                <span>{item.label}</span>
-              </Link>
-            ))}
-          </div>
-
-          {/* ── USER ── */}
-          <div style={{ marginTop: 'auto', padding: '12px 8px 16px', borderTop: '1px solid var(--border)' }}>
+          {/* ── PINNED FOOTER ── */}
+          <div className="sidebar-footer" style={{ padding: '10px 8px 12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 10 }}>
               <div style={{ width: 30, height: 30, borderRadius: '50%', background: '#d95f2b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: 'white', flexShrink: 0 }}>
                 {user?.full_name?.[0] || user?.email?.[0]?.toUpperCase() || 'U'}

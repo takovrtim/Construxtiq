@@ -1,4 +1,4 @@
-ï»¿import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/lib/supabase'
 import Link from 'next/link'
 
@@ -24,9 +24,9 @@ export default async function HomePage() {
           ConstructIQ is the operating system for electrical and plumbing contractors.
         </p>
         <Link href="/auth/signup" style={{ display: "inline-block", background: "#E8520A", color: "white", textDecoration: "none", padding: "14px 32px", borderRadius: 12, fontSize: 16, fontWeight: 700 }}>
-          Start free â€” 14 days
+          Start free — 14 days
         </Link>
-        <p style={{ fontSize: 12, color: "#bbb", marginTop: 16 }}>No credit card Â· Cancel anytime</p>
+        <p style={{ fontSize: 12, color: "#bbb", marginTop: 16 }}>No credit card · Cancel anytime</p>
       </main>
     </div>
   )

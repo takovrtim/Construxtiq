@@ -285,7 +285,7 @@ Return JSON:
       role: 'user',
       content: [
         params.mimeType === 'application/pdf'
-          ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: params.fileBase64 } }
+          ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: params.fileBase64 } } as any
           : { type: 'image', source: { type: 'base64', media_type: params.mimeType as any, data: params.fileBase64 } },
         { type: 'text', text: userPrompt },
       ],

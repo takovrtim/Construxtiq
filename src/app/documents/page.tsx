@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/lib/supabase'
 import { AppShell } from '@/components/layout/AppShell'
-import { DocumentsClient } from './DocumentsClient'
+import { DocumentsClient } from './DocumentsClientV2'
 import type { User, Project } from '@/types'
 
 export default async function DocumentsPage() {
@@ -33,3 +33,4 @@ export default async function DocumentsPage() {
     </AppShell>
   )
 }
+

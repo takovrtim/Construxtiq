@@ -14,6 +14,7 @@ interface Delay {
   description: string
   cumulative_impact: string | null
   documented: boolean
+  gc_name: string | null
   created_at: string
 }
 
@@ -48,8 +49,77 @@ export function DelayTrackerClient({ user, project, initialDelays, jobs }: Props
   const [impact, setImpact]           = useState('')
   const [jobId, setJobId]             = useState(jobs[0]?.id || '')
   const [documented, setDocumented]   = useState(false)
+  const [gcName, setGcName]           = useState('')
+  const [exporting, setExporting]     = useState(false)
 
   function msg(t: string) { setToast(t); setTimeout(() => setToast(''), 3000) }
+
+  function exportDelayReport() {
+    setExporting(true)
+    const gcDelays = delays.filter(d => d.caused_by === 'gc')
+    const html = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Delay Report — ${project?.name}</title>
+<style>
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; padding: 48px; color: #0a0a0a; max-width: 800px; margin: 0 auto; }
+  h1 { font-size: 28px; font-weight: 900; letter-spacing: -1px; margin-bottom: 4px; }
+  .meta { font-size: 13px; color: #666; margin-bottom: 32px; }
+  .summary { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 32px; }
+  .stat { background: #f6f4f1; border-radius: 10px; padding: 16px; }
+  .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #999; font-weight: 700; margin-bottom: 6px; }
+  .stat-value { font-size: 28px; font-weight: 900; letter-spacing: -1px; }
+  .stat-value.red { color: #C0392B; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 8px 12px; background: #f6f4f1; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #666; }
+  td { padding: 10px 12px; border-bottom: 1px solid #ede9e4; vertical-align: top; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
+  .badge-red { background: #fdf0f0; color: #C0392B; }
+  .badge-blue { background: #eef3fb; color: #1A56DB; }
+  .badge-gray { background: #f1ede6; color: #666; }
+  .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ede9e4; font-size: 11px; color: #aaa; display: flex; justify-content: space-between; }
+  @media print { body { padding: 20px; } }
+</style></head><body>
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+  <div style="width:32px;height:32px;background:#E8520A;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+    <svg width="16" height="16" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="white"/><rect x="8" y="1" width="5" height="5" rx="1" fill="white" opacity=".7"/><rect x="1" y="8" width="5" height="5" rx="1" fill="white" opacity=".5"/><rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity=".3"/></svg>
+  </div>
+  <span style="font-size:13px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#E8520A;">ConstructIQ — Delay Report</span>
+</div>
+<h1>${project?.name}</h1>
+<div class="meta">Generated ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} · ${delays.length} delays logged</div>
+<div class="summary">
+  <div class="stat"><div class="stat-label">Total Days Lost</div><div class="stat-value">${totalDaysLost}d</div></div>
+  <div class="stat"><div class="stat-label">GC-Caused Days</div><div class="stat-value red">${gcDays}d</div></div>
+  <div class="stat"><div class="stat-label">GC Delays</div><div class="stat-value red">${gcDelays.length}</div></div>
+  <div class="stat"><div class="stat-label">Other Delays</div><div class="stat-value">${delays.length - gcDelays.length}</div></div>
+</div>
+${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0.2);border-left:4px solid #C0392B;border-radius:8px;padding:14px 16px;margin-bottom:24px;font-size:13px;color:#6e1a1a;font-weight:600;">
+⚠️ The General Contractor has directly caused ${gcDays} calendar day${gcDays !== 1 ? 's' : ''} of schedule delay on this project.
+</div>` : ''}
+<table>
+  <tr><th>Date</th><th>Caused By</th><th>Days Lost</th><th>Description</th><th>Documented</th></tr>
+  ${delays.map(d => `<tr>
+    <td style="white-space:nowrap">${format(parseISO(d.delay_date), 'MMM d, yyyy')}</td>
+    <td><span class="badge ${d.caused_by === 'gc' || d.caused_by === 'permit' ? 'badge-red' : d.caused_by === 'weather' ? 'badge-blue' : 'badge-gray'}">${CAUSED_BY[d.caused_by].label}</span></td>
+    <td><strong>+${d.days_lost}d</strong></td>
+    <td>${d.description}${d.cumulative_impact ? '<br><em style="color:#999;font-size:11px">' + d.cumulative_impact + '</em>' : ''}</td>
+    <td>${d.documented ? '✓' : '—'}</td>
+  </tr>`).join('')}
+</table>
+<div class="footer">
+  <span>ConstructIQ · ${project?.name}</span>
+  <span>Generated ${new Date().toLocaleDateString()}</span>
+</div>
+</body></html>`
+    const blob = new Blob([html], { type: 'text/html' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `Delay-Report-${(project?.name || 'Project').replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.html`
+    a.click()
+    URL.revokeObjectURL(url)
+    msg('✓ Report downloaded — open in browser and print to PDF')
+    setExporting(false)
+  }
 
   const totalDaysLost    = delays.reduce((s, d) => s + d.days_lost, 0)
   const gcDays           = delays.filter(d => d.caused_by === 'gc').reduce((s, d) => s + d.days_lost, 0)
@@ -69,6 +139,7 @@ export function DelayTrackerClient({ user, project, initialDelays, jobs }: Props
       description: description.trim(),
       cumulative_impact: impact.trim() || null,
       documented,
+      gc_name: gcName.trim() || null,
     }).select().single()
 
     if (!error && data) {
@@ -236,6 +307,10 @@ export function DelayTrackerClient({ user, project, initialDelays, jobs }: Props
               </button>
               <span style={{ fontSize: 13, color: 'var(--text-secondary)', fontWeight: documented ? 600 : 400 }}>Documented with GC</span>
             </div>
+          </div>
+          <div style={{ marginBottom: 14 }}>
+            <label style={lbl}>GC / Responsible Party Name</label>
+            <input style={inp} placeholder="Turner Construction" value={gcName} onChange={e => setGcName(e.target.value)} />
           </div>
           <div style={{ marginBottom: 14 }}>
             <label style={lbl}>What happened? *</label>

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import { QuickLog } from '../QuickLog'
 import {
   LayoutDashboard, Briefcase, ClipboardList, FileText, Shield,
   Clock, MessageSquare, DollarSign, FileCheck, Receipt, Download,

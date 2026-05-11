@@ -59,7 +59,7 @@ export function RFIClient({ user, project, initialRFIs, jobs }: Props) {
     ...r,
     status: r.status === 'closed' ? 'closed' :
             r.response_date ? 'responded' :
-            isPast(parseISO(r.response_needed_by)) ? 'overdue' : 'open'
+            r.response_needed_by && isPast(parseISO(r.response_needed_by)) ? 'overdue' : 'open'
   })) as RFI[]
 
   const openCount    = rfisWithStatus.filter(r => r.status === 'open').length
@@ -199,7 +199,7 @@ export function RFIClient({ user, project, initialRFIs, jobs }: Props) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {rfisWithStatus.map(rfi => {
             const sc = STATUS_CONFIG[rfi.status]
-            const daysUntil = differenceInDays(parseISO(rfi.response_needed_by), new Date())
+            const daysUntil = rfi.response_needed_by ? differenceInDays(parseISO(rfi.response_needed_by), new Date()) : 999
             const job = jobs.find(j => j.id === rfi.job_id)
             const isExpanded = expanded === rfi.id
             return (

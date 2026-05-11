@@ -55,6 +55,98 @@ const CATEGORIES = {
   other:    'Other',
 }
 
+function SendToGC({ change, approvalUrl, generating, onGenerate, onMsg }: {
+  change: any; approvalUrl: string | null; generating: boolean
+  onGenerate: () => void; onMsg: (t: string) => void
+}) {
+  const [showEmail, setShowEmail] = useState(false)
+  const [gcEmail, setGcEmail]     = useState('')
+  const [gcName, setGcName]       = useState('')
+  const [sending, setSending]     = useState(false)
+
+  async function sendEmail() {
+    if (!gcEmail.trim()) return
+    setSending(true)
+    try {
+      const res = await fetch('/api/send-change-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ change_id: change.id, gc_email: gcEmail.trim(), gc_name: gcName.trim() }),
+      })
+      const json = await res.json()
+      if (json.success) {
+        onMsg('✓ Email sent to GC — approval link included')
+        setShowEmail(false)
+      } else {
+        // Email failed but we have the URL
+        if (json.approval_url) {
+          navigator.clipboard.writeText(json.approval_url).catch(() => {})
+          onMsg('Email failed — approval link copied to clipboard')
+        } else onMsg('Failed to send')
+      }
+    } catch { onMsg('Failed to send') }
+    setSending(false)
+  }
+
+  const inp: React.CSSProperties = {
+    width: '100%', padding: '9px 12px', fontSize: 13,
+    border: '1.5px solid var(--border)', borderRadius: 8,
+    fontFamily: 'inherit', outline: 'none',
+    background: 'var(--surface-2)', color: 'var(--text-primary)',
+  }
+
+  if (!approvalUrl && change.status !== 'pending') return null
+
+  return (
+    <div style={{ marginBottom: 16 }}>
+      {approvalUrl ? (
+        <div style={{ background: '#edf5f0', border: '1px solid rgba(45,122,79,0.2)', borderRadius: 12, padding: 16 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#2d7a4f', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.4px' }}>GC Approval Link Ready</div>
+
+          {/* Link copy */}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+            <div style={{ flex: 1, fontSize: 12, fontFamily: 'monospace', color: '#1a4d31', background: 'white', padding: '8px 10px', borderRadius: 7, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', border: '1px solid rgba(45,122,79,0.15)' }}>{approvalUrl}</div>
+            <button onClick={() => { navigator.clipboard.writeText(approvalUrl).catch(() => {}); onMsg('✓ Link copied!') }} style={{ padding: '8px 14px', fontSize: 12, fontWeight: 700, borderRadius: 7, cursor: 'pointer', border: 'none', background: '#2d7a4f', color: 'white', fontFamily: 'inherit', flexShrink: 0 }}>Copy</button>
+          </div>
+
+          {/* Send options */}
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <button onClick={() => window.open(`sms:?body=Please review and approve this change order: ${approvalUrl}`, '_blank')} style={{ padding: '7px 14px', fontSize: 12, fontWeight: 600, borderRadius: 7, cursor: 'pointer', border: '1px solid rgba(45,122,79,0.2)', background: 'white', color: '#2d7a4f', fontFamily: 'inherit' }}>
+              📱 Text to GC
+            </button>
+            <button onClick={() => setShowEmail(v => !v)} style={{ padding: '7px 14px', fontSize: 12, fontWeight: 600, borderRadius: 7, cursor: 'pointer', border: '1px solid rgba(45,122,79,0.2)', background: showEmail ? '#2d7a4f' : 'white', color: showEmail ? 'white' : '#2d7a4f', fontFamily: 'inherit' }}>
+              📧 Email to GC
+            </button>
+          </div>
+
+          {/* Email form */}
+          {showEmail && (
+            <div style={{ marginTop: 12, padding: 12, background: 'white', borderRadius: 8, border: '1px solid rgba(45,122,79,0.15)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
+                <div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 4 }}>GC Email *</div>
+                  <input style={inp} placeholder="pm@turnerconst.com" type="email" value={gcEmail} onChange={e => setGcEmail(e.target.value)} autoFocus />
+                </div>
+                <div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 4 }}>GC Name</div>
+                  <input style={inp} placeholder="John Smith" value={gcName} onChange={e => setGcName(e.target.value)} />
+                </div>
+              </div>
+              <button onClick={sendEmail} disabled={sending || !gcEmail.trim()} style={{ width: '100%', padding: '9px', fontSize: 13, fontWeight: 700, borderRadius: 8, cursor: sending || !gcEmail.trim() ? 'not-allowed' : 'pointer', border: 'none', background: sending || !gcEmail.trim() ? '#ccc' : '#0a0a0a', color: 'white', fontFamily: 'inherit' }}>
+                {sending ? 'Sending...' : 'Send Email with Approval Link →'}
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <button onClick={onGenerate} disabled={generating} style={{ padding: '10px 20px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#d95f2b', color: 'white', fontFamily: 'inherit' }}>
+          {generating ? '⏳ Generating...' : '📤 Generate GC Approval Link'}
+        </button>
+      )}
+    </div>
+  )
+}
+
 export function ChangesClient({ user, project, initialChanges, jobs }: Props) {
   const [changes, setChanges]     = useState<ChangeOrder[]>(initialChanges)
   const [showNew, setShowNew]     = useState(false)
@@ -338,22 +430,14 @@ export function ChangesClient({ user, project, initialChanges, jobs }: Props) {
                       </div>
                     )}
 
-                    {/* Approval link */}
-                    <div style={{ marginBottom: 16 }}>
-                      {approvalUrl ? (
-                        <div style={{ background: '#edf5f0', border: '1px solid rgba(45,122,79,0.2)', borderRadius: 10, padding: 14 }}>
-                          <div style={{ fontSize: 11, fontWeight: 700, color: '#2d7a4f', marginBottom: 8 }}>GC Approval Link</div>
-                          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                            <div style={{ flex: 1, fontSize: 12, fontFamily: 'monospace', color: '#1a4d31', background: 'white', padding: '7px 10px', borderRadius: 7, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{approvalUrl}</div>
-                            <button onClick={() => { navigator.clipboard.writeText(approvalUrl).catch(() => {}); msg('✓ Copied!') }} style={{ padding: '7px 12px', fontSize: 12, fontWeight: 600, borderRadius: 7, cursor: 'pointer', border: 'none', background: '#2d7a4f', color: 'white', fontFamily: 'inherit', flexShrink: 0 }}>Copy</button>
-                          </div>
-                        </div>
-                      ) : change.status === 'pending' && (
-                        <button onClick={() => generateApprovalLink(change.id)} disabled={generating === change.id} style={{ padding: '10px 20px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#d95f2b', color: 'white', fontFamily: 'inherit' }}>
-                          {generating === change.id ? 'Generating...' : '📤 Generate GC Approval Link'}
-                        </button>
-                      )}
-                    </div>
+                    {/* Send to GC section */}
+                    <SendToGC
+                      change={change}
+                      approvalUrl={approvalUrl}
+                      generating={generating === change.id}
+                      onGenerate={() => generateApprovalLink(change.id)}
+                      onMsg={msg}
+                    />
 
                     {/* Status actions */}
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>

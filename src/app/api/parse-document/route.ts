@@ -33,12 +33,11 @@ export async function POST(req: NextRequest) {
 
   if (!doc) return NextResponse.json({ error: 'Document not found' }, { status: 404 })
 
-  // Get project context
-  const { data: project } = await admin
-    .from('projects')
-    .select('name, jurisdiction, city, state')
-    .eq('id', body.project_id)
-    .single()
+  // Get project context + user profile for full personalization
+  const [{ data: project }, { data: userData }] = await Promise.all([
+    admin.from('projects').select('name, jurisdiction, city, state, trade_type, project_type').eq('id', body.project_id).single(),
+    admin.from('users').select('trade_type, company_gc, full_name, company_name').eq('id', user.id).single(),
+  ])
 
   // Mark as processing
   await admin.from('documents').update({ status: 'processing' }).eq('id', doc.id)
@@ -82,6 +81,10 @@ export async function POST(req: NextRequest) {
     const projectName = project?.name || 'Construction Project'
 
     // Run AI extraction
+    const tradeType = (userData?.trade_type || project?.trade_type || 'electrical') as 'electrical' | 'plumbing' | 'both'
+    const gcName = userData?.company_gc || 'the General Contractor'
+    const projectType = project?.project_type || 'commercial'
+
     const result = await parseDocument({
       fileBase64: base64,
       mimeType,
@@ -89,6 +92,9 @@ export async function POST(req: NextRequest) {
       docType: doc.doc_type,
       projectName,
       jurisdiction,
+      tradeType,
+      gcName,
+      projectType,
     })
 
     // If it's a blueprint, run additional analysis (now supports PDF too)
@@ -99,7 +105,7 @@ export async function POST(req: NextRequest) {
         mimeType,
         projectName,
         jurisdiction,
-        jobType: 'both',
+        jobType: (userData?.trade_type || 'electrical') as 'electrical' | 'plumbing' | 'both',
       })
     }
 

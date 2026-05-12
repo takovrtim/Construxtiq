@@ -64,19 +64,35 @@ export async function parseDocument(params: {
   projectName: string
   jurisdiction?: string
   tradeType?: 'electrical' | 'plumbing' | 'both'
+  gcName?: string
+  projectType?: string
 }): Promise<ParsedDocument> {
 
-  const trade = params.tradeType || 'electrical'
+  const trade      = params.tradeType   || 'electrical'
   const jurisdiction = params.jurisdiction || 'Clark County, Nevada'
+  const gc         = params.gcName      || 'the General Contractor'
+  const projType   = params.projectType || 'commercial'
 
-  const systemPrompt = `You are an expert construction document analyst for a commercial ${trade} subcontractor.
-Project: ${params.projectName}
-Jurisdiction: ${jurisdiction}
-Trade focus: ${trade} work — think NEC 2020, Clark County electrical/plumbing codes, casino-grade commercial standards.
+  const systemPrompt = `You are an expert construction document analyst for a commercial ${trade} subcontractor working on ${projType} jobs in ${jurisdiction}.
 
-You extract EVERY useful piece of information from construction documents.
-You think like a contractor who has been burned by missing deadlines, vague scope, and GC disputes.
-Flag ANYTHING that could cost money, cause delays, or create legal exposure.
+CONTEXT:
+- Project: ${params.projectName}
+- Trade: ${trade} (${trade === 'electrical' ? 'NEC 2020, Clark County electrical codes' : trade === 'plumbing' ? 'IPC, Clark County plumbing codes' : 'NEC 2020, IPC, Clark County codes'})
+- General Contractor: ${gc}
+- Jurisdiction: ${jurisdiction}
+- Project type: ${projType}
+
+YOUR ROLE:
+You are the contractor's trusted advisor. You've seen contractors lose disputes because of:
+- Missed permit expiry dates causing stop-work orders
+- Verbal scope changes with no documentation  
+- Penalty clauses they never read
+- Missing RFIs that created scope gaps
+- Special conditions they ignored
+
+Extract EVERYTHING that matters. Flag ANYTHING that could cost money or create legal exposure.
+Write action items specifically for a ${trade} sub working for ${gc}.
+Be specific — not "check the expiry date" but "Permit expires May 15, 2026 — renew by May 1 with Clark County"
 
 Return ONLY valid JSON — no markdown, no explanation, just the JSON object.
 

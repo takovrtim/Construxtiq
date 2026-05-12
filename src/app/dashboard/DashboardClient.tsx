@@ -154,16 +154,14 @@ export function DashboardClient({
 
       {/* ── CASE STRENGTH CARD ──────────────────────────── */}
       {(() => {
-        const logScore     = Math.min(100, Math.round((logs.filter((l: any) => {
-          const d = new Date(); d.setDate(d.getDate() - 7)
-          return new Date(l.log_date) >= d
-        }).length / 7) * 100))
-        const safetyScore  = Math.min(100, Math.round((safetyChecklists.filter((c: any) => {
+        const recentSafety = safetyChecklists.filter((c: any) => {
           const d = new Date(); d.setDate(d.getDate() - 7)
           return new Date(c.job_date) >= d
-        }).length / 7) * 100))
+        }).length
+        const safetyScore  = Math.min(100, Math.round((recentSafety / 7) * 100))
         const changeScore  = changes.filter((c: any) => c.approval_token).length > 0 ? 85 : changes.length > 0 ? 40 : 0
         const rfiScore     = rfis.length > 0 ? Math.round((rfis.filter((r: any) => r.status !== 'open').length / rfis.length) * 100) : 0
+        const logScore     = safetyScore
         const overall      = Math.round((logScore * 0.35) + (safetyScore * 0.3) + (changeScore * 0.2) + (rfiScore * 0.15))
         const color        = overall >= 75 ? '#22c55e' : overall >= 50 ? '#ea580c' : '#ef4444'
         const label        = overall >= 75 ? 'Strong' : overall >= 50 ? 'Building' : 'Weak'

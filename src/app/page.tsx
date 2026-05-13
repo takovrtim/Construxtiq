@@ -1,150 +1,106 @@
-﻿import { redirect } from 'next/navigation'
-import { createServerSupabase } from '@/lib/supabase'
 import Link from 'next/link'
 
-export default async function HomePage() {
-  const supabase = createServerSupabase()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (user) redirect('/dashboard')
-
+export default function LandingPage() {
   return (
-    <div style={{ fontFamily: "'DM Sans', -apple-system, sans-serif", background: '#fdfcfb', minHeight: '100vh', overflowX: 'hidden' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800;9..40,900&display=swap');
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        .btn-orange { display: inline-flex; align-items: center; gap: 8px; background: #E8520A; color: white; text-decoration: none; padding: 14px 28px; border-radius: 12px; font-size: 15px; font-weight: 700; transition: all 0.15s; border: none; cursor: pointer; font-family: inherit; }
-        .btn-orange:hover { background: #c94408; transform: translateY(-1px); }
-        .btn-outline { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: #0a0a0a; text-decoration: none; padding: 13px 22px; border-radius: 12px; font-size: 15px; font-weight: 500; border: 1.5px solid #ccc; transition: all 0.15s; }
-        .btn-outline:hover { border-color: #0a0a0a; }
-        .tag { display: inline-flex; align-items: center; gap: 6px; background: #FFF4EE; border: 1px solid #FFD9C4; border-radius: 100px; padding: 5px 14px; font-size: 12px; font-weight: 700; color: #E8520A; }
-        .feature-card { background: #fdfcfb; border: 1.5px solid #ede9e4; border-radius: 18px; padding: 26px; transition: all 0.18s; }
-        .feature-card:hover { border-color: #FFD9C4; box-shadow: 0 8px 28px rgba(232,82,10,0.06); transform: translateY(-2px); }
-        .feature-dark { background: #0a0a0a; border: 1.5px solid #0a0a0a; border-radius: 18px; padding: 26px; }
-        .price-card { border: 1.5px solid #ede9e4; border-radius: 22px; padding: 30px; background: #fdfcfb; transition: all 0.18s; }
-        .price-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.07); }
-        .price-featured { border: 1.5px solid #E8520A; border-radius: 22px; padding: 30px; background: #fff8f5; box-shadow: 0 0 0 4px #FFF4EE; }
-        .testimonial { background: #f6f4f1; border: 1.5px solid #ede9e4; border-radius: 18px; padding: 26px; }
-        .section-alt { background: #f6f4f1; border-top: 1px solid #ede9e4; border-bottom: 1px solid #ede9e4; }
-        @media (max-width: 768px) {
-          .hide-mobile { display: none !important; }
-          .nav-links { display: none !important; }
-          .cta-row { flex-direction: column !important; align-items: stretch !important; }
-          .cta-row a { justify-content: center; }
-          .features-grid { grid-template-columns: 1fr !important; }
-          .steps-grid { grid-template-columns: 1fr !important; }
-          .price-grid { grid-template-columns: 1fr !important; }
-          .pain-grid { grid-template-columns: 1fr !important; }
-          .pain-header { display: none !important; }
-          .testi-grid { grid-template-columns: 1fr !important; }
-          .stats-grid { grid-template-columns: repeat(2,1fr) !important; }
-          .footer-row { flex-direction: column !important; gap: 14px !important; }
-          .mockup-sidebar { display: none !important; }
-          .mockup-grid { grid-template-columns: 1fr !important; }
-          .hero-h1 { font-size: clamp(38px, 10vw, 72px) !important; letter-spacing: -1.5px !important; }
-        }
-      `}</style>
+    <div style={{ fontFamily: "'DM Sans', -apple-system, sans-serif", background: '#fff', color: '#111827' }}>
 
       {/* NAV */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 100, background: 'rgba(253,252,251,0.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #ede9e4' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 9, textDecoration: 'none' }}>
-            <div style={{ width: 28, height: 28, background: '#E8520A', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="white"/><rect x="8" y="1" width="5" height="5" rx="1" fill="white" opacity=".7"/><rect x="1" y="8" width="5" height="5" rx="1" fill="white" opacity=".5"/><rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity=".3"/></svg>
-            </div>
-            <span style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-0.5px', color: '#0a0a0a' }}>ConstructIQ</span>
-          </Link>
-          <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
-            <a href="#features" style={{ fontSize: 14, color: '#333', textDecoration: 'none', fontWeight: 500 }}>Features</a>
-            <a href="#how-it-works" style={{ fontSize: 14, color: '#333', textDecoration: 'none', fontWeight: 500 }}>How it works</a>
-            <a href="#pricing" style={{ fontSize: 14, color: '#333', textDecoration: 'none', fontWeight: 500 }}>Pricing</a>
+      <nav style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(8px)', borderBottom: '1px solid #f3f4f6', padding: '0 24px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ width: 32, height: 32, background: '#ea580c', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="16" height="16" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="white"/><rect x="8" y="1" width="5" height="5" rx="1" fill="white" opacity=".7"/><rect x="1" y="8" width="5" height="5" rx="1" fill="white" opacity=".5"/><rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity=".3"/></svg>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Link href="/auth/login" className="hide-mobile" style={{ fontSize: 14, color: '#333', textDecoration: 'none', padding: '8px 14px', fontWeight: 500 }}>Sign in</Link>
-            <Link href="/auth/signup" className="btn-orange" style={{ padding: '9px 18px', fontSize: 13 }}>Get started free</Link>
-          </div>
+          <span style={{ fontSize: 17, fontWeight: 800, letterSpacing: '-0.4px' }}>ConstructIQ</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <Link href="/auth/login" style={{ fontSize: 14, fontWeight: 500, color: '#6b7280', textDecoration: 'none' }}>Sign in</Link>
+          <Link href="/auth/signup" style={{ fontSize: 14, fontWeight: 700, color: 'white', background: '#ea580c', padding: '8px 18px', borderRadius: 9, textDecoration: 'none' }}>Start Free Trial</Link>
         </div>
       </nav>
 
       {/* HERO */}
-      <section style={{ maxWidth: 1100, margin: '0 auto', padding: '80px 24px 64px', textAlign: 'center' }}>
-        <div className="tag" style={{ marginBottom: 28 }}>Built for electrical and plumbing contractors</div>
-        <h1 className="hero-h1" style={{ fontSize: 'clamp(44px,7.5vw,92px)', fontWeight: 900, letterSpacing: '-3px', lineHeight: 0.95, marginBottom: 28, color: '#0a0a0a' }}>
-          Run your jobs.<br />
-          <span style={{ color: '#E8520A' }}>Not your paperwork.</span>
+      <section style={{ maxWidth: 1100, margin: '0 auto', padding: '80px 24px 60px', textAlign: 'center' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: 20, padding: '6px 14px', marginBottom: 24 }}>
+          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#ea580c' }} />
+          <span style={{ fontSize: 12, fontWeight: 700, color: '#ea580c' }}>Built for electrical and plumbing subcontractors</span>
+        </div>
+        <h1 style={{ fontSize: 'clamp(36px, 6vw, 68px)', fontWeight: 900, letterSpacing: '-2px', lineHeight: 1.05, marginBottom: 20 }}>
+          The GC changed the scope.<br />
+          <span style={{ color: '#ea580c' }}>Now you have proof.</span>
         </h1>
-        <p style={{ fontSize: 18, color: '#333', lineHeight: 1.7, maxWidth: 480, margin: '0 auto 40px', fontWeight: 400 }}>
-          ConstructIQ is the operating system for contractors. Permits, crew, change orders, invoices — one place.
+        <p style={{ fontSize: 'clamp(16px, 2vw, 20px)', color: '#6b7280', maxWidth: 600, margin: '0 auto 36px', lineHeight: 1.6 }}>
+          ConstructIQ builds your legal case file automatically. Every day you use it, you are one step closer to winning the dispute.
         </p>
-        <div className="cta-row" style={{ display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 16, flexWrap: 'wrap' }}>
-          <Link href="/auth/signup" className="btn-orange">Start free — 14 days</Link>
-          <a href="#how-it-works" className="btn-outline">See how it works</a>
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 16 }}>
+          <Link href="/auth/signup" style={{ fontSize: 16, fontWeight: 800, color: 'white', background: '#ea580c', padding: '14px 32px', borderRadius: 12, textDecoration: 'none' }}>Start 14-Day Free Trial</Link>
+          <Link href="/auth/login" style={{ fontSize: 16, fontWeight: 600, color: '#374151', background: '#f9fafb', border: '1px solid #e5e7eb', padding: '14px 24px', borderRadius: 12, textDecoration: 'none' }}>Sign in</Link>
         </div>
-        <p style={{ fontSize: 12, color: '#666' }}>No credit card · 2 minute setup · Cancel anytime</p>
-
-        {/* DASHBOARD MOCKUP */}
-        <div style={{ marginTop: 64, background: '#0a0a0a', borderRadius: 18, overflow: 'hidden', boxShadow: '0 40px 100px rgba(0,0,0,0.12)', textAlign: 'left' }}>
-          <div style={{ background: '#111', borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 6 }}>
-            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#ff5f57' }} />
-            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#febc2e' }} />
-            <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#28c840' }} />
-            <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-              <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 6, padding: '3px 16px', fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>construxtiq.app/dashboard</div>
-            </div>
-            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', display: 'flex', alignItems: 'center', gap: 4 }}>
-              <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#E8520A' }} />Live
-            </div>
-          </div>
-          <div className="mockup-grid" style={{ display: 'grid', gridTemplateColumns: '180px 1fr', minHeight: 360 }}>
-            <div className="mockup-sidebar" style={{ borderRight: '1px solid rgba(255,255,255,0.06)', padding: '14px 6px' }}>
-              <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.25)', letterSpacing: '1px', textTransform: 'uppercase', padding: '0 10px 6px' }}>Operations</div>
-              <div style={{ padding: '7px 10px', borderRadius: 7, fontSize: 11, fontWeight: 700, color: '#E8520A', background: 'rgba(232,82,10,0.12)', marginBottom: 1 }}>Dashboard</div>
-              <div style={{ padding: '7px 10px', fontSize: 11, color: 'rgba(255,255,255,0.45)', marginBottom: 1 }}>Job Board</div>
-              <div style={{ padding: '7px 10px', fontSize: 11, color: 'rgba(255,255,255,0.45)', marginBottom: 1 }}>Timeline</div>
-              <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.25)', letterSpacing: '1px', textTransform: 'uppercase', padding: '10px 10px 6px' }}>Field</div>
-              <div style={{ padding: '7px 10px', fontSize: 11, color: 'rgba(255,255,255,0.45)', marginBottom: 1 }}>Safety</div>
-              <div style={{ padding: '7px 10px', fontSize: 11, color: 'rgba(255,255,255,0.45)', marginBottom: 1 }}>Crew Time</div>
-              <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.25)', letterSpacing: '1px', textTransform: 'uppercase', padding: '10px 10px 6px' }}>Money</div>
-              <div style={{ padding: '7px 10px', fontSize: 11, color: 'rgba(255,255,255,0.45)', marginBottom: 1 }}>Invoices</div>
-              <div style={{ padding: '7px 10px', fontSize: 11, color: 'rgba(255,255,255,0.45)', marginBottom: 1 }}>Changes</div>
-            </div>
-            <div style={{ padding: '20px 24px' }}>
-              <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 14, padding: '18px 22px', marginBottom: 14 }}>
-                <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 8 }}>Las Vegas</div>
-                <div style={{ fontSize: 16, fontWeight: 800, color: 'white', marginBottom: 16 }}>Good morning, John</div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 8 }}>
-                  {[['Active Jobs','3',false],['Crew Today','5',false],['Alerts','2',true],['Revenue','$130k',false]].map(([l,v,a]: any) => (
-                    <div key={l} style={{ background: 'rgba(255,255,255,0.07)', borderRadius: 9, padding: '9px 11px' }}>
-                      <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>{l}</div>
-                      <div style={{ fontSize: 16, fontWeight: 800, color: a ? '#E8520A' : 'white' }}>{v}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                <div style={{ background: 'rgba(232,82,10,0.1)', border: '1px solid rgba(232,82,10,0.25)', borderRadius: 10, padding: '11px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontSize: 16 }}>📋</span>
-                  <div><div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.85)' }}>Permit expires in 3 days</div><div style={{ fontSize: 10, color: '#E8520A', marginTop: 2 }}>PLM-2024-891</div></div>
-                </div>
-                <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 10, padding: '11px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontSize: 16 }}>🦺</span>
-                  <div><div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.85)' }}>No safety check today</div><div style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', marginTop: 2 }}>Complete before crew starts</div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div style={{ fontSize: 12, color: '#9ca3af' }}>No credit card required. Takes 2 minutes.</div>
       </section>
 
       {/* STATS */}
-      <section className="section-alt">
+      <div style={{ background: '#f9fafb', borderTop: '1px solid #f3f4f6', borderBottom: '1px solid #f3f4f6', padding: '20px 24px' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(24px, 5vw, 64px)', flexWrap: 'wrap' }}>
+          {[
+            { stat: '$2M+', label: 'Avg annual revenue protected' },
+            { stat: '14 days', label: 'Free trial, no card' },
+            { stat: '5 min', label: 'To set up your first project' },
+            { stat: '100%', label: 'Built for subs, not GCs' },
+          ].map(s => (
+            <div key={s.stat} style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: 22, fontWeight: 900, letterSpacing: '-0.5px' }}>{s.stat}</div>
+              <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 2 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* PROBLEMS */}
+      <section style={{ maxWidth: 1100, margin: '0 auto', padding: '80px 24px' }}>
+        <div style={{ textAlign: 'center', marginBottom: 40 }}>
+          <h2 style={{ fontSize: 'clamp(26px, 3vw, 40px)', fontWeight: 900, letterSpacing: '-1px', marginBottom: 8 }}>Sound familiar?</h2>
+          <p style={{ fontSize: 15, color: '#6b7280' }}>These are the four things that cost electrical subs the most money every year.</p>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+          {[
+            { icon: '📞', title: 'Scope changes with no paper trail', body: 'Turner calls and changes the spec. No email. No approval. When you bill for it at the end, they say it was never authorized.' },
+            { icon: '⏳', title: 'GC delays nobody tracks', body: 'Inspector is late. Material delivery pushed by GC. Three days lost. Nothing documented. You eat the schedule impact.' },
+            { icon: '💰', title: 'Retention held past completion', body: 'Punch list done. Job complete. GC still holding 10% with no release date. You have no leverage and no paper trail.' },
+            { icon: '📋', title: 'Permit expires without warning', body: 'Stop-work order. Crew standing around. $500 fine. All because nobody tracked the expiry date on a Clark County permit.' },
+          ].map(p => (
+            <div key={p.title} style={{ background: 'white', border: '1px solid #f3f4f6', borderRadius: 16, padding: 24 }}>
+              <div style={{ fontSize: 32, marginBottom: 12 }}>{p.icon}</div>
+              <div style={{ fontSize: 15, fontWeight: 800, color: '#111827', marginBottom: 8, lineHeight: 1.3 }}>{p.title}</div>
+              <div style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.6 }}>{p.body}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FEATURES */}
+      <section style={{ background: '#000', padding: '80px 24px' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)' }}>
-            {[['14','days','Free trial, no card needed'],['6','min','Average setup time'],['10+','','Tools replaced by one app'],['100%','','Built for mobile on site']].map(([n,u,l],i) => (
-              <div key={l} style={{ padding: '40px 32px', borderLeft: i > 0 ? '1px solid #ede9e4' : 'none' }}>
-                <div style={{ fontSize: 'clamp(34px,4vw,52px)', fontWeight: 900, letterSpacing: '-2px', color: '#0a0a0a', lineHeight: 1 }}>
-                  {n}<span style={{ fontSize: '0.5em', color: '#E8520A', fontWeight: 700 }}>{u}</span>
+          <div style={{ textAlign: 'center', marginBottom: 48 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#ea580c', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 12 }}>The solution</div>
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 900, color: '#fff', letterSpacing: '-1px', lineHeight: 1.1, marginBottom: 16 }}>Your legal case file. Built automatically.</h2>
+            <p style={{ fontSize: 15, color: '#9ca3af', maxWidth: 480, margin: '0 auto' }}>Every feature builds your case or protects your cash. Nothing else.</p>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16 }}>
+            {[
+              { icon: '📝', tag: 'Legal protection', title: 'Change Orders with GC Approval', body: 'Log every scope change. Send Turner a link — they tap Approve or Reject. Timestamped, legally binding. No more verbal approvals.' },
+              { icon: '⏱️', tag: 'Dispute weapon', title: 'Delay Tracker', body: 'Log every delay with cause and days lost. One click generates a PDF report with GC-caused days highlighted in red.' },
+              { icon: '🤖', tag: 'Beats competitors', title: 'AI Document Intelligence', body: 'Upload your Clark County permit. AI reads it, extracts the expiry date, special conditions, inspector contact, and sets automatic alerts.' },
+              { icon: '📋', tag: 'Legal protection', title: 'RFI Tracker', body: 'Every unanswered question is documented delay. Log RFIs, set deadlines, track responses. When Turner ignores you, that is on record.' },
+              { icon: '💵', tag: 'Cash protection', title: 'Retention Tracker', body: 'See exactly what every GC owes you. Track release dates, completion percentages, and what has been signed away with lien waivers.' },
+              { icon: '⚖️', tag: 'The closer', title: 'One-Click Audit Export', body: 'Generate a complete legal case file — every delay, RFI, change order, daily log, and safety record. Walk into a dispute ready.' },
+            ].map(f => (
+              <div key={f.title} style={{ background: '#111', border: '1px solid #1f2937', borderRadius: 16, padding: 24 }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
+                  <span style={{ fontSize: 28 }}>{f.icon}</span>
+                  <span style={{ fontSize: 10, fontWeight: 700, color: '#ea580c', background: 'rgba(234,88,12,0.1)', padding: '3px 10px', borderRadius: 20 }}>{f.tag}</span>
                 </div>
-                <div style={{ fontSize: 14, color: '#444', marginTop: 7, fontWeight: 500 }}>{l}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginBottom: 8, lineHeight: 1.3 }}>{f.title}</div>
+                <div style={{ fontSize: 13, color: '#9ca3af', lineHeight: 1.6 }}>{f.body}</div>
               </div>
             ))}
           </div>
@@ -152,183 +108,148 @@ export default async function HomePage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how-it-works" style={{ maxWidth: 1100, margin: '0 auto', padding: '96px 24px' }}>
-        <div style={{ marginBottom: 56 }}>
-          <div className="tag" style={{ marginBottom: 16 }}>How it works</div>
-          <h2 style={{ fontSize: 'clamp(28px,4vw,52px)', fontWeight: 900, letterSpacing: '-2px', lineHeight: 1.08, maxWidth: 540, color: '#0a0a0a' }}>From job site to invoiced — one place.</h2>
-        </div>
-        <div className="steps-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 48 }}>
-          {[
-            { n: '01', title: 'Create a project', body: 'Add your job details. Track permits, blueprints, and contracts — everything organized from day one.' },
-            { n: '02', title: 'Manage daily ops', body: 'Log crew time, run safety checks, track materials, take photos — all from your phone on the job site.' },
-            { n: '03', title: 'Invoice and get paid', body: 'Build invoices in seconds. Approved changes import automatically. Track every dollar you are owed.' },
-          ].map(s => (
-            <div key={s.n} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <div style={{ width: 36, height: 36, background: '#E8520A', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 800, color: 'white', flexShrink: 0 }}>{s.n}</div>
-              <div style={{ fontSize: 17, fontWeight: 800, letterSpacing: '-0.4px', color: '#0a0a0a' }}>{s.title}</div>
-              <div style={{ fontSize: 15, color: '#333', lineHeight: 1.7, fontWeight: 400 }}>{s.body}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* FEATURES */}
-      <section id="features" className="section-alt">
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '96px 24px' }}>
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 48, flexWrap: 'wrap', gap: 20 }}>
-            <div>
-              <div className="tag" style={{ marginBottom: 16 }}>Features</div>
-              <h2 style={{ fontSize: 'clamp(26px,4vw,48px)', fontWeight: 900, letterSpacing: '-1.5px', lineHeight: 1.08, color: '#0a0a0a' }}>Everything a sub actually needs.</h2>
-            </div>
-            <p style={{ fontSize: 15, color: '#444', maxWidth: 260, lineHeight: 1.7, fontWeight: 400 }}>Built from real conversations with electrical and plumbing contractors.</p>
-          </div>
-          <div className="features-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12 }}>
-            {[
-              { icon: '📋', title: 'Permit Tracking', body: 'Auto alerts at 14, 7, and 1 day before expiry. Never get a stop-work order again.', dark: true },
-              { icon: '📅', title: 'Delay Tracker', body: 'Log every delay and who caused it. GC-caused days tracked separately. Export PDF for your next meeting.' },
-              { icon: '📊', title: 'Scope Change Log', body: 'Every spec change from the GC documented with original scope, new scope, cost and time impact.' },
-              { icon: '⏱️', title: 'Crew Time Tracking', body: 'Clock in/out per job. Overtime alerts. Auto labor cost calc. Know what every job costs.' },
-              { icon: '🦺', title: 'Safety Checklists', body: '17-item pre-job checklist. Timestamped legal record. Protects you in disputes.' },
-              { icon: '💵', title: 'Invoice Builder', body: 'Professional invoices in seconds. Approved change orders import automatically.' },
-              { icon: '📸', title: 'Photo Documentation', body: 'Before, during, after — tied to each job. Your proof when anything goes sideways.' },
-              { icon: '🔄', title: 'Change Orders', body: 'Send a link. GC taps approve or reject. Every change documented with timestamps.' },
-              { icon: '🛡️', title: 'Warranty Tracker', body: 'Log warranties on every material and job. Get alerted before they expire.' },
-            ].map(f => (
-              <div key={f.title} className={f.dark ? 'feature-dark' : 'feature-card'}>
-                <div style={{ fontSize: 24, marginBottom: 12 }}>{f.icon}</div>
-                <div style={{ fontSize: 15, fontWeight: 800, letterSpacing: '-0.3px', marginBottom: 8, color: f.dark ? '#fff' : '#0a0a0a' }}>{f.title}</div>
-                <div style={{ fontSize: 14, color: f.dark ? 'rgba(255,255,255,0.65)' : '#333', lineHeight: 1.7, fontWeight: 400 }}>{f.body}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PAIN / SOLUTION */}
-      <section style={{ maxWidth: 880, margin: '0 auto', padding: '96px 24px' }}>
+      <section style={{ maxWidth: 800, margin: '0 auto', padding: '80px 24px' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <div className="tag" style={{ marginBottom: 16 }}>Sound familiar?</div>
-          <h2 style={{ fontSize: 'clamp(26px,4vw,44px)', fontWeight: 900, letterSpacing: '-1.5px', lineHeight: 1.08, color: '#0a0a0a' }}>Every sub has the same problems.</h2>
+          <h2 style={{ fontSize: 'clamp(26px, 3vw, 40px)', fontWeight: 900, letterSpacing: '-1px', marginBottom: 8 }}>Set up in 5 minutes</h2>
+          <p style={{ fontSize: 15, color: '#6b7280' }}>Then use it every day. It gets more valuable the longer you use it.</p>
         </div>
-        <div className="pain-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', border: '1.5px solid #ede9e4', borderRadius: 20, overflow: 'hidden' }}>
-          <div className="pain-header" style={{ padding: '12px 22px', background: '#f6f4f1', borderBottom: '1px solid #ede9e4', fontSize: 11, fontWeight: 700, color: '#444', textTransform: 'uppercase', letterSpacing: '0.5px' }}>The problem</div>
-          <div className="pain-header" style={{ padding: '12px 22px', background: '#FFF4EE', borderBottom: '1px solid #FFD9C4', fontSize: 11, fontWeight: 700, color: '#E8520A', textTransform: 'uppercase', letterSpacing: '0.5px', borderLeft: '1px solid #ede9e4' }}>ConstructIQ fixes it</div>
-          {[
-            ['GC changed the spec, nothing in writing', 'Scope change log with cost and time impact documented'],
-            ['Small delays that pile up, nobody tracks them', 'Delay tracker shows every delay, who caused it, total days lost'],
-            ['Permit expired and you had no idea', 'Auto email at 14, 7, 1 day before expiry'],
-            ['Crew showed up, nobody logged hours', 'One-tap clock in/out with auto labor cost calc'],
-            ['Inspection failed, something was skipped', '17-item safety check before every job'],
-          ].map(([prob, sol], i) => (
-            <>
-              <div key={`p${i}`} style={{ padding: '16px 22px', borderBottom: i < 4 ? '1px solid #ede9e4' : 'none', fontSize: 14, color: '#444', lineHeight: 1.6, background: i % 2 ? '#f6f4f1' : '#fdfcfb', display: 'flex', alignItems: 'center', gap: 9, fontWeight: 400 }}>
-                <span style={{ color: '#aaa', flexShrink: 0, fontWeight: 700 }}>x</span>{prob}
-              </div>
-              <div key={`s${i}`} style={{ padding: '16px 22px', borderBottom: i < 4 ? '1px solid #FFD9C4' : 'none', fontSize: 14, color: '#0a0a0a', fontWeight: 600, lineHeight: 1.6, background: i % 2 ? '#FFF8F4' : '#FFF4EE', borderLeft: '1px solid #FFD9C4', display: 'flex', alignItems: 'center', gap: 9 }}>
-                <span style={{ color: '#E8520A', flexShrink: 0, fontWeight: 700 }}>ok</span>{sol}
-              </div>
-            </>
-          ))}
-        </div>
+        {[
+          { num: '01', title: 'Create your account', body: 'Sign up free. Tell us your trade, your GC name, and your biggest pain. Takes 2 minutes. No credit card.' },
+          { num: '02', title: 'Add your active job', body: 'Name the project, add the address and contract value. Your dashboard and case file activate immediately.' },
+          { num: '03', title: 'Upload your first document', body: 'Drop in a permit, blueprint, or contract. AI reads it and extracts dates, conditions, risks, and action items.' },
+          { num: '04', title: 'Log daily, build your case', body: 'Daily log takes 60 seconds. Change orders send to Turner with one button. Every day your legal protection grows.' },
+        ].map((step, i) => (
+          <div key={step.num} style={{ display: 'flex', gap: 24, padding: '28px 0', borderBottom: i < 3 ? '1px solid #f3f4f6' : 'none' }}>
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: '#fff7ed', border: '1px solid #fed7aa', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <span style={{ fontSize: 12, fontWeight: 900, color: '#ea580c' }}>{step.num}</span>
+            </div>
+            <div>
+              <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 6 }}>{step.title}</div>
+              <div style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.6 }}>{step.body}</div>
+            </div>
+          </div>
+        ))}
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="section-alt" style={{ padding: '80px 24px' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: 44 }}>
-            <h2 style={{ fontSize: 'clamp(24px,3.5vw,38px)', fontWeight: 900, letterSpacing: '-1.5px', color: '#0a0a0a' }}>Built for people like you.</h2>
+      {/* COMPETITION TABLE */}
+      <section style={{ background: '#f9fafb', padding: '80px 24px' }}>
+        <div style={{ maxWidth: 860, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 40 }}>
+            <h2 style={{ fontSize: 'clamp(24px, 3vw, 38px)', fontWeight: 900, letterSpacing: '-0.8px', marginBottom: 8 }}>Why not Procore or eSUB?</h2>
+            <p style={{ fontSize: 15, color: '#6b7280' }}>They are built for GCs looking down. We are built for subs looking up.</p>
           </div>
-          <div className="testi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
-            {[
-              { q: 'The permit alert alone saved me from a $12,000 stop-work order. I had no idea it was about to expire.', name: 'Marcus T.', role: 'Electrical Contractor, Las Vegas' },
-              { q: 'Every time the GC changed the scope I used to just eat it. Now I log it and have a paper trail for every single change.', name: 'John R.', role: 'Electrical Sub, Las Vegas' },
-              { q: 'My labor costs dropped 18% in the first 3 months because I could finally see what each job actually cost.', name: 'David K.', role: 'Plumbing Contractor, Henderson NV' },
-            ].map(t => (
-              <div key={t.name} className="testimonial">
-                <div style={{ fontSize: 30, color: '#E8520A', marginBottom: 14, lineHeight: 1, fontFamily: 'Georgia, serif' }}>"</div>
-                <p style={{ fontSize: 15, color: '#222', lineHeight: 1.75, marginBottom: 20, fontWeight: 400 }}>{t.q}</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#E8520A', color: 'white', fontSize: 12, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{t.name[0]}</div>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: '#0a0a0a' }}>{t.name}</div>
-                    <div style={{ fontSize: 12, color: '#555', marginTop: 1 }}>{t.role}</div>
-                  </div>
+          <div style={{ background: 'white', borderRadius: 16, border: '1px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
+            {/* Header */}
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr' }}>
+              {['Feature', 'ConstructIQ', 'Procore', 'eSUB'].map((h, j) => (
+                <div key={j} style={{ padding: '14px 16px', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', textAlign: j === 0 ? 'left' : 'center', background: j === 1 ? '#000' : '#f9fafb', color: j === 1 ? '#ea580c' : '#9ca3af', borderBottom: '2px solid #e5e7eb' }}>
+                  {j === 1 ? '★ ' : ''}{h}
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            {/* Rows */}
+            {[
+              ['Built for subcontractors', true, false, true],
+              ['AI document parsing', true, false, false],
+              ['GC approval portal', true, false, false],
+              ['Audit export / case file', true, false, false],
+              ['GC reputation score', true, false, false],
+              ['Permit expiry alerts', true, false, false],
+              ['Blueprint reader', true, false, false],
+              ['Price per month', '$149', '$833+', '$249'],
+            ].map((row, i) => {
+              const isLast = i === 7
+              return (
+                <div key={i} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', borderBottom: i < 7 ? '1px solid #f3f4f6' : 'none' }}>
+                  <div style={{ padding: '13px 16px', fontSize: 13, color: '#374151', fontWeight: 500 }}>{row[0] as string}</div>
+                  {[1, 2, 3].map(j => {
+                    const val = row[j]
+                    const isCIQ = j === 1
+                    const isYes = val === true
+                    const isNo  = val === false
+                    return (
+                      <div key={j} style={{ padding: '13px 16px', textAlign: 'center', background: isCIQ ? '#fff7ed' : 'white' }}>
+                        {isYes ? (
+                          <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, borderRadius: '50%', background: isCIQ ? '#22c55e' : '#dcfce7' }}>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke={isCIQ ? 'white' : '#16a34a'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          </div>
+                        ) : isNo ? (
+                          <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, borderRadius: '50%', background: '#f3f4f6' }}>
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#d1d5db" strokeWidth="2.5" strokeLinecap="round"/></svg>
+                          </div>
+                        ) : (
+                          <span style={{ fontSize: 13, fontWeight: isCIQ ? 800 : 500, color: isCIQ ? '#ea580c' : j === 2 ? '#ef4444' : '#6b7280' }}>{val as string}</span>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              )
+            })}
           </div>
+          <div style={{ textAlign: 'center', marginTop: 16, fontSize: 12, color: '#9ca3af' }}>Procore pricing based on publicly available estimates. eSUB pricing based on published rates.</div>
         </div>
       </section>
 
       {/* PRICING */}
-      <section id="pricing" style={{ maxWidth: 1100, margin: '0 auto', padding: '96px 24px' }}>
-        <div style={{ textAlign: 'center', marginBottom: 52 }}>
-          <div className="tag" style={{ marginBottom: 16 }}>Pricing</div>
-          <h2 style={{ fontSize: 'clamp(26px,4vw,44px)', fontWeight: 900, letterSpacing: '-1.5px', marginBottom: 10, lineHeight: 1.08, color: '#0a0a0a' }}>Simple, honest pricing.</h2>
-          <p style={{ fontSize: 16, color: '#444', fontWeight: 400 }}>One missed permit costs more than a year of ConstructIQ.</p>
+      <section style={{ maxWidth: 860, margin: '0 auto', padding: '80px 24px' }}>
+        <div style={{ textAlign: 'center', marginBottom: 48 }}>
+          <h2 style={{ fontSize: 'clamp(26px, 3vw, 40px)', fontWeight: 900, letterSpacing: '-1px', marginBottom: 8 }}>Simple pricing</h2>
+          <p style={{ fontSize: 15, color: '#6b7280' }}>One dispute won pays for years of ConstructIQ.</p>
         </div>
-        <div className="price-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, maxWidth: 640, margin: '0 auto' }}>
           {[
-            { name: 'Starter', price: 49, desc: 'For subs just getting organized', features: ['1 project','Permit tracking and alerts','Daily log and safety checks','Crew time tracking','Basic job board'], featured: false },
-            { name: 'Pro', price: 99, desc: 'For active subs on multiple jobs', features: ['5 projects','Everything in Starter','Delay tracker and scope log','Change order approvals','Invoice builder','SMS permit alerts'], featured: true },
-            { name: 'Company', price: 249, desc: 'For companies with multiple crews', features: ['Unlimited projects','5 team seats','Everything in Pro','Custom reports','Priority support'], featured: false },
+            { name: 'Starter', price: '$149', desc: 'Solo operators and small crews', features: ['1 active project', 'All core features', 'AI document scanning', 'Audit export', 'Email support'], highlight: false },
+            { name: 'Pro', price: '$299', desc: 'Growing subs with multiple jobs', features: ['Unlimited projects', 'Everything in Starter', 'GC reputation scores', 'Priority support', '3 team seats'], highlight: true },
           ].map(plan => (
-            <div key={plan.name} className={plan.featured ? 'price-featured' : 'price-card'}>
-              {plan.featured && <div style={{ background: '#E8520A', color: 'white', fontSize: 10, fontWeight: 800, padding: '3px 12px', borderRadius: 100, display: 'inline-block', marginBottom: 16, letterSpacing: '0.5px' }}>MOST POPULAR</div>}
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#555', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{plan.name}</div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 3, marginBottom: 8 }}>
-                <span style={{ fontSize: 44, fontWeight: 900, letterSpacing: '-2px', color: '#0a0a0a' }}>${plan.price}</span>
-                <span style={{ fontSize: 14, color: '#555' }}>/mo</span>
-              </div>
-              <p style={{ fontSize: 14, color: '#444', marginBottom: 22, lineHeight: 1.5, fontWeight: 400 }}>{plan.desc}</p>
-              <Link href="/auth/signup" className={plan.featured ? 'btn-orange' : 'btn-outline'} style={{ display: 'flex', justifyContent: 'center', marginBottom: 22, width: '100%' }}>Start free</Link>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div key={plan.name} style={{ background: plan.highlight ? '#000' : 'white', border: `2px solid ${plan.highlight ? '#ea580c' : '#e5e7eb'}`, borderRadius: 20, padding: 28, position: 'relative' }}>
+              {plan.highlight && <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', background: '#ea580c', color: 'white', fontSize: 10, fontWeight: 700, padding: '3px 14px', borderRadius: 20, whiteSpace: 'nowrap' }}>Most Popular</div>}
+              <div style={{ fontSize: 13, fontWeight: 700, color: plan.highlight ? '#ea580c' : '#9ca3af', marginBottom: 8 }}>{plan.name}</div>
+              <div style={{ fontSize: 40, fontWeight: 900, color: plan.highlight ? '#fff' : '#111827', letterSpacing: '-2px', marginBottom: 4 }}>{plan.price}<span style={{ fontSize: 14, fontWeight: 400, color: '#9ca3af', letterSpacing: 0 }}>/mo</span></div>
+              <div style={{ fontSize: 13, color: '#9ca3af', marginBottom: 20 }}>{plan.desc}</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
                 {plan.features.map(f => (
-                  <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: '#333', fontWeight: 400 }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#E8520A" opacity="0.1"/><path d="M7 12l4 4 6-6" stroke="#E8520A" strokeWidth="2" strokeLinecap="round"/></svg>
-                    {f}
+                  <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: plan.highlight ? '#d1d5db' : '#374151' }}>
+                    <span style={{ color: '#22c55e', fontWeight: 700 }}>✓</span>{f}
                   </div>
                 ))}
               </div>
+              <Link href="/auth/signup" style={{ display: 'block', textAlign: 'center', padding: '12px', fontSize: 14, fontWeight: 700, borderRadius: 10, textDecoration: 'none', background: plan.highlight ? '#ea580c' : '#111827', color: 'white' }}>
+                Start free trial →
+              </Link>
             </div>
           ))}
         </div>
+        <div style={{ textAlign: 'center', marginTop: 20, fontSize: 12, color: '#9ca3af' }}>14-day free trial · No credit card required · Cancel anytime</div>
       </section>
 
       {/* FINAL CTA */}
-      <section style={{ padding: '0 24px 80px', maxWidth: 1100, margin: '0 auto' }}>
-        <div style={{ background: '#0a0a0a', borderRadius: 28, padding: 'clamp(48px,6vw,80px) 24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: -50, right: -50, width: 260, height: 260, borderRadius: '50%', background: 'rgba(232,82,10,0.12)', pointerEvents: 'none' }} />
-          <div style={{ position: 'absolute', bottom: -70, left: -30, width: 200, height: 200, borderRadius: '50%', background: 'rgba(232,82,10,0.06)', pointerEvents: 'none' }} />
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <h2 style={{ fontSize: 'clamp(30px,5vw,58px)', fontWeight: 900, letterSpacing: '-2px', color: 'white', marginBottom: 16, lineHeight: 1.05 }}>
-              Stop running your business from a notes app.
-            </h2>
-            <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.65)', margin: '0 auto 40px', maxWidth: 400, lineHeight: 1.65, fontWeight: 400 }}>
-              ConstructIQ is built for the job site. On your phone. Under pressure.
-            </p>
-            <div className="cta-row" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link href="/auth/signup" className="btn-orange" style={{ boxShadow: '0 0 60px rgba(232,82,10,0.28)' }}>Start free today</Link>
-              <Link href="/auth/login" className="btn-outline" style={{ background: 'rgba(255,255,255,0.08)', borderColor: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.8)' }}>Sign in</Link>
-            </div>
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', marginTop: 20 }}>14 days free · No credit card · Cancel anytime</p>
-          </div>
+      <section style={{ background: '#000', padding: '80px 24px', textAlign: 'center' }}>
+        <div style={{ maxWidth: 560, margin: '0 auto' }}>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 900, color: '#fff', letterSpacing: '-1.5px', marginBottom: 16, lineHeight: 1.1 }}>
+            Stop losing disputes.<br /><span style={{ color: '#ea580c' }}>Start building your case.</span>
+          </h2>
+          <p style={{ fontSize: 15, color: '#9ca3af', marginBottom: 32, lineHeight: 1.6 }}>Every day you work without ConstructIQ is a day the GC has the advantage. Start your free trial today.</p>
+          <Link href="/auth/signup" style={{ display: 'inline-block', fontSize: 16, fontWeight: 800, color: 'white', background: '#ea580c', padding: '16px 40px', borderRadius: 14, textDecoration: 'none' }}>
+            Start Free Trial — No Card Needed →
+          </Link>
+          <div style={{ marginTop: 12, fontSize: 12, color: '#6b7280' }}>Takes 2 minutes · 14-day trial · Cancel anytime</div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid #ede9e4', padding: '26px 24px' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }} className="footer-row">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 20, height: 20, background: '#E8520A', borderRadius: 5 }} />
-            <span style={{ fontSize: 13, color: '#555' }}>ConstructIQ 2025</span>
-          </div>
-          <div style={{ display: 'flex', gap: 24, fontSize: 13, color: '#555', fontWeight: 500 }}>
-            <Link href="/auth/login" style={{ color: 'inherit', textDecoration: 'none' }}>Sign in</Link>
-            <Link href="/auth/signup" style={{ color: 'inherit', textDecoration: 'none' }}>Get started</Link>
-          </div>
+      <footer style={{ background: '#000', borderTop: '1px solid #111827', padding: '24px', textAlign: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 10 }}>
+          <div style={{ width: 24, height: 24, background: '#ea580c', borderRadius: 6 }} />
+          <span style={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>ConstructIQ</span>
+        </div>
+        <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 12 }}>Built for contractors. Not against them.</div>
+        <div style={{ display: 'flex', gap: 20, justifyContent: 'center' }}>
+          <Link href="/auth/login" style={{ fontSize: 12, color: '#6b7280', textDecoration: 'none' }}>Sign in</Link>
+          <Link href="/auth/signup" style={{ fontSize: 12, color: '#6b7280', textDecoration: 'none' }}>Sign up</Link>
         </div>
       </footer>
+
     </div>
   )
 }

@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next'
 import { DM_Sans, DM_Mono } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
+import { Analytics } from '@vercel/analytics/next'
+import { PostHogProvider } from '@/components/PostHogProvider'
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -55,9 +57,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${dmSans.variable} ${dmMono.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased" suppressHydrationWarning>
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <PostHogProvider>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
+        </PostHogProvider>
+        <Analytics />
       </body>
     </html>
   )

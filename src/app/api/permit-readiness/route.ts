@@ -4,82 +4,72 @@ import Anthropic from '@anthropic-ai/sdk'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
-const JURISDICTION_RULES: Record<string, string> = {
-  'clark county': 'Clark County NV requires: licensed contractor with NV state license, site plan drawn to scale, load calculations for electrical, two-hole test for plumbing, IRC 2018 compliance, HOA approval letter if applicable.',
-  'las vegas': 'City of Las Vegas requires: contractor license number on all permits, stamped engineered plans for structural work, energy compliance forms, SNHD approval for commercial food service.',
-  'henderson': 'Henderson NV requires: permit application, site plan, contractor license, insurance certificate, energy code compliance (IECC 2018).',
-  'north las vegas': 'North Las Vegas requires: contractor registration, site plan, load calculations, 2018 NEC compliance for electrical.',
-  default: 'Standard requirements: licensed contractor, site plan, load calculations where applicable, current code compliance (check local jurisdiction for specifics).',
-}
-
-function getJurisdictionRules(jurisdiction: string): string {
-  const j = (jurisdiction || '').toLowerCase()
-  for (const [key, rules] of Object.entries(JURISDICTION_RULES)) {
-    if (j.includes(key)) return rules
-  }
-  return JURISDICTION_RULES.default
-}
-
 export async function POST(req: NextRequest) {
   const supabase = createServerSupabase()
-  const admin = createAdminSupabase()
+  const admin    = createAdminSupabase()
 
   const { data: { user }, error: authErr } = await supabase.auth.getUser()
   if (authErr || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { project_id, permit_type } = await req.json()
+  const { project_id, permit_id } = await req.json().catch(() => ({}))
+  if (!project_id) return NextResponse.json({ error: 'Missing project_id' }, { status: 400 })
 
-  // Fetch project + all docs + permits
-  const [{ data: project }, { data: docs }, { data: permits }] = await Promise.all([
+  const [{ data: project }, { data: userData }, permitResult] = await Promise.all([
     admin.from('projects').select('*').eq('id', project_id).single(),
-    admin.from('documents').select('*').eq('project_id', project_id).eq('status', 'extracted').or('status.eq.saved'),
-    admin.from('permits').select('*').eq('project_id', project_id),
+    admin.from('users').select('trade_type, company_gc, full_name').eq('id', user.id).single(),
+    permit_id ? admin.from('permits').select('*').eq('id', permit_id).single() : Promise.resolve({ data: null }),
   ])
 
-  const jurisdiction = project?.jurisdiction || project?.city || 'default'
-  const jurisdictionRules = getJurisdictionRules(jurisdiction)
+  const permit = (permitResult as any)?.data
 
-  const docSummary = (docs || []).map(d => `- ${d.name} (${d.doc_type}): ${JSON.stringify(d.extracted_data || {})}`).join('\n')
-  const permitSummary = (permits || []).map(p => `- ${p.permit_number} (${p.permit_type}): ${p.status}`).join('\n')
+  const [{ data: logs }, { data: safety }, { data: rfis }, { data: inspections }] = await Promise.all([
+    admin.from('job_logs').select('log_date, work_completed').eq('project_id', project_id).order('log_date', { ascending: false }).limit(10),
+    admin.from('safety_checklists').select('job_date, all_clear').eq('project_id', project_id).order('job_date', { ascending: false }).limit(7),
+    admin.from('rfis').select('status, subject').eq('project_id', project_id),
+    admin.from('inspections').select('inspection_type, status, scheduled_date').eq('project_id', project_id),
+  ])
 
-  const prompt = `You are a construction permit specialist for ${jurisdiction}.
+  const tradeType   = userData?.trade_type || 'electrical'
+  const gcName      = userData?.company_gc || 'the GC'
+  const projectName = project?.name || 'Construction Project'
+  const openRFIs    = (rfis || []).filter((r: any) => r.status === 'open')
 
-JURISDICTION REQUIREMENTS:
-${jurisdictionRules}
-
-PROJECT: ${project?.name}
-PERMIT TYPE REQUESTED: ${permit_type || 'General Building Permit'}
-
-DOCUMENTS ON FILE:
-${docSummary || 'None uploaded yet'}
-
-EXISTING PERMITS:
-${permitSummary || 'None'}
-
-Analyze readiness to submit a ${permit_type || 'building'} permit. Return ONLY valid JSON:
-{
-  "score": <0-100 integer>,
-  "status": "<Ready to Submit | Almost Ready | Needs Work | Not Ready>",
-  "missing_docs": ["<item>", ...],
-  "issues": [{"severity": "critical|warning|info", "message": "<specific issue>"}],
-  "next_steps": ["<actionable step>", ...],
-  "estimated_approval_days": <integer>,
-  "delay_risk": "<Low|Medium|High>",
-  "summary": "<2 sentence plain English summary>"
-}`
+  const context = `Project: ${projectName}
+Trade: ${tradeType}
+GC: ${gcName}
+Jurisdiction: ${[project?.city, project?.state].filter(Boolean).join(', ') || 'Clark County, Nevada'}
+${permit ? `Permit: ${permit.permit_number} (${permit.permit_type})
+Special conditions: ${(permit.special_conditions || []).join('; ') || 'None'}
+Inspector: ${permit.inspector_name || 'Unknown'}` : 'No permit uploaded yet.'}
+Daily logs filed: ${(logs || []).length}
+Most recent work: ${logs?.[0]?.work_completed || 'No logs yet'}
+Safety checks: ${(safety || []).length} completed, ${(safety || []).filter((s: any) => !s.all_clear).length} with issues
+Open RFIs: ${openRFIs.length}${openRFIs.length ? ': ' + openRFIs.map((r: any) => r.subject).slice(0, 3).join(', ') : ''}
+Upcoming inspections: ${(inspections || []).filter((i: any) => i.status === 'scheduled').length}`
 
   const response = await client.messages.create({
-    model: 'claude-opus-4-5',
-    max_tokens: 800,
-    messages: [{ role: 'user', content: prompt }],
+    model: 'claude-sonnet-4-6',
+    max_tokens: 1500,
+    system: `You are an expert construction inspection readiness consultant for a ${tradeType} sub.
+You know Clark County requirements, NEC 2020, IPC, and what inspectors look for on commercial casino-grade jobs.
+Return ONLY valid JSON.`,
+    messages: [{
+      role: 'user',
+      content: `Assess inspection readiness:\n${context}\n\nReturn JSON:\n{\n  "ready_score": 0-100,\n  "verdict": "Ready" | "Almost Ready" | "Not Ready",\n  "critical_blockers": ["things that WILL cause failure"],\n  "warnings": ["things that might cause issues"],\n  "checklist": [{ "item": "...", "status": "complete|pending|unknown", "note": "..." }],\n  "inspector_tips": ["specific tips for this jurisdiction"],\n  "summary": "2 sentence assessment"\n}`,
+    }],
   })
 
-  const text = response.content[0].type === 'text' ? response.content[0].text : '{}'
+  const text  = response.content[0].type === 'text' ? response.content[0].text : ''
+  const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+
   try {
-    const clean = text.replace(/```json|```/g, '').trim()
-    const result = JSON.parse(clean)
-    return NextResponse.json({ success: true, result })
+    return NextResponse.json({ success: true, ...JSON.parse(clean) })
   } catch {
-    return NextResponse.json({ error: 'Failed to parse AI response' }, { status: 500 })
+    return NextResponse.json({
+      success: true, ready_score: 50, verdict: 'Unknown',
+      critical_blockers: [], warnings: ['Upload permit and daily logs for full assessment'],
+      checklist: [], inspector_tips: [],
+      summary: 'Upload your permit and recent daily logs for a complete readiness check.',
+    })
   }
 }

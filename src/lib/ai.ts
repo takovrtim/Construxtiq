@@ -8,7 +8,7 @@
 import Anthropic from '@anthropic-ai/sdk'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-const MODEL  = 'claude-opus-4-5'
+const MODEL  = 'claude-sonnet-4-6'
 
 // ── TYPES ─────────────────────────────────────────────────
 
@@ -301,7 +301,7 @@ Return JSON:
       role: 'user',
       content: [
         params.mimeType === 'application/pdf'
-          ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: params.fileBase64 } } as any
+          ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: params.fileBase64 } } as any as any
           : { type: 'image', source: { type: 'base64', media_type: params.mimeType as any, data: params.fileBase64 } },
         { type: 'text', text: userPrompt },
       ],

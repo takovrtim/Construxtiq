@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -14,7 +14,7 @@ export default function ResetPasswordPage() {
   const [ready, setReady]       = useState(false)
 
   useEffect(() => {
-    // Supabase puts the recovery token in the URL hash — getSession picks it up
+    // Supabase puts the recovery token in the URL hash â€” getSession picks it up
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) setReady(true)
       else setError('Invalid or expired reset link. Request a new one.')
@@ -41,7 +41,7 @@ export default function ResetPasswordPage() {
           <div style={{ width: 28, height: 28, background: '#1a1a1a', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="white"/><rect x="8" y="1" width="5" height="5" rx="1" fill="white" opacity=".6"/><rect x="1" y="8" width="5" height="5" rx="1" fill="white" opacity=".5"/><rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity=".35"/></svg>
           </div>
-          <span style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.3px' }}>ConstructIQ</span>
+          <span style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.3px' }}>SubIQ</span>
         </div>
 
         <div className="card">
@@ -60,15 +60,15 @@ export default function ResetPasswordPage() {
                 <label className="input-label" htmlFor="confirm">Confirm password</label>
                 <input id="confirm" type="password" className="input" placeholder="Repeat password" value={confirm} onChange={e => setConfirm(e.target.value)} required />
               </div>
-              <button type="submit" className="btn btn-p btn-full" disabled={loading}>{loading ? 'Updating…' : 'Update password'}</button>
+              <button type="submit" className="btn btn-p btn-full" disabled={loading}>{loading ? 'Updatingâ€¦' : 'Update password'}</button>
             </form>
           ) : !error ? (
-            <div style={{ textAlign: 'center', padding: '16px 0', color: 'var(--text-3)', fontSize: 13 }}>Verifying reset link…</div>
+            <div style={{ textAlign: 'center', padding: '16px 0', color: 'var(--text-3)', fontSize: 13 }}>Verifying reset linkâ€¦</div>
           ) : null}
         </div>
 
         <p style={{ textAlign: 'center', marginTop: 20, fontSize: 13, color: 'var(--text-2)' }}>
-          <Link href="/auth/login" style={{ color: 'var(--accent)', textDecoration: 'none' }}>← Back to sign in</Link>
+          <Link href="/auth/login" style={{ color: 'var(--accent)', textDecoration: 'none' }}>â† Back to sign in</Link>
         </p>
       </div>
     </div>

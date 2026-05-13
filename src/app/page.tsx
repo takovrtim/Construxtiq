@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 
 export default function LandingPage() {
   return (
@@ -10,7 +10,7 @@ export default function LandingPage() {
           <div style={{ width: 32, height: 32, background: '#ea580c', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="16" height="16" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="white"/><rect x="8" y="1" width="5" height="5" rx="1" fill="white" opacity=".7"/><rect x="1" y="8" width="5" height="5" rx="1" fill="white" opacity=".5"/><rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity=".3"/></svg>
           </div>
-          <span style={{ fontSize: 17, fontWeight: 800, letterSpacing: '-0.4px' }}>ConstructIQ</span>
+          <span style={{ fontSize: 17, fontWeight: 800, letterSpacing: '-0.4px' }}>SubIQ</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <Link href="/auth/login" style={{ fontSize: 14, fontWeight: 500, color: '#6b7280', textDecoration: 'none' }}>Sign in</Link>
@@ -29,7 +29,7 @@ export default function LandingPage() {
           <span style={{ color: '#ea580c' }}>Now you have proof.</span>
         </h1>
         <p style={{ fontSize: 'clamp(16px, 2vw, 20px)', color: '#6b7280', maxWidth: 600, margin: '0 auto 36px', lineHeight: 1.6 }}>
-          ConstructIQ builds your legal case file automatically. Every day you use it, you are one step closer to winning the dispute.
+          SubIQ builds your legal case file automatically. Every day you use it, you are one step closer to winning the dispute.
         </p>
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 16 }}>
           <Link href="/auth/signup" style={{ fontSize: 16, fontWeight: 800, color: 'white', background: '#ea580c', padding: '14px 32px', borderRadius: 12, textDecoration: 'none' }}>Start 14-Day Free Trial</Link>
@@ -63,10 +63,10 @@ export default function LandingPage() {
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
           {[
-            { icon: '📞', title: 'Scope changes with no paper trail', body: 'Turner calls and changes the spec. No email. No approval. When you bill for it at the end, they say it was never authorized.' },
-            { icon: '⏳', title: 'GC delays nobody tracks', body: 'Inspector is late. Material delivery pushed by GC. Three days lost. Nothing documented. You eat the schedule impact.' },
-            { icon: '💰', title: 'Retention held past completion', body: 'Punch list done. Job complete. GC still holding 10% with no release date. You have no leverage and no paper trail.' },
-            { icon: '📋', title: 'Permit expires without warning', body: 'Stop-work order. Crew standing around. $500 fine. All because nobody tracked the expiry date on a Clark County permit.' },
+            { icon: 'ðŸ“ž', title: 'Scope changes with no paper trail', body: 'Turner calls and changes the spec. No email. No approval. When you bill for it at the end, they say it was never authorized.' },
+            { icon: 'â³', title: 'GC delays nobody tracks', body: 'Inspector is late. Material delivery pushed by GC. Three days lost. Nothing documented. You eat the schedule impact.' },
+            { icon: 'ðŸ’°', title: 'Retention held past completion', body: 'Punch list done. Job complete. GC still holding 10% with no release date. You have no leverage and no paper trail.' },
+            { icon: 'ðŸ“‹', title: 'Permit expires without warning', body: 'Stop-work order. Crew standing around. $500 fine. All because nobody tracked the expiry date on a Clark County permit.' },
           ].map(p => (
             <div key={p.title} style={{ background: 'white', border: '1px solid #f3f4f6', borderRadius: 16, padding: 24 }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>{p.icon}</div>
@@ -87,12 +87,12 @@ export default function LandingPage() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16 }}>
             {[
-              { icon: '📝', tag: 'Legal protection', title: 'Change Orders with GC Approval', body: 'Log every scope change. Send Turner a link — they tap Approve or Reject. Timestamped, legally binding. No more verbal approvals.' },
-              { icon: '⏱️', tag: 'Dispute weapon', title: 'Delay Tracker', body: 'Log every delay with cause and days lost. One click generates a PDF report with GC-caused days highlighted in red.' },
-              { icon: '🤖', tag: 'Beats competitors', title: 'AI Document Intelligence', body: 'Upload your Clark County permit. AI reads it, extracts the expiry date, special conditions, inspector contact, and sets automatic alerts.' },
-              { icon: '📋', tag: 'Legal protection', title: 'RFI Tracker', body: 'Every unanswered question is documented delay. Log RFIs, set deadlines, track responses. When Turner ignores you, that is on record.' },
-              { icon: '💵', tag: 'Cash protection', title: 'Retention Tracker', body: 'See exactly what every GC owes you. Track release dates, completion percentages, and what has been signed away with lien waivers.' },
-              { icon: '⚖️', tag: 'The closer', title: 'One-Click Audit Export', body: 'Generate a complete legal case file — every delay, RFI, change order, daily log, and safety record. Walk into a dispute ready.' },
+              { icon: 'ðŸ“', tag: 'Legal protection', title: 'Change Orders with GC Approval', body: 'Log every scope change. Send Turner a link â€” they tap Approve or Reject. Timestamped, legally binding. No more verbal approvals.' },
+              { icon: 'â±ï¸', tag: 'Dispute weapon', title: 'Delay Tracker', body: 'Log every delay with cause and days lost. One click generates a PDF report with GC-caused days highlighted in red.' },
+              { icon: 'ðŸ¤–', tag: 'Beats competitors', title: 'AI Document Intelligence', body: 'Upload your Clark County permit. AI reads it, extracts the expiry date, special conditions, inspector contact, and sets automatic alerts.' },
+              { icon: 'ðŸ“‹', tag: 'Legal protection', title: 'RFI Tracker', body: 'Every unanswered question is documented delay. Log RFIs, set deadlines, track responses. When Turner ignores you, that is on record.' },
+              { icon: 'ðŸ’µ', tag: 'Cash protection', title: 'Retention Tracker', body: 'See exactly what every GC owes you. Track release dates, completion percentages, and what has been signed away with lien waivers.' },
+              { icon: 'âš–ï¸', tag: 'The closer', title: 'One-Click Audit Export', body: 'Generate a complete legal case file â€” every delay, RFI, change order, daily log, and safety record. Walk into a dispute ready.' },
             ].map(f => (
               <div key={f.title} style={{ background: '#111', border: '1px solid #1f2937', borderRadius: 16, padding: 24 }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
@@ -141,9 +141,9 @@ export default function LandingPage() {
           <div style={{ background: 'white', borderRadius: 16, border: '1px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
             {/* Header */}
             <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr' }}>
-              {['Feature', 'ConstructIQ', 'Procore', 'eSUB'].map((h, j) => (
+              {['Feature', 'SubIQ', 'Procore', 'eSUB'].map((h, j) => (
                 <div key={j} style={{ padding: '14px 16px', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', textAlign: j === 0 ? 'left' : 'center', background: j === 1 ? '#000' : '#f9fafb', color: j === 1 ? '#ea580c' : '#9ca3af', borderBottom: '2px solid #e5e7eb' }}>
-                  {j === 1 ? '★ ' : ''}{h}
+                  {j === 1 ? 'â˜… ' : ''}{h}
                 </div>
               ))}
             </div>
@@ -195,7 +195,7 @@ export default function LandingPage() {
       <section style={{ maxWidth: 860, margin: '0 auto', padding: '80px 24px' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <h2 style={{ fontSize: 'clamp(26px, 3vw, 40px)', fontWeight: 900, letterSpacing: '-1px', marginBottom: 8 }}>Simple pricing</h2>
-          <p style={{ fontSize: 15, color: '#6b7280' }}>One dispute won pays for years of ConstructIQ.</p>
+          <p style={{ fontSize: 15, color: '#6b7280' }}>One dispute won pays for years of SubIQ.</p>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, maxWidth: 640, margin: '0 auto' }}>
           {[
@@ -210,17 +210,17 @@ export default function LandingPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
                 {plan.features.map(f => (
                   <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: plan.highlight ? '#d1d5db' : '#374151' }}>
-                    <span style={{ color: '#22c55e', fontWeight: 700 }}>✓</span>{f}
+                    <span style={{ color: '#22c55e', fontWeight: 700 }}>âœ“</span>{f}
                   </div>
                 ))}
               </div>
               <Link href="/auth/signup" style={{ display: 'block', textAlign: 'center', padding: '12px', fontSize: 14, fontWeight: 700, borderRadius: 10, textDecoration: 'none', background: plan.highlight ? '#ea580c' : '#111827', color: 'white' }}>
-                Start free trial →
+                Start free trial â†’
               </Link>
             </div>
           ))}
         </div>
-        <div style={{ textAlign: 'center', marginTop: 20, fontSize: 12, color: '#9ca3af' }}>14-day free trial · No credit card required · Cancel anytime</div>
+        <div style={{ textAlign: 'center', marginTop: 20, fontSize: 12, color: '#9ca3af' }}>14-day free trial Â· No credit card required Â· Cancel anytime</div>
       </section>
 
       {/* FINAL CTA */}
@@ -229,11 +229,11 @@ export default function LandingPage() {
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 900, color: '#fff', letterSpacing: '-1.5px', marginBottom: 16, lineHeight: 1.1 }}>
             Stop losing disputes.<br /><span style={{ color: '#ea580c' }}>Start building your case.</span>
           </h2>
-          <p style={{ fontSize: 15, color: '#9ca3af', marginBottom: 32, lineHeight: 1.6 }}>Every day you work without ConstructIQ is a day the GC has the advantage. Start your free trial today.</p>
+          <p style={{ fontSize: 15, color: '#9ca3af', marginBottom: 32, lineHeight: 1.6 }}>Every day you work without SubIQ is a day the GC has the advantage. Start your free trial today.</p>
           <Link href="/auth/signup" style={{ display: 'inline-block', fontSize: 16, fontWeight: 800, color: 'white', background: '#ea580c', padding: '16px 40px', borderRadius: 14, textDecoration: 'none' }}>
-            Start Free Trial — No Card Needed →
+            Start Free Trial â€” No Card Needed â†’
           </Link>
-          <div style={{ marginTop: 12, fontSize: 12, color: '#6b7280' }}>Takes 2 minutes · 14-day trial · Cancel anytime</div>
+          <div style={{ marginTop: 12, fontSize: 12, color: '#6b7280' }}>Takes 2 minutes Â· 14-day trial Â· Cancel anytime</div>
         </div>
       </section>
 
@@ -241,7 +241,7 @@ export default function LandingPage() {
       <footer style={{ background: '#000', borderTop: '1px solid #111827', padding: '24px', textAlign: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 10 }}>
           <div style={{ width: 24, height: 24, background: '#ea580c', borderRadius: 6 }} />
-          <span style={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>ConstructIQ</span>
+          <span style={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>SubIQ</span>
         </div>
         <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 12 }}>Built for contractors. Not against them.</div>
         <div style={{ display: 'flex', gap: 20, justifyContent: 'center' }}>

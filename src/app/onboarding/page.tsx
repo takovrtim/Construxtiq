@@ -1,10 +1,10 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
-// ── TYPES ──────────────────────────────────────────────────
+// â”€â”€ TYPES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 type Trade    = 'electrical' | 'plumbing' | 'both' | 'general'
 type Size     = 'solo' | 'small' | 'medium' | 'large'
 type Pain     = 'scope_changes' | 'delays' | 'permits' | 'billing' | 'crew' | 'documentation'
@@ -23,21 +23,21 @@ interface Profile {
   state: string
 }
 
-// ── PAIN CONFIG ────────────────────────────────────────────
+// â”€â”€ PAIN CONFIG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const PAIN_CONFIG: Record<Pain, {
   icon: string; title: string; sub: string
   solution: string; route: string; feature: string
 }> = {
   scope_changes: {
-    icon: '📝',
-    title: 'GC changes the scope — nothing in writing',
+    icon: 'ðŸ“',
+    title: 'GC changes the scope â€” nothing in writing',
     sub: 'They change the spec then dispute your bill at the end',
-    solution: 'Every scope change logged with cost impact, time impact, and a GC approval link. They text you "go ahead" — you text back a link they have to sign.',
+    solution: 'Every scope change logged with cost impact, time impact, and a GC approval link. They text you "go ahead" â€” you text back a link they have to sign.',
     route: '/changes',
     feature: 'Change Orders',
   },
   delays: {
-    icon: '⏳',
+    icon: 'â³',
     title: 'Small delays that pile up and nobody tracks',
     sub: 'GC-caused days eat your schedule and nobody documents it',
     solution: 'Delay Tracker logs every delay, who caused it, and total days lost. Export a PDF before your next GC meeting.',
@@ -45,15 +45,15 @@ const PAIN_CONFIG: Record<Pain, {
     feature: 'Delay Tracker',
   },
   permits: {
-    icon: '📋',
+    icon: 'ðŸ“‹',
     title: 'Permit expires and you had no idea',
     sub: 'Stop-work orders cost more than the permit renewal',
-    solution: 'Auto email alerts at 14, 7, and 1 day before any permit expires. Upload your permit — AI reads it and sets the alert automatically.',
+    solution: 'Auto email alerts at 14, 7, and 1 day before any permit expires. Upload your permit â€” AI reads it and sets the alert automatically.',
     route: '/documents',
     feature: 'Document Intelligence',
   },
   billing: {
-    icon: '💵',
+    icon: 'ðŸ’µ',
     title: 'Getting paid takes forever',
     sub: 'Invoicing is slow, change orders get lost, retention never gets released',
     solution: 'Invoice builder with automatic change order import. Retention tracker shows exactly what every GC owes you.',
@@ -61,7 +61,7 @@ const PAIN_CONFIG: Record<Pain, {
     feature: 'Invoice Builder',
   },
   crew: {
-    icon: '👷',
+    icon: 'ðŸ‘·',
     title: "Can't see what each job actually costs",
     sub: 'Labor is your biggest cost and you track it in your head',
     solution: 'One-tap clock in/out per job. Overtime alerts. Auto labor cost calc. See your real margin on every job.',
@@ -69,38 +69,38 @@ const PAIN_CONFIG: Record<Pain, {
     feature: 'Crew Time Tracking',
   },
   documentation: {
-    icon: '📸',
+    icon: 'ðŸ“¸',
     title: 'Nothing to back you up in a dispute',
-    sub: 'No photos, no logs — just your word against the GC',
-    solution: 'Daily logs, timestamped photos, safety checklists — all tied to the job. AI generates a professional summary of every day on site.',
+    sub: 'No photos, no logs â€” just your word against the GC',
+    solution: 'Daily logs, timestamped photos, safety checklists â€” all tied to the job. AI generates a professional summary of every day on site.',
     route: '/logs',
     feature: 'Daily Log',
   },
 }
 
 const TRADE_OPTIONS = [
-  { val: 'electrical' as Trade, icon: '⚡', title: 'Electrical',   sub: 'Panel, rough-in, service, inspections' },
-  { val: 'plumbing'   as Trade, icon: '🔧', title: 'Plumbing',     sub: 'Rough-in, water heaters, drain, gas' },
-  { val: 'both'       as Trade, icon: '⚡🔧', title: 'Both',       sub: 'Electrical and plumbing' },
-  { val: 'general'    as Trade, icon: '🏗️', title: 'General',     sub: 'GC managing multiple trades' },
+  { val: 'electrical' as Trade, icon: 'âš¡', title: 'Electrical',   sub: 'Panel, rough-in, service, inspections' },
+  { val: 'plumbing'   as Trade, icon: 'ðŸ”§', title: 'Plumbing',     sub: 'Rough-in, water heaters, drain, gas' },
+  { val: 'both'       as Trade, icon: 'âš¡ðŸ”§', title: 'Both',       sub: 'Electrical and plumbing' },
+  { val: 'general'    as Trade, icon: 'ðŸ—ï¸', title: 'General',     sub: 'GC managing multiple trades' },
 ]
 
 const SIZE_OPTIONS = [
-  { val: 'solo'   as Size, icon: '👤', title: 'Just me',      sub: 'Solo operator' },
-  { val: 'small'  as Size, icon: '👥', title: '2–5 people',   sub: 'Small crew' },
-  { val: 'medium' as Size, icon: '👷', title: '6–20 people',  sub: 'Multiple crews' },
-  { val: 'large'  as Size, icon: '🏢', title: '20+ people',   sub: 'Large company' },
+  { val: 'solo'   as Size, icon: 'ðŸ‘¤', title: 'Just me',      sub: 'Solo operator' },
+  { val: 'small'  as Size, icon: 'ðŸ‘¥', title: '2â€“5 people',   sub: 'Small crew' },
+  { val: 'medium' as Size, icon: 'ðŸ‘·', title: '6â€“20 people',  sub: 'Multiple crews' },
+  { val: 'large'  as Size, icon: 'ðŸ¢', title: '20+ people',   sub: 'Large company' },
 ]
 
 const JOB_OPTIONS = [
-  { val: 'casino'       as JobType, icon: '🎰', title: 'Casino / Hotel',  sub: 'Hardrock, MGM, Wynn, resorts' },
-  { val: 'commercial'   as JobType, icon: '🏢', title: 'Commercial',       sub: 'Office, retail, restaurants' },
-  { val: 'residential'  as JobType, icon: '🏠', title: 'Residential',      sub: 'Houses, condos, apartments' },
-  { val: 'industrial'   as JobType, icon: '🏭', title: 'Industrial',       sub: 'Warehouses, data centers' },
-  { val: 'mixed'        as JobType, icon: '🔀', title: 'Mixed',            sub: 'Whatever comes in' },
+  { val: 'casino'       as JobType, icon: 'ðŸŽ°', title: 'Casino / Hotel',  sub: 'Hardrock, MGM, Wynn, resorts' },
+  { val: 'commercial'   as JobType, icon: 'ðŸ¢', title: 'Commercial',       sub: 'Office, retail, restaurants' },
+  { val: 'residential'  as JobType, icon: 'ðŸ ', title: 'Residential',      sub: 'Houses, condos, apartments' },
+  { val: 'industrial'   as JobType, icon: 'ðŸ­', title: 'Industrial',       sub: 'Warehouses, data centers' },
+  { val: 'mixed'        as JobType, icon: 'ðŸ”€', title: 'Mixed',            sub: 'Whatever comes in' },
 ]
 
-// ── OPTION CARD ────────────────────────────────────────────
+// â”€â”€ OPTION CARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function Card({ icon, title, sub, selected, onClick }: {
   icon: string; title: string; sub?: string; selected: boolean; onClick: () => void
 }) {
@@ -126,7 +126,7 @@ function Card({ icon, title, sub, selected, onClick }: {
   )
 }
 
-// ── MAIN ───────────────────────────────────────────────────
+// â”€â”€ MAIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function OnboardingPage() {
   const router = useRouter()
   const [step, setStep]       = useState(0) // 0-3 = questions, 4 = done
@@ -245,7 +245,7 @@ export default function OnboardingPage() {
             <rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity=".3"/>
           </svg>
         </div>
-        <span style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-0.5px', color: '#0a0a0a' }}>ConstructIQ</span>
+        <span style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-0.5px', color: '#0a0a0a' }}>SubIQ</span>
       </div>
 
       {/* PROGRESS */}
@@ -279,11 +279,11 @@ export default function OnboardingPage() {
           <div style={{ background: '#fdf0f0', borderRadius: 9, padding: '10px 14px', fontSize: 13, color: '#b83232', marginBottom: 16, border: '1px solid rgba(184,50,50,0.15)' }}>{error}</div>
         )}
 
-        {/* ── STEP 0: TRADE ─────────────────────────── */}
+        {/* â”€â”€ STEP 0: TRADE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {step === 0 && (
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#E8520A', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>
-              {firstName ? `Hey ${firstName} 👋` : 'Welcome'}
+              {firstName ? `Hey ${firstName} ðŸ‘‹` : 'Welcome'}
             </div>
             <h1 style={{ fontSize: 24, fontWeight: 900, letterSpacing: '-0.5px', marginBottom: 6, color: '#0a0a0a', lineHeight: 1.1 }}>
               What trade are you in?
@@ -297,12 +297,12 @@ export default function OnboardingPage() {
               ))}
             </div>
             <button onClick={() => { if (profile.trade) setStep(1) }} disabled={!profile.trade} style={{ width: '100%', padding: '14px', fontSize: 15, fontWeight: 700, borderRadius: 12, cursor: profile.trade ? 'pointer' : 'not-allowed', border: 'none', background: profile.trade ? '#0a0a0a' : '#e8e3da', color: profile.trade ? 'white' : '#aaa', fontFamily: 'inherit', transition: 'all 0.15s' }}>
-              Next →
+              Next â†’
             </button>
           </div>
         )}
 
-        {/* ── STEP 1: BIGGEST PAIN ──────────────────── */}
+        {/* â”€â”€ STEP 1: BIGGEST PAIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {step === 1 && (
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#E8520A', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>Be honest</div>
@@ -318,22 +318,22 @@ export default function OnboardingPage() {
               ))}
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
-              <button onClick={() => setStep(0)} style={{ padding: '14px 20px', fontSize: 14, fontWeight: 500, borderRadius: 12, cursor: 'pointer', border: '1.5px solid #e8e3da', background: 'white', color: '#666', fontFamily: 'inherit' }}>←</button>
+              <button onClick={() => setStep(0)} style={{ padding: '14px 20px', fontSize: 14, fontWeight: 500, borderRadius: 12, cursor: 'pointer', border: '1.5px solid #e8e3da', background: 'white', color: '#666', fontFamily: 'inherit' }}>â†</button>
               <button onClick={() => { if (profile.pain) setStep(2) }} disabled={!profile.pain} style={{ flex: 1, padding: '14px', fontSize: 15, fontWeight: 700, borderRadius: 12, cursor: profile.pain ? 'pointer' : 'not-allowed', border: 'none', background: profile.pain ? '#0a0a0a' : '#e8e3da', color: profile.pain ? 'white' : '#aaa', fontFamily: 'inherit', transition: 'all 0.15s' }}>
-                Next →
+                Next â†’
               </button>
             </div>
           </div>
         )}
 
-        {/* ── STEP 2: JOB TYPE + SIZE ───────────────── */}
+        {/* â”€â”€ STEP 2: JOB TYPE + SIZE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {step === 2 && (
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#E8520A', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>Your work</div>
             <h1 style={{ fontSize: 24, fontWeight: 900, letterSpacing: '-0.5px', marginBottom: 6, color: '#0a0a0a', lineHeight: 1.1 }}>
               What kind of jobs do you run?
             </h1>
-            <p style={{ fontSize: 14, color: '#666', marginBottom: 16, lineHeight: 1.6 }}>Quick — two taps and you're done with this step.</p>
+            <p style={{ fontSize: 14, color: '#666', marginBottom: 16, lineHeight: 1.6 }}>Quick â€” two taps and you're done with this step.</p>
 
             <div style={{ marginBottom: 16 }}>
               <div style={{ fontSize: 12, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>Project type</div>
@@ -366,15 +366,15 @@ export default function OnboardingPage() {
             </div>
 
             <div style={{ display: 'flex', gap: 8 }}>
-              <button onClick={() => setStep(1)} style={{ padding: '14px 20px', fontSize: 14, fontWeight: 500, borderRadius: 12, cursor: 'pointer', border: '1.5px solid #e8e3da', background: 'white', color: '#666', fontFamily: 'inherit' }}>←</button>
+              <button onClick={() => setStep(1)} style={{ padding: '14px 20px', fontSize: 14, fontWeight: 500, borderRadius: 12, cursor: 'pointer', border: '1.5px solid #e8e3da', background: 'white', color: '#666', fontFamily: 'inherit' }}>â†</button>
               <button onClick={() => { if (canProceed()) setStep(3) }} disabled={!canProceed()} style={{ flex: 1, padding: '14px', fontSize: 15, fontWeight: 700, borderRadius: 12, cursor: canProceed() ? 'pointer' : 'not-allowed', border: 'none', background: canProceed() ? '#0a0a0a' : '#e8e3da', color: canProceed() ? 'white' : '#aaa', fontFamily: 'inherit', transition: 'all 0.15s' }}>
-                Next →
+                Next â†’
               </button>
             </div>
           </div>
         )}
 
-        {/* ── STEP 3: FIRST PROJECT ─────────────────── */}
+        {/* â”€â”€ STEP 3: FIRST PROJECT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {step === 3 && (
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#E8520A', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>Almost done</div>
@@ -382,17 +382,17 @@ export default function OnboardingPage() {
               What are you working on right now?
             </h1>
             <p style={{ fontSize: 14, color: '#666', marginBottom: 22, lineHeight: 1.6 }}>
-              Create your first project — takes 30 seconds.
+              Create your first project â€” takes 30 seconds.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 20 }}>
               <div>
                 <label style={lbl}>Project Name *</label>
                 <input style={inp} autoFocus
                   placeholder={
-                    profile.jobType === 'casino' ? 'Hardrock Cafe — Electrical Rough-In' :
-                    profile.jobType === 'commercial' ? 'Desert Ridge Office — Panel Upgrade' :
-                    profile.jobType === 'residential' ? 'Smith Residence — Rewire' :
-                    profile.trade === 'plumbing' ? 'Lakeview Apartments — Plumbing Retrofit' :
+                    profile.jobType === 'casino' ? 'Hardrock Cafe â€” Electrical Rough-In' :
+                    profile.jobType === 'commercial' ? 'Desert Ridge Office â€” Panel Upgrade' :
+                    profile.jobType === 'residential' ? 'Smith Residence â€” Rewire' :
+                    profile.trade === 'plumbing' ? 'Lakeview Apartments â€” Plumbing Retrofit' :
                     'My First Project'
                   }
                   value={profile.projectName}
@@ -415,15 +415,15 @@ export default function OnboardingPage() {
               </div>
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
-              <button onClick={() => setStep(2)} style={{ padding: '14px 20px', fontSize: 14, fontWeight: 500, borderRadius: 12, cursor: 'pointer', border: '1.5px solid #e8e3da', background: 'white', color: '#666', fontFamily: 'inherit' }}>←</button>
+              <button onClick={() => setStep(2)} style={{ padding: '14px 20px', fontSize: 14, fontWeight: 500, borderRadius: 12, cursor: 'pointer', border: '1.5px solid #e8e3da', background: 'white', color: '#666', fontFamily: 'inherit' }}>â†</button>
               <button onClick={finish} disabled={saving || !profile.projectName.trim()} style={{ flex: 1, padding: '14px', fontSize: 15, fontWeight: 700, borderRadius: 12, cursor: saving || !profile.projectName.trim() ? 'not-allowed' : 'pointer', border: 'none', background: saving || !profile.projectName.trim() ? '#e8e3da' : '#E8520A', color: saving || !profile.projectName.trim() ? '#aaa' : 'white', fontFamily: 'inherit', transition: 'all 0.15s' }}>
-                {saving ? '⏳ Building your workspace...' : 'Launch ConstructIQ →'}
+                {saving ? 'â³ Building your workspace...' : 'Launch SubIQ â†’'}
               </button>
             </div>
           </div>
         )}
 
-        {/* ── STEP 4: LOADING ───── */}
+        {/* â”€â”€ STEP 4: LOADING â”€â”€â”€â”€â”€ */}
         {step === 4 && false && (
           <div>
             {/* Big personalized welcome */}
@@ -439,7 +439,7 @@ export default function OnboardingPage() {
               </p>
             </div>
 
-            {/* PERSONALIZED SOLUTION — the hero of the done screen */}
+            {/* PERSONALIZED SOLUTION â€” the hero of the done screen */}
             <div style={{ background: '#0a0a0a', borderRadius: 16, padding: '22px 24px', marginBottom: 16, position: 'relative', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', top: -30, right: -30, width: 120, height: 120, borderRadius: '50%', background: 'rgba(232,82,10,0.15)', pointerEvents: 'none' }} />
               <div style={{ position: 'relative', zIndex: 1 }}>
@@ -450,7 +450,7 @@ export default function OnboardingPage() {
                   "{painConfig.title}"
                 </div>
                 <div style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 8 }}>
-                  How ConstructIQ fixes it
+                  How SubIQ fixes it
                 </div>
                 <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', lineHeight: 1.7 }}>
                   {painConfig.solution}
@@ -458,14 +458,14 @@ export default function OnboardingPage() {
               </div>
             </div>
 
-            {/* Quick wins — 3 other things ready for them */}
+            {/* Quick wins â€” 3 other things ready for them */}
             <div style={{ marginBottom: 24 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 10 }}>Also ready for you</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {[
-                  { icon: '🦺', label: 'Safety checklist before crew starts', href: '/safety' },
-                  { icon: '📋', label: 'Upload your permit — AI reads it', href: '/documents' },
-                  { icon: '🔄', label: 'Log your first change order', href: '/changes' },
+                  { icon: 'ðŸ¦º', label: 'Safety checklist before crew starts', href: '/safety' },
+                  { icon: 'ðŸ“‹', label: 'Upload your permit â€” AI reads it', href: '/documents' },
+                  { icon: 'ðŸ”„', label: 'Log your first change order', href: '/changes' },
                 ].filter(item => item.href !== painConfig.route).slice(0, 2).map(item => (
                   <div key={item.href} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: '#f6f4f1', borderRadius: 10 }}>
                     <span style={{ fontSize: 18 }}>{item.icon}</span>
@@ -478,7 +478,7 @@ export default function OnboardingPage() {
             {/* CTA BUTTONS */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               <button onClick={() => router.push(painConfig.route)} style={{ padding: '15px', fontSize: 15, fontWeight: 800, borderRadius: 12, cursor: 'pointer', border: 'none', background: '#E8520A', color: 'white', fontFamily: 'inherit', letterSpacing: '-0.3px' }}>
-                Fix my biggest problem first → {painConfig.feature}
+                Fix my biggest problem first â†’ {painConfig.feature}
               </button>
               <button onClick={() => router.push('/safety')} style={{ padding: '13px', fontSize: 14, fontWeight: 600, borderRadius: 12, cursor: 'pointer', border: '1.5px solid #e8e3da', background: 'white', color: '#333', fontFamily: 'inherit' }}>
                 Start today's safety checklist
@@ -491,7 +491,7 @@ export default function OnboardingPage() {
             {/* Trial reminder */}
             <div style={{ marginTop: 20, textAlign: 'center', padding: '12px', background: '#f6f4f1', borderRadius: 10 }}>
               <div style={{ fontSize: 12, color: '#888' }}>
-                ⏱️ You're on a <strong style={{ color: '#0a0a0a' }}>14-day free trial</strong> — no credit card needed
+                â±ï¸ You're on a <strong style={{ color: '#0a0a0a' }}>14-day free trial</strong> â€” no credit card needed
               </div>
             </div>
           </div>

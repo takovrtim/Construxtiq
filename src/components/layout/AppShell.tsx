@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
@@ -150,7 +150,7 @@ function SidebarInner({ projects, activeProject, user, onSignOut, onClose }: {
           <div style={{ width: 32, height: 32, background: '#ea580c', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <Shield size={18} color="white" />
           </div>
-          <span style={{ fontSize: 17, fontWeight: 700, color: '#fff', letterSpacing: '-0.3px' }}>ConstructIQ</span>
+          <span style={{ fontSize: 17, fontWeight: 700, color: '#fff', letterSpacing: '-0.3px' }}>SubIQ</span>
         </Link>
         {onClose && (
           <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#9ca3af', padding: 4, display: 'flex', alignItems: 'center' }}>
@@ -258,7 +258,7 @@ export function AppShell({ user, projects, activeProject, children }: Props) {
                 <Menu size={20} />
               </button>
               <span style={{ fontSize: 16, fontWeight: 600, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 240 }}>
-                {activeProject?.name || 'ConstructIQ'}
+                {activeProject?.name || 'SubIQ'}
               </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>

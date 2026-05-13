@@ -1,9 +1,9 @@
-// ─────────────────────────────────────────────────────────
-// CONSTRUCTIQ — Core Types
+﻿// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// SubIQ â€” Core Types
 // Single source of truth. Every DB table mirrors these types.
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// ── USER ──────────────────────────────────────────────────
+// â”€â”€ USER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export interface User {
   id: string
   email: string
@@ -20,7 +20,7 @@ export interface User {
   updated_at: string
 }
 
-// ── PROJECT ───────────────────────────────────────────────
+// â”€â”€ PROJECT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export interface Project {
   id: string
   user_id: string
@@ -37,7 +37,7 @@ export interface Project {
   updated_at: string
 }
 
-// ── DOCUMENT ──────────────────────────────────────────────
+// â”€â”€ DOCUMENT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export type DocumentType =
   | 'permit'
   | 'blueprint'
@@ -101,7 +101,7 @@ export interface ExtractedData {
   inspector_phone?: string
 }
 
-// ── PERMIT ────────────────────────────────────────────────
+// â”€â”€ PERMIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export type PermitStatus = 'active' | 'pending' | 'expiring_soon' | 'expired' | 'revoked'
 
 export interface Permit {
@@ -128,7 +128,7 @@ export interface Permit {
   updated_at: string
 }
 
-// ── BID / LINE ITEM ───────────────────────────────────────
+// â”€â”€ BID / LINE ITEM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export type BidStatus = 'not_started' | 'bidding' | 'awarded' | 'revise' | 'rejected'
 
 export interface BidLineItem {
@@ -150,7 +150,7 @@ export interface BidLineItem {
   updated_at: string
 }
 
-// ── SUBCONTRACTOR ─────────────────────────────────────────
+// â”€â”€ SUBCONTRACTOR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export type SubStatus = 'prospect' | 'bidding' | 'awarded' | 'active' | 'completed' | 'rejected'
 
 export interface Subcontractor {
@@ -174,7 +174,7 @@ export interface Subcontractor {
   updated_at: string
 }
 
-// ── EMAIL THREAD ──────────────────────────────────────────
+// â”€â”€ EMAIL THREAD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export type EmailDirection = 'inbound' | 'outbound'
 
 export interface EmailThread {
@@ -193,7 +193,7 @@ export interface EmailThread {
   created_at: string
 }
 
-// ── TRAINING MODULE ───────────────────────────────────────
+// â”€â”€ TRAINING MODULE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export type ModuleStatus = 'generating' | 'draft' | 'published'
 
 export interface TrainingModule {
@@ -210,7 +210,7 @@ export interface TrainingModule {
   updated_at: string
 }
 
-// ── API RESPONSE WRAPPERS ─────────────────────────────────
+// â”€â”€ API RESPONSE WRAPPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export interface ApiSuccess<T> {
   success: true
   data: T
@@ -224,7 +224,7 @@ export interface ApiError {
 
 export type ApiResponse<T> = ApiSuccess<T> | ApiError
 
-// ── PLAN LIMITS ───────────────────────────────────────────
+// â”€â”€ PLAN LIMITS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export const PLAN_LIMITS = {
   starter: {
     projects: 1,

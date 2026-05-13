@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -58,7 +58,7 @@ export function DelayTrackerClient({ user, project, initialDelays, jobs }: Props
     setExporting(true)
     const gcDelays = delays.filter(d => d.caused_by === 'gc')
     const html = `<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Delay Report — ${project?.name}</title>
+<html><head><meta charset="UTF-8"><title>Delay Report â€” ${project?.name}</title>
 <style>
   body { font-family: 'Helvetica Neue', Arial, sans-serif; padding: 48px; color: #0a0a0a; max-width: 800px; margin: 0 auto; }
   h1 { font-size: 28px; font-weight: 900; letter-spacing: -1px; margin-bottom: 4px; }
@@ -82,10 +82,10 @@ export function DelayTrackerClient({ user, project, initialDelays, jobs }: Props
   <div style="width:32px;height:32px;background:#E8520A;border-radius:8px;display:flex;align-items:center;justify-content:center;">
     <svg width="16" height="16" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="white"/><rect x="8" y="1" width="5" height="5" rx="1" fill="white" opacity=".7"/><rect x="1" y="8" width="5" height="5" rx="1" fill="white" opacity=".5"/><rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity=".3"/></svg>
   </div>
-  <span style="font-size:13px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#E8520A;">ConstructIQ — Delay Report</span>
+  <span style="font-size:13px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#E8520A;">SubIQ â€” Delay Report</span>
 </div>
 <h1>${project?.name}</h1>
-<div class="meta">Generated ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} · ${delays.length} delays logged</div>
+<div class="meta">Generated ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} Â· ${delays.length} delays logged</div>
 <div class="summary">
   <div class="stat"><div class="stat-label">Total Days Lost</div><div class="stat-value">${totalDaysLost}d</div></div>
   <div class="stat"><div class="stat-label">GC-Caused Days</div><div class="stat-value red">${gcDays}d</div></div>
@@ -93,7 +93,7 @@ export function DelayTrackerClient({ user, project, initialDelays, jobs }: Props
   <div class="stat"><div class="stat-label">Other Delays</div><div class="stat-value">${delays.length - gcDelays.length}</div></div>
 </div>
 ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0.2);border-left:4px solid #C0392B;border-radius:8px;padding:14px 16px;margin-bottom:24px;font-size:13px;color:#6e1a1a;font-weight:600;">
-⚠️ The General Contractor has directly caused ${gcDays} calendar day${gcDays !== 1 ? 's' : ''} of schedule delay on this project.
+âš ï¸ The General Contractor has directly caused ${gcDays} calendar day${gcDays !== 1 ? 's' : ''} of schedule delay on this project.
 </div>` : ''}
 <table>
   <tr><th>Date</th><th>Caused By</th><th>Days Lost</th><th>Description</th><th>Documented</th></tr>
@@ -102,11 +102,11 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
     <td><span class="badge ${d.caused_by === 'gc' || d.caused_by === 'permit' ? 'badge-red' : d.caused_by === 'weather' ? 'badge-blue' : 'badge-gray'}">${CAUSED_BY[d.caused_by].label}</span></td>
     <td><strong>+${d.days_lost}d</strong></td>
     <td>${d.description}${d.cumulative_impact ? '<br><em style="color:#999;font-size:11px">' + d.cumulative_impact + '</em>' : ''}</td>
-    <td>${d.documented ? '✓' : '—'}</td>
+    <td>${d.documented ? 'âœ“' : 'â€”'}</td>
   </tr>`).join('')}
 </table>
 <div class="footer">
-  <span>ConstructIQ · ${project?.name}</span>
+  <span>SubIQ Â· ${project?.name}</span>
   <span>Generated ${new Date().toLocaleDateString()}</span>
 </div>
 </body></html>`
@@ -117,7 +117,7 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
     a.download = `Delay-Report-${(project?.name || 'Project').replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.html`
     a.click()
     URL.revokeObjectURL(url)
-    msg('✓ Report downloaded — open in browser and print to PDF')
+    msg('âœ“ Report downloaded â€” open in browser and print to PDF')
     setExporting(false)
   }
 
@@ -144,7 +144,7 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
 
     if (!error && data) {
       setDelays(prev => [data as Delay, ...prev])
-      msg('✓ Delay logged')
+      msg('âœ“ Delay logged')
       setShowNew(false)
       setDescription(''); setImpact(''); setDaysLost('1'); setDocumented(false)
     } else msg('Failed to save')
@@ -171,17 +171,17 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
       return `
         <tr style="border-bottom:1px solid #f0f0f0">
           <td style="padding:10px 14px;font-size:13px">${format(parseISO(d.delay_date), 'MMM d, yyyy')}</td>
-          <td style="padding:10px 14px;font-size:13px">${job?.title || '—'}</td>
+          <td style="padding:10px 14px;font-size:13px">${job?.title || 'â€”'}</td>
           <td style="padding:10px 14px"><span style="background:${cfg.bg};color:${cfg.color};padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700">${cfg.label}</span></td>
           <td style="padding:10px 14px;font-size:13px;text-align:center;font-weight:700;color:#b83232">+${d.days_lost}d</td>
           <td style="padding:10px 14px;font-size:13px">${d.description}</td>
-          <td style="padding:10px 14px;font-size:13px">${d.documented ? '✓' : '—'}</td>
+          <td style="padding:10px 14px;font-size:13px">${d.documented ? 'âœ“' : 'â€”'}</td>
         </tr>
       `
     }).join('')
 
     win.document.write(`
-      <html><head><title>Delay Report — ${project.name}</title>
+      <html><head><title>Delay Report â€” ${project.name}</title>
       <style>body{font-family:-apple-system,sans-serif;padding:40px;color:#0f0f0f}table{width:100%;border-collapse:collapse}th{text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#9e9d99;padding:8px 14px;border-bottom:2px solid #e8e3da}@media print{body{padding:20px}}</style>
       </head><body>
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px">
@@ -218,8 +218,8 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
 
   if (!project) return (
     <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-      <div style={{ fontSize: 40 }}>⏱️</div>
-      <a href="/dashboard" style={{ color: '#d95f2b', textDecoration: 'none', fontSize: 13 }}>Create a project first →</a>
+      <div style={{ fontSize: 40 }}>â±ï¸</div>
+      <a href="/dashboard" style={{ color: '#d95f2b', textDecoration: 'none', fontSize: 13 }}>Create a project first â†’</a>
     </div>
   )
 
@@ -233,11 +233,11 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
         <div style={{ display: 'flex', gap: 8 }}>
           {delays.length > 0 && (
             <button onClick={exportReport} style={{ padding: '10px 16px', fontSize: 13, fontWeight: 600, borderRadius: 10, cursor: 'pointer', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-primary)', fontFamily: 'inherit' }}>
-              🖨️ Export PDF
+              ðŸ–¨ï¸ Export PDF
             </button>
           )}
           <button onClick={() => setShowNew(v => !v)} style={{ padding: '10px 20px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: showNew ? '#0f0f0f' : '#d95f2b', color: 'white', fontFamily: 'inherit' }}>
-            {showNew ? '✕ Cancel' : '+ Log Delay'}
+            {showNew ? 'âœ• Cancel' : '+ Log Delay'}
           </button>
         </div>
       </div>
@@ -262,7 +262,7 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
       {/* GC ALERT */}
       {gcDays > 0 && (
         <div style={{ background: '#fdf0f0', border: '1px solid rgba(184,50,50,0.2)', borderRadius: 12, padding: '14px 18px', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontSize: 22 }}>🚨</span>
+          <span style={{ fontSize: 22 }}>ðŸš¨</span>
           <div>
             <div style={{ fontSize: 14, fontWeight: 700, color: '#6e1a1a' }}>GC has caused {gcDays} days of delays</div>
             <div style={{ fontSize: 12, color: '#b83232' }}>You have documentation to protect yourself. Export the PDF before your next meeting.</div>
@@ -332,7 +332,7 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
       {/* DELAY LIST */}
       {delays.length === 0 && !showNew ? (
         <div style={{ textAlign: 'center', padding: '52px 20px', background: 'var(--surface)', borderRadius: 16, border: '2px dashed var(--border)' }}>
-          <div style={{ fontSize: 40, marginBottom: 12 }}>📅</div>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>ðŸ“…</div>
           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>No delays logged</div>
           <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginBottom: 20 }}>Start logging delays to build your paper trail. When the GC blames you, you'll have proof.</div>
           <button onClick={() => setShowNew(true)} style={{ padding: '10px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#d95f2b', color: 'white', fontFamily: 'inherit' }}>+ Log First Delay</button>
@@ -364,7 +364,7 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
                     <button
                       onClick={() => toggleDocumented(delay.id, !delay.documented)}
                       style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 20, cursor: 'pointer', border: `1px solid ${delay.documented ? 'rgba(45,122,79,0.3)' : 'rgba(176,110,26,0.3)'}`, background: delay.documented ? '#edf5f0' : '#fdf4e3', color: delay.documented ? '#1a4d31' : '#6b4010', fontFamily: 'inherit' }}>
-                      {delay.documented ? '✓ Documented' : '! Not documented'}
+                      {delay.documented ? 'âœ“ Documented' : '! Not documented'}
                     </button>
                     <button onClick={() => deleteDelay(delay.id)} style={{ fontSize: 11, color: '#b83232', border: 'none', background: 'transparent', cursor: 'pointer', fontFamily: 'inherit' }}>Delete</button>
                   </div>

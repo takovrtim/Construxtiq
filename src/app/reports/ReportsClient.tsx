@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { format } from 'date-fns'
@@ -75,7 +75,7 @@ export function ReportsClient({ user, project }: Props) {
     const html = `<!DOCTYPE html>
 <html><head>
 <meta charset="UTF-8">
-<title>Project Audit Report — ${a.project.name}</title>
+<title>Project Audit Report â€” ${a.project.name}</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #0a0a0a; background: white; padding: 48px; max-width: 860px; margin: 0 auto; }
@@ -108,18 +108,18 @@ export function ReportsClient({ user, project }: Props) {
 </head><body>
 
 <div class="header">
-  <div class="logo">ConstructIQ — Project Audit Report</div>
+  <div class="logo">SubIQ â€” Project Audit Report</div>
   <h1>${a.project.name}</h1>
   <div class="meta">
-    ${a.contractor.company || a.contractor.name} &nbsp;·&nbsp;
-    ${a.contractor.license ? `License: ${a.contractor.license} &nbsp;·&nbsp;` : ''}
-    GC: ${a.contractor.gc || 'Not specified'} &nbsp;·&nbsp;
+    ${a.contractor.company || a.contractor.name} &nbsp;Â·&nbsp;
+    ${a.contractor.license ? `License: ${a.contractor.license} &nbsp;Â·&nbsp;` : ''}
+    GC: ${a.contractor.gc || 'Not specified'} &nbsp;Â·&nbsp;
     Generated: ${format(new Date(a.generated_at), 'MMMM d, yyyy h:mm a')}
   </div>
 </div>
 
-${s.gc_caused_days > 0 ? `<div class="critical-box"><strong>⚠️ GC-Caused Delays:</strong> ${s.gc_caused_days} calendar days of delay attributed to the General Contractor as of the date of this report.</div>` : ''}
-${s.overdue_rfis > 0 ? `<div class="warning-box"><strong>⏳ Unanswered RFIs:</strong> ${s.overdue_rfis} RFI${s.overdue_rfis > 1 ? 's' : ''} submitted to the GC/architect with no response past the deadline.</div>` : ''}
+${s.gc_caused_days > 0 ? `<div class="critical-box"><strong>âš ï¸ GC-Caused Delays:</strong> ${s.gc_caused_days} calendar days of delay attributed to the General Contractor as of the date of this report.</div>` : ''}
+${s.overdue_rfis > 0 ? `<div class="warning-box"><strong>â³ Unanswered RFIs:</strong> ${s.overdue_rfis} RFI${s.overdue_rfis > 1 ? 's' : ''} submitted to the GC/architect with no response past the deadline.</div>` : ''}
 
 <div class="section">
   <div class="section-title">Executive Summary</div>
@@ -137,14 +137,14 @@ ${s.overdue_rfis > 0 ? `<div class="warning-box"><strong>⏳ Unanswered RFIs:</s
 
 ${a.delays.length > 0 ? `
 <div class="section">
-  <div class="section-title">Delay Log (${a.delays.length} entries · ${s.total_delay_days} total days)</div>
+  <div class="section-title">Delay Log (${a.delays.length} entries Â· ${s.total_delay_days} total days)</div>
   <table>
     <tr><th>Date</th><th>Description</th><th>Caused By</th><th>Days Lost</th></tr>
     ${a.delays.map((d: any) => `
     <tr>
-      <td>${d.delay_date ? format(new Date(d.delay_date), 'MMM d, yyyy') : '—'}</td>
-      <td>${d.description || d.title || '—'}</td>
-      <td><span class="badge ${d.caused_by === 'gc' ? 'badge-red' : 'badge-blue'}">${d.caused_by?.toUpperCase() || '—'}</span></td>
+      <td>${d.delay_date ? format(new Date(d.delay_date), 'MMM d, yyyy') : 'â€”'}</td>
+      <td>${d.description || d.title || 'â€”'}</td>
+      <td><span class="badge ${d.caused_by === 'gc' ? 'badge-red' : 'badge-blue'}">${d.caused_by?.toUpperCase() || 'â€”'}</span></td>
       <td><strong>${d.days_lost || 0}d</strong></td>
     </tr>`).join('')}
   </table>
@@ -157,10 +157,10 @@ ${a.rfis.length > 0 ? `
     <tr><th>RFI #</th><th>Subject</th><th>Submitted To</th><th>Submitted</th><th>Status</th></tr>
     ${a.rfis.map((r: any) => `
     <tr>
-      <td style="font-family:monospace;font-size:11px">${r.rfi_number || '—'}</td>
-      <td>${r.subject || '—'}</td>
-      <td>${r.submitted_to || '—'}</td>
-      <td>${r.submitted_date ? format(new Date(r.submitted_date), 'MMM d') : '—'}</td>
+      <td style="font-family:monospace;font-size:11px">${r.rfi_number || 'â€”'}</td>
+      <td>${r.subject || 'â€”'}</td>
+      <td>${r.submitted_to || 'â€”'}</td>
+      <td>${r.submitted_date ? format(new Date(r.submitted_date), 'MMM d') : 'â€”'}</td>
       <td><span class="badge ${r.status === 'responded' ? 'badge-green' : r.status === 'overdue' ? 'badge-red' : 'badge-orange'}">${r.status?.toUpperCase()}</span></td>
     </tr>`).join('')}
   </table>
@@ -173,8 +173,8 @@ ${a.change_orders.length > 0 ? `
     <tr><th>Title</th><th>Category</th><th>Cost Impact</th><th>Time Impact</th><th>Status</th></tr>
     ${a.change_orders.map((c: any) => `
     <tr>
-      <td>${c.title || '—'}</td>
-      <td>${c.category || '—'}</td>
+      <td>${c.title || 'â€”'}</td>
+      <td>${c.category || 'â€”'}</td>
       <td><strong>$${Number(c.cost_impact || 0).toLocaleString()}</strong></td>
       <td>${c.time_impact_days || 0}d</td>
       <td><span class="badge ${c.status === 'approved' ? 'badge-green' : c.status === 'rejected' ? 'badge-red' : 'badge-orange'}">${c.status?.toUpperCase()}</span></td>
@@ -189,17 +189,17 @@ ${a.daily_logs.length > 0 ? `
     <tr><th>Date</th><th>Work Completed</th><th>Hours</th><th>Issues</th></tr>
     ${a.daily_logs.slice(0, 20).map((l: any) => `
     <tr>
-      <td style="white-space:nowrap">${l.log_date ? format(new Date(l.log_date), 'MMM d, yyyy') : '—'}</td>
+      <td style="white-space:nowrap">${l.log_date ? format(new Date(l.log_date), 'MMM d, yyyy') : 'â€”'}</td>
       <td>${(l.work_completed || '').slice(0, 120)}${(l.work_completed || '').length > 120 ? '...' : ''}</td>
-      <td>${l.hours_worked || '—'}</td>
-      <td style="color:${l.issues ? '#C0392B' : '#aaa'}">${l.issues ? l.issues.slice(0, 80) : '—'}</td>
+      <td>${l.hours_worked || 'â€”'}</td>
+      <td style="color:${l.issues ? '#C0392B' : '#aaa'}">${l.issues ? l.issues.slice(0, 80) : 'â€”'}</td>
     </tr>`).join('')}
     ${a.daily_logs.length > 20 ? `<tr><td colspan="4" style="color:#aaa;font-style:italic">+ ${a.daily_logs.length - 20} more entries</td></tr>` : ''}
   </table>
 </div>` : ''}
 
 <div class="footer">
-  <span>ConstructIQ · ${a.contractor.company || a.contractor.name} · ${a.project.name}</span>
+  <span>SubIQ Â· ${a.contractor.company || a.contractor.name} Â· ${a.project.name}</span>
   <span>Generated ${format(new Date(a.generated_at), 'MMMM d, yyyy')}</span>
 </div>
 
@@ -209,10 +209,10 @@ ${a.daily_logs.length > 0 ? `
     const url  = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href  = url
-    link.download = `ConstructIQ-Audit-${a.project.name.replace(/\s+/g, '-')}-${format(new Date(), 'yyyy-MM-dd')}.html`
+    link.download = `SubIQ-Audit-${a.project.name.replace(/\s+/g, '-')}-${format(new Date(), 'yyyy-MM-dd')}.html`
     link.click()
     URL.revokeObjectURL(url)
-    msg('✓ Audit report downloaded — open in browser and print to PDF')
+    msg('âœ“ Audit report downloaded â€” open in browser and print to PDF')
   }
 
   const inp: React.CSSProperties = {
@@ -226,15 +226,15 @@ ${a.daily_logs.length > 0 ? `
     <>
       <div style={{ marginBottom: 24 }}>
         <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px' }}>Reports & Intelligence</div>
-        <div style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 2 }}>Legal case file · GC reputation · Protection score</div>
+        <div style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 2 }}>Legal case file Â· GC reputation Â· Protection score</div>
       </div>
 
       {/* TABS */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 20, borderBottom: '1px solid var(--border)', paddingBottom: 0 }}>
         {([
-          { id: 'audit',    label: '📋 Audit Export' },
-          { id: 'gc',       label: '⭐ GC Score' },
-          { id: 'strength', label: '🛡️ Case Strength' },
+          { id: 'audit',    label: 'ðŸ“‹ Audit Export' },
+          { id: 'gc',       label: 'â­ GC Score' },
+          { id: 'strength', label: 'ðŸ›¡ï¸ Case Strength' },
         ] as const).map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
             padding: '10px 16px', fontSize: 13, fontWeight: activeTab === tab.id ? 700 : 400,
@@ -248,31 +248,31 @@ ${a.daily_logs.length > 0 ? `
         ))}
       </div>
 
-      {/* ── AUDIT EXPORT ─────────────────────────────── */}
+      {/* â”€â”€ AUDIT EXPORT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       {activeTab === 'audit' && (
         <div>
           {!audit ? (
             <div>
               <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '32px', marginBottom: 16, textAlign: 'center' }}>
-                <div style={{ fontSize: 48, marginBottom: 16 }}>⚖️</div>
+                <div style={{ fontSize: 48, marginBottom: 16 }}>âš–ï¸</div>
                 <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.3px', marginBottom: 8 }}>Generate Your Case File</div>
                 <div style={{ fontSize: 14, color: 'var(--text-2)', marginBottom: 24, maxWidth: 440, margin: '0 auto 24px', lineHeight: 1.7 }}>
                   One click pulls every delay, RFI, change order, daily log, and safety record into a professional legal-grade report. Drop it on the table at your next GC meeting.
                 </div>
                 <button onClick={generateAudit} disabled={generating || !project} style={{ padding: '14px 32px', fontSize: 15, fontWeight: 700, borderRadius: 12, cursor: generating || !project ? 'not-allowed' : 'pointer', border: 'none', background: generating || !project ? 'var(--surface-3)' : '#0a0a0a', color: generating || !project ? 'var(--text-3)' : 'white', fontFamily: 'inherit' }}>
-                  {generating ? '⏳ Compiling records...' : '📋 Generate Audit Report'}
+                  {generating ? 'â³ Compiling records...' : 'ðŸ“‹ Generate Audit Report'}
                 </button>
                 {!project && <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 12 }}>Create a project first</div>}
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12 }}>
                 {[
-                  { icon: '📅', title: 'Every Delay Logged', body: 'Date, cause, days lost. GC-caused delays highlighted separately.' },
-                  { icon: '🔄', title: 'All Change Orders', body: 'Cost impact, approval status, timestamps. Legally binding records.' },
-                  { icon: '📋', title: 'RFI Paper Trail', body: 'Every question submitted, every deadline missed, every response received.' },
-                  { icon: '📝', title: 'Daily Log History', body: 'Every day on site documented. Timestamped, professional.' },
-                  { icon: '🦺', title: 'Safety Records', body: 'Every safety checklist completed. Your OSHA protection.' },
-                  { icon: '💰', title: 'Financial Summary', body: 'Outstanding retention, approved change values, what you\'re owed.' },
+                  { icon: 'ðŸ“…', title: 'Every Delay Logged', body: 'Date, cause, days lost. GC-caused delays highlighted separately.' },
+                  { icon: 'ðŸ”„', title: 'All Change Orders', body: 'Cost impact, approval status, timestamps. Legally binding records.' },
+                  { icon: 'ðŸ“‹', title: 'RFI Paper Trail', body: 'Every question submitted, every deadline missed, every response received.' },
+                  { icon: 'ðŸ“', title: 'Daily Log History', body: 'Every day on site documented. Timestamped, professional.' },
+                  { icon: 'ðŸ¦º', title: 'Safety Records', body: 'Every safety checklist completed. Your OSHA protection.' },
+                  { icon: 'ðŸ’°', title: 'Financial Summary', body: 'Outstanding retention, approved change values, what you\'re owed.' },
                 ].map(f => (
                   <div key={f.title} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px 18px' }}>
                     <div style={{ fontSize: 22, marginBottom: 8 }}>{f.icon}</div>
@@ -288,12 +288,12 @@ ${a.daily_logs.length > 0 ? `
               <div style={{ background: '#0a0a0a', borderRadius: 16, padding: '24px 28px', marginBottom: 16, color: 'white' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
                   <div>
-                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 6 }}>Case File — {audit.project.name}</div>
+                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 6 }}>Case File â€” {audit.project.name}</div>
                     <div style={{ fontSize: 18, fontWeight: 800 }}>Generated {format(new Date(audit.generated_at), 'MMMM d, yyyy')}</div>
                   </div>
                   <div style={{ display: 'flex', gap: 8 }}>
                     <button onClick={downloadAuditHTML} style={{ padding: '9px 18px', fontSize: 12, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#E8520A', color: 'white', fontFamily: 'inherit' }}>
-                      ⬇️ Download Report
+                      â¬‡ï¸ Download Report
                     </button>
                     <button onClick={() => setAudit(null)} style={{ padding: '9px 14px', fontSize: 12, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'rgba(255,255,255,0.5)', fontFamily: 'inherit' }}>
                       Regenerate
@@ -324,27 +324,27 @@ ${a.daily_logs.length > 0 ? `
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
                   {audit.summary.gc_caused_days > 0 && (
                     <div style={{ padding: '12px 16px', background: 'var(--red-bg)', border: '1px solid rgba(192,57,43,0.2)', borderLeft: '3px solid var(--red)', borderRadius: 10, fontSize: 13, fontWeight: 600, color: 'var(--red)' }}>
-                      🚨 {audit.summary.gc_caused_days} days of delay caused by GC — documented and exportable
+                      ðŸš¨ {audit.summary.gc_caused_days} days of delay caused by GC â€” documented and exportable
                     </div>
                   )}
                   {audit.summary.overdue_rfis > 0 && (
                     <div style={{ padding: '12px 16px', background: 'var(--yellow-bg)', border: '1px solid rgba(160,90,0,0.2)', borderLeft: '3px solid var(--yellow)', borderRadius: 10, fontSize: 13, fontWeight: 600, color: 'var(--yellow)' }}>
-                      ⏳ {audit.summary.overdue_rfis} RFI{audit.summary.overdue_rfis > 1 ? 's' : ''} unanswered past deadline — GC is on record
+                      â³ {audit.summary.overdue_rfis} RFI{audit.summary.overdue_rfis > 1 ? 's' : ''} unanswered past deadline â€” GC is on record
                     </div>
                   )}
                   {audit.summary.retention_outstanding > 0 && (
                     <div style={{ padding: '12px 16px', background: 'var(--yellow-bg)', border: '1px solid rgba(160,90,0,0.2)', borderLeft: '3px solid var(--yellow)', borderRadius: 10, fontSize: 13, fontWeight: 600, color: 'var(--yellow)' }}>
-                      💰 ${Number(audit.summary.retention_outstanding).toLocaleString()} in retention outstanding — track your punch list
+                      ðŸ’° ${Number(audit.summary.retention_outstanding).toLocaleString()} in retention outstanding â€” track your punch list
                     </div>
                   )}
                 </div>
               )}
 
               <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14 }}>
-                <div style={{ fontSize: 28 }}>💡</div>
+                <div style={{ fontSize: 28 }}>ðŸ’¡</div>
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 3 }}>How to use this report</div>
-                  <div style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.6 }}>Download → Open in browser → Print to PDF (Ctrl+P). Bring to your next GC meeting. If there's a dispute, this is your evidence. It's timestamped, professionally formatted, and covers every day of work.</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.6 }}>Download â†’ Open in browser â†’ Print to PDF (Ctrl+P). Bring to your next GC meeting. If there's a dispute, this is your evidence. It's timestamped, professionally formatted, and covers every day of work.</div>
                 </div>
               </div>
             </div>
@@ -352,7 +352,7 @@ ${a.daily_logs.length > 0 ? `
         </div>
       )}
 
-      {/* ── GC REPUTATION SCORE ──────────────────────── */}
+      {/* â”€â”€ GC REPUTATION SCORE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       {activeTab === 'gc' && (
         <div>
           <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px', marginBottom: 20 }}>
@@ -402,9 +402,9 @@ ${a.daily_logs.length > 0 ? `
                 <div style={{ background: 'var(--red-bg)', border: '1px solid rgba(192,57,43,0.15)', borderRadius: 12, padding: '16px 20px' }}>
                   <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: 'var(--red)' }}>Your current exposure with {gcScore.gc_name}</div>
                   <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-                    {gcScore.my_data.delay_days > 0 && <span style={{ fontSize: 13, color: 'var(--red)' }}>📅 {gcScore.my_data.delay_days} delay days</span>}
-                    {gcScore.my_data.open_rfis > 0 && <span style={{ fontSize: 13, color: 'var(--red)' }}>📋 {gcScore.my_data.open_rfis} open RFIs</span>}
-                    {gcScore.my_data.pending_changes > 0 && <span style={{ fontSize: 13, color: 'var(--red)' }}>🔄 {gcScore.my_data.pending_changes} pending changes</span>}
+                    {gcScore.my_data.delay_days > 0 && <span style={{ fontSize: 13, color: 'var(--red)' }}>ðŸ“… {gcScore.my_data.delay_days} delay days</span>}
+                    {gcScore.my_data.open_rfis > 0 && <span style={{ fontSize: 13, color: 'var(--red)' }}>ðŸ“‹ {gcScore.my_data.open_rfis} open RFIs</span>}
+                    {gcScore.my_data.pending_changes > 0 && <span style={{ fontSize: 13, color: 'var(--red)' }}>ðŸ”„ {gcScore.my_data.pending_changes} pending changes</span>}
                   </div>
                 </div>
               )}
@@ -414,10 +414,10 @@ ${a.daily_logs.length > 0 ? `
           {!gcScore && (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               {[
-                { icon: '💳', title: 'Retention Release Rate', body: 'Does this GC actually release retention when punch list is done? Score tracks it.' },
-                { icon: '⏱️', title: 'RFI Response Time', body: 'How fast do they answer formal questions? Slow RFI response = documented delay.' },
-                { icon: '✍️', title: 'Change Order Speed', body: 'Average days from submission to approval. Fast GCs get better scores.' },
-                { icon: '📅', title: 'Delays Caused', body: 'How many days of delay has this GC caused across your jobs? It compounds.' },
+                { icon: 'ðŸ’³', title: 'Retention Release Rate', body: 'Does this GC actually release retention when punch list is done? Score tracks it.' },
+                { icon: 'â±ï¸', title: 'RFI Response Time', body: 'How fast do they answer formal questions? Slow RFI response = documented delay.' },
+                { icon: 'âœï¸', title: 'Change Order Speed', body: 'Average days from submission to approval. Fast GCs get better scores.' },
+                { icon: 'ðŸ“…', title: 'Delays Caused', body: 'How many days of delay has this GC caused across your jobs? It compounds.' },
               ].map(f => (
                 <div key={f.title} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px 18px' }}>
                   <div style={{ fontSize: 24, marginBottom: 8 }}>{f.icon}</div>
@@ -430,25 +430,25 @@ ${a.daily_logs.length > 0 ? `
         </div>
       )}
 
-      {/* ── CASE STRENGTH ────────────────────────────── */}
+      {/* â”€â”€ CASE STRENGTH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       {activeTab === 'strength' && (
         <div>
           <div style={{ background: '#0a0a0a', borderRadius: 16, padding: '24px 28px', marginBottom: 16, color: 'white' }}>
             <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 8 }}>Your Legal Protection</div>
             <div style={{ fontSize: 22, fontWeight: 800, marginBottom: 4 }}>How strong is your case right now?</div>
             <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>
-              Every day you use ConstructIQ, your case file gets stronger. Here's what you've built so far.
+              Every day you use SubIQ, your case file gets stronger. Here's what you've built so far.
             </div>
           </div>
 
           <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px', marginBottom: 14 }}>
             <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 20 }}>Documentation Coverage</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <ProtectionMeter score={85} label="Daily Logs — Proof of work completed each day" />
-              <ProtectionMeter score={70} label="Safety Records — OSHA protection and liability shield" />
-              <ProtectionMeter score={60} label="Change Order Paper Trail — GC approval timestamps" />
-              <ProtectionMeter score={45} label="RFI Documentation — Unanswered questions on record" />
-              <ProtectionMeter score={30} label="Delay Attribution — GC-caused days documented" />
+              <ProtectionMeter score={85} label="Daily Logs â€” Proof of work completed each day" />
+              <ProtectionMeter score={70} label="Safety Records â€” OSHA protection and liability shield" />
+              <ProtectionMeter score={60} label="Change Order Paper Trail â€” GC approval timestamps" />
+              <ProtectionMeter score={45} label="RFI Documentation â€” Unanswered questions on record" />
+              <ProtectionMeter score={30} label="Delay Attribution â€” GC-caused days documented" />
             </div>
           </div>
 
@@ -483,7 +483,7 @@ ${a.daily_logs.length > 0 ? `
               ].map(item => (
                 <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, fontSize: 12, color: 'var(--red)' }}>
                   <div style={{ width: 16, height: 16, borderRadius: '50%', background: '#FEF0EE', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <span style={{ fontSize: 8, fontWeight: 800 }}>✕</span>
+                    <span style={{ fontSize: 8, fontWeight: 800 }}>âœ•</span>
                   </div>
                   {item}
                 </div>

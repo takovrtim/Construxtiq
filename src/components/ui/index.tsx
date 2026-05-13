@@ -1,15 +1,15 @@
-'use client'
+﻿'use client'
 
-// ─────────────────────────────────────────────────────────
-// CONSTRUCTIQ — UI Primitives
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// SubIQ â€” UI Primitives
 // Every UI component lives here. Import from '@/components/ui'
-// Never write inline styles for these patterns — use these.
-// ─────────────────────────────────────────────────────────
+// Never write inline styles for these patterns â€” use these.
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 import { clsx } from 'clsx'
 import React from 'react'
 
-// ── BUTTON ────────────────────────────────────────────────
+// â”€â”€ BUTTON â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'danger' | 'ghost'
   size?: 'sm' | 'md' | 'lg'
@@ -54,7 +54,7 @@ export function Button({
   )
 }
 
-// ── INPUT ─────────────────────────────────────────────────
+// â”€â”€ INPUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
   error?: string
@@ -89,7 +89,7 @@ export function Input({ label, error, hint, className, id, ...props }: InputProp
   )
 }
 
-// ── TEXTAREA ──────────────────────────────────────────────
+// â”€â”€ TEXTAREA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string
   error?: string
@@ -122,7 +122,7 @@ export function Textarea({ label, error, className, id, ...props }: TextareaProp
   )
 }
 
-// ── SELECT ────────────────────────────────────────────────
+// â”€â”€ SELECT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string
   error?: string
@@ -162,7 +162,7 @@ export function Select({ label, error, options, className, id, ...props }: Selec
   )
 }
 
-// ── CARD ──────────────────────────────────────────────────
+// â”€â”€ CARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface CardProps {
   children: React.ReactNode
   className?: string
@@ -186,7 +186,7 @@ export function Card({ children, className, onClick, hoverable }: CardProps) {
   )
 }
 
-// ── BADGE / PILL ──────────────────────────────────────────
+// â”€â”€ BADGE / PILL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 type BadgeVariant = 'green' | 'red' | 'amber' | 'blue' | 'orange' | 'gray'
 
 interface BadgeProps {
@@ -218,7 +218,7 @@ export function Badge({ variant = 'gray', children, className }: BadgeProps) {
   )
 }
 
-// ── SPINNER ───────────────────────────────────────────────
+// â”€â”€ SPINNER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface SpinnerProps {
   size?: 'sm' | 'md' | 'lg'
   className?: string
@@ -243,7 +243,7 @@ export function Spinner({ size = 'md', className }: SpinnerProps) {
   )
 }
 
-// ── ALERT ─────────────────────────────────────────────────
+// â”€â”€ ALERT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 type AlertVariant = 'info' | 'warning' | 'danger' | 'success'
 
 interface AlertProps {
@@ -275,7 +275,7 @@ export function Alert({ variant = 'info', title, children, className }: AlertPro
   )
 }
 
-// ── STAT CARD ─────────────────────────────────────────────
+// â”€â”€ STAT CARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface StatCardProps {
   label: string
   value: string | number
@@ -300,12 +300,12 @@ export function StatCard({ label, value, sub, subVariant = 'default' }: StatCard
   )
 }
 
-// ── DIVIDER ───────────────────────────────────────────────
+// â”€â”€ DIVIDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function Divider({ className }: { className?: string }) {
   return <hr className={clsx('border-0 border-t border-[rgba(0,0,0,0.08)]', className)} />
 }
 
-// ── EMPTY STATE ───────────────────────────────────────────
+// â”€â”€ EMPTY STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface EmptyStateProps {
   icon?: string
   title: string
@@ -313,7 +313,7 @@ interface EmptyStateProps {
   action?: React.ReactNode
 }
 
-export function EmptyState({ icon = '📭', title, description, action }: EmptyStateProps) {
+export function EmptyState({ icon = 'ðŸ“­', title, description, action }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
       <div className="text-4xl mb-4">{icon}</div>
@@ -324,9 +324,9 @@ export function EmptyState({ icon = '📭', title, description, action }: EmptyS
   )
 }
 
-// ── PROGRESS BAR ──────────────────────────────────────────
+// â”€â”€ PROGRESS BAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface ProgressBarProps {
-  value: number   // 0–100
+  value: number   // 0â€“100
   color?: string
   className?: string
 }
@@ -343,7 +343,7 @@ export function ProgressBar({ value, color = '#2d7a4f', className }: ProgressBar
   )
 }
 
-// ── MODAL ─────────────────────────────────────────────────
+// â”€â”€ MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface ModalProps {
   open: boolean
   onClose: () => void
@@ -370,7 +370,7 @@ export function Modal({ open, onClose, title, children, footer, size = 'md' }: M
             onClick={onClose}
             className="w-7 h-7 rounded-lg flex items-center justify-center text-[#6b6a66] hover:bg-[#f8f7f4] transition-colors"
           >
-            ✕
+            âœ•
           </button>
         </div>
         <div className="px-5 py-4">{children}</div>

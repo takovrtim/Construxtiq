@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+﻿import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabase } from '@/lib/supabase'
 
 export async function POST(req: NextRequest) {
@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   const { change_id, gc_email, gc_name } = await req.json().catch(() => ({}))
   if (!change_id || !gc_email) return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
 
-  // Get change order — verify ownership
+  // Get change order â€” verify ownership
   const { data: change } = await supabase
     .from('change_orders')
     .select('*, projects(name)')
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
   const emailBody = {
     from: process.env.RESEND_FROM_EMAIL || 'noreply@resend.dev',
     to: gc_email,
-    subject: `Change Order Approval Required — ${projectName}`,
+    subject: `Change Order Approval Required â€” ${projectName}`,
     html: `<!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     <!-- Header -->
     <div style="background: #0a0a0a; border-radius: 14px 14px 0 0; padding: 20px 28px; display: flex; align-items: center; gap: 10px;">
       <div style="width: 28px; height: 28px; background: #E8520A; border-radius: 7px; display: inline-block;"></div>
-      <span style="color: white; font-size: 15px; font-weight: 800; letter-spacing: -0.3px; margin-left: 10px;">ConstructIQ</span>
+      <span style="color: white; font-size: 15px; font-weight: 800; letter-spacing: -0.3px; margin-left: 10px;">SubIQ</span>
     </div>
 
     <!-- Body -->
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
 
       ${change.requires_permit_revision ? `
       <div style="background: #FEF8EE; border: 1px solid rgba(160,90,0,0.2); border-left: 3px solid #A05A00; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 13px; color: #6b4010; font-weight: 600;">
-        ⚠️ This change requires a permit revision before work can proceed
+        âš ï¸ This change requires a permit revision before work can proceed
       </div>` : ''}
 
       <!-- Legal note -->
@@ -90,10 +90,10 @@ export async function POST(req: NextRequest) {
       <!-- CTA Buttons -->
       <div style="display: flex; gap: 10px; margin-bottom: 20px;">
         <a href="${approvalUrl}?action=approve" style="flex: 1; display: block; padding: 14px; text-align: center; background: #1a4d31; color: white; text-decoration: none; border-radius: 10px; font-size: 15px; font-weight: 800; letter-spacing: -0.2px;">
-          ✓ Approve
+          âœ“ Approve
         </a>
         <a href="${approvalUrl}?action=reject" style="flex: 1; display: block; padding: 14px; text-align: center; background: #C0392B; color: white; text-decoration: none; border-radius: 10px; font-size: 15px; font-weight: 800; letter-spacing: -0.2px;">
-          ✕ Reject
+          âœ• Reject
         </a>
       </div>
 
@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
     </div>
 
     <p style="font-size: 11px; color: #bbb; text-align: center; margin-top: 16px;">
-      Sent via ConstructIQ · Secure · Timestamped
+      Sent via SubIQ Â· Secure Â· Timestamped
     </p>
   </div>
 </body>
@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: false,
       approval_url: approvalUrl,
-      error: 'Email failed — use approval link directly',
+      error: 'Email failed â€” use approval link directly',
     })
   }
 }

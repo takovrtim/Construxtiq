@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
@@ -27,16 +27,16 @@ export default function ForgotPasswordPage() {
         <div style={{ width: 30, height: 30, background: '#d95f2b', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <svg width="15" height="15" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="white"/><rect x="8" y="1" width="5" height="5" rx="1" fill="white" opacity=".7"/><rect x="1" y="8" width="5" height="5" rx="1" fill="white" opacity=".5"/><rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity=".3"/></svg>
         </div>
-        <span style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-0.5px', color: 'white' }}>ConstructIQ</span>
+        <span style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-0.5px', color: 'white' }}>SubIQ</span>
       </Link>
 
       <div style={{ width: '100%', maxWidth: 380, background: '#111', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, padding: '36px 32px', boxShadow: '0 32px 80px rgba(0,0,0,0.5)' }}>
         {sent ? (
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 40, marginBottom: 16 }}>📬</div>
+            <div style={{ fontSize: 40, marginBottom: 16 }}>ðŸ“¬</div>
             <h1 style={{ fontSize: 20, fontWeight: 800, color: 'white', marginBottom: 8 }}>Check your email</h1>
             <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)', lineHeight: 1.6 }}>We sent a reset link to <strong style={{ color: 'rgba(255,255,255,0.6)' }}>{email}</strong>. Check your inbox and click the link.</p>
-            <Link href="/auth/login" style={{ display: 'block', marginTop: 24, fontSize: 13, fontWeight: 600, color: '#d95f2b', textDecoration: 'none' }}>← Back to sign in</Link>
+            <Link href="/auth/login" style={{ display: 'block', marginTop: 24, fontSize: 13, fontWeight: 600, color: '#d95f2b', textDecoration: 'none' }}>â† Back to sign in</Link>
           </div>
         ) : (
           <>
@@ -55,7 +55,7 @@ export default function ForgotPasswordPage() {
               </button>
             </form>
             <div style={{ marginTop: 20, textAlign: 'center' }}>
-              <Link href="/auth/login" style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)', textDecoration: 'none' }}>← Back to sign in</Link>
+              <Link href="/auth/login" style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)', textDecoration: 'none' }}>â† Back to sign in</Link>
             </div>
           </>
         )}

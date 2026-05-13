@@ -1,6 +1,6 @@
-{
-  "name": "ConstructIQ",
-  "short_name": "ConstructIQ",
+﻿{
+  "name": "SubIQ",
+  "short_name": "SubIQ",
   "description": "The operating system for electrical and plumbing contractors",
   "start_url": "/dashboard",
   "display": "standalone",

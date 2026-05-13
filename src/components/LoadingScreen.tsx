@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 
@@ -126,7 +126,7 @@ export function LoadingScreen() {
         opacity: 0,
         fontFamily: "'DM Sans', -apple-system, sans-serif",
       }}>
-        ConstructIQ
+        SubIQ
       </div>
 
       {/* Tagline */}

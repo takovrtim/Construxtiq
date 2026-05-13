@@ -1,16 +1,16 @@
-// ─────────────────────────────────────────────────────────
-// CONSTRUCTIQ — AI Layer
+﻿// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// SubIQ â€” AI Layer
 // Built for commercial electrical/plumbing subs at casino scale.
 // Handles permits, blueprints, contracts, NDAs, submittals,
 // insurance certs, RFI generation, conflict detection.
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 import Anthropic from '@anthropic-ai/sdk'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 const MODEL  = 'claude-sonnet-4-6'
 
-// ── TYPES ─────────────────────────────────────────────────
+// â”€â”€ TYPES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export interface DocumentFlag {
   severity: 'info' | 'warning' | 'critical'
@@ -52,7 +52,7 @@ export interface ConflictReport {
   rfi_needed: boolean
 }
 
-// ── MASTER DOCUMENT PARSER ────────────────────────────────
+// â”€â”€ MASTER DOCUMENT PARSER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Reads ANY construction document and extracts what matters
 // for a commercial electrical/plumbing sub.
 
@@ -92,23 +92,23 @@ You are the contractor's trusted advisor. You've seen contractors lose disputes 
 
 Extract EVERYTHING that matters. Flag ANYTHING that could cost money or create legal exposure.
 Write action items specifically for a ${trade} sub working for ${gc}.
-Be specific — not "check the expiry date" but "Permit expires May 15, 2026 — renew by May 1 with Clark County"
+Be specific â€” not "check the expiry date" but "Permit expires May 15, 2026 â€” renew by May 1 with Clark County"
 
-Return ONLY valid JSON — no markdown, no explanation, just the JSON object.
+Return ONLY valid JSON â€” no markdown, no explanation, just the JSON object.
 
 DOCUMENT TYPE EXTRACTION RULES:
 
-PERMITS — Extract:
+PERMITS â€” Extract:
   permit_number, permit_type, issued_date, expiry_date, jurisdiction
   inspector_name, inspector_phone, inspector_email
   contractor_name, contractor_license, contractor_license_expiry
   valuation, sq_footage, work_description
   approved_plans_date, approved_plans_number
-  special_conditions: [] — every condition listed, verbatim
-  required_inspections: [] — all inspection stages required
+  special_conditions: [] â€” every condition listed, verbatim
+  required_inspections: [] â€” all inspection stages required
   bond_required, insurance_required
 
-BLUEPRINTS — Extract:
+BLUEPRINTS â€” Extract:
   project_name, architect, engineer, structural_engineer
   sheet_count, sheet_numbers: [], revision_date, revision_number
   scale, drawing_date
@@ -116,38 +116,38 @@ BLUEPRINTS — Extract:
   conduit_types: [], wire_gauge_specs: []
   pipe_sizes: {}, fixture_count: {}
   materials_specified: []
-  code_references: [] — every code cited (NEC 2020, IPC, local)
+  code_references: [] â€” every code cited (NEC 2020, IPC, local)
   special_requirements: []
   dimensions_key: {}
-  scope_gaps: [] — things NOT specified that should be
-  rfi_candidates: [] — questions that need GC/architect answers
+  scope_gaps: [] â€” things NOT specified that should be
+  rfi_candidates: [] â€” questions that need GC/architect answers
 
-CONTRACTS — Extract:
+CONTRACTS â€” Extract:
   parties: [], contract_value, retention_pct
   start_date, completion_date, substantial_completion_date
   payment_terms, payment_schedule: []
   key_milestones: []
-  penalty_clauses: [] — liquidated damages, delay penalties, VERBATIM
+  penalty_clauses: [] â€” liquidated damages, delay penalties, VERBATIM
   termination_clauses: []
   dispute_resolution
   scope_of_work_summary
-  exclusions: [] — what is NOT included
+  exclusions: [] â€” what is NOT included
   allowances: []
   change_order_process
-  notice_requirements — how many days notice for changes/claims
+  notice_requirements â€” how many days notice for changes/claims
   warranty_period
 
-NDAs — Extract:
+NDAs â€” Extract:
   parties: [], effective_date, expiry_date
   confidential_info_definition
-  restrictions: [] — what CANNOT be shared
+  restrictions: [] â€” what CANNOT be shared
   permitted_disclosures: []
   penalties: []
   governing_law
   non_compete_clauses: []
   project_restrictions: []
 
-SUBMITTALS — Extract:
+SUBMITTALS â€” Extract:
   submittal_type, submittal_number
   submitted_by, submitted_to, submitted_date
   response_required_by
@@ -157,15 +157,15 @@ SUBMITTALS — Extract:
   product_data: {}
   shop_drawing_sheets: []
 
-INSPECTION REPORTS — Extract:
+INSPECTION REPORTS â€” Extract:
   inspection_date, inspector_name, inspector_id
   result: pass/fail/conditional
   items_passed: [], items_failed: []
-  corrections_required: [] — specific items to fix
+  corrections_required: [] â€” specific items to fix
   re_inspection_required, re_inspection_date
   stop_work_issued
 
-INSURANCE CERTS — Extract:
+INSURANCE CERTS â€” Extract:
   insured_name, policy_number
   insurer, agent_name, agent_phone
   policy_type
@@ -175,10 +175,10 @@ INSURANCE CERTS — Extract:
   certificate_holder
   project_specific
 
-LICENSES — Extract:
+LICENSES â€” Extract:
   license_number, license_type, license_holder
   issued_date, expiry_date, state
-  contractor_classifications: [] — C-10, C-36, etc
+  contractor_classifications: [] â€” C-10, C-36, etc
   bonding_amount, insurance_amount
   restrictions: []
   qualifying_individual
@@ -195,9 +195,9 @@ ALWAYS INCLUDE:
     - Flag: unusual contract terms (legal)
     - Flag: missing insurance (financial)
   
-  rfi_candidates: [] — questions that NEED answers before work starts
-  scope_gaps: [] — things that should be specified but aren't
-  action_items: [] — what John needs to do TODAY based on this document
+  rfi_candidates: [] â€” questions that NEED answers before work starts
+  scope_gaps: [] â€” things that should be specified but aren't
+  action_items: [] â€” what John needs to do TODAY based on this document
   ai_notes: 2-3 sentence plain English summary, written to the contractor`
 
   const userPrompt = `Analyze this ${params.docType} document: "${params.fileName}"
@@ -249,12 +249,12 @@ Return JSON with EXACTLY this structure:
       flags: [{ severity: 'warning', category: 'compliance', message: 'Could not fully parse. Review manually.' }],
       rfi_candidates: [],
       scope_gaps: [],
-      action_items: ['Review this document manually — AI extraction failed'],
+      action_items: ['Review this document manually â€” AI extraction failed'],
     }
   }
 }
 
-// ── BLUEPRINT DEEP SCAN ───────────────────────────────────
+// â”€â”€ BLUEPRINT DEEP SCAN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Full analysis for an electrical/plumbing sub reviewing plans.
 // Finds scope gaps, code issues, and generates RFIs.
 
@@ -319,7 +319,7 @@ Return JSON:
       what_to_remove: [],
       code_issues: [],
       cost_saving_opportunities: [],
-      safety_flags: ['Could not analyze — ensure file is a clear PDF or high-res image'],
+      safety_flags: ['Could not analyze â€” ensure file is a clear PDF or high-res image'],
       scope_gaps: [],
       rfi_candidates: [],
       spec_conflicts: [],
@@ -328,7 +328,7 @@ Return JSON:
   }
 }
 
-// ── BLUEPRINT vs CHANGE ORDER CONFLICT DETECTOR ───────────
+// â”€â”€ BLUEPRINT vs CHANGE ORDER CONFLICT DETECTOR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Compares blueprint specs against approved/pending change orders.
 // Tells John exactly where the GC's changes conflict with the plans.
 
@@ -377,7 +377,7 @@ Identify conflicts and return JSON:
   }
 }
 
-// ── RFI GENERATOR ─────────────────────────────────────────
+// â”€â”€ RFI GENERATOR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Takes blueprint analysis or document gaps and generates
 // formal RFI text ready to send to the GC/architect.
 
@@ -432,7 +432,7 @@ Convert each into a formal RFI. Return JSON array:
   }
 }
 
-// ── DAILY LOG AI SUMMARY ──────────────────────────────────
+// â”€â”€ DAILY LOG AI SUMMARY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function summarizeDailyLog(params: {
   log_date: string
@@ -450,7 +450,7 @@ export async function summarizeDailyLog(params: {
     max_tokens: 200,
     system: `You write professional construction daily log summaries for a commercial electrical/plumbing contractor.
 Write in past tense, 2 sentences. Be specific. Include hours and crew if provided.
-Mention any issues or delays clearly — these are legal records.`,
+Mention any issues or delays clearly â€” these are legal records.`,
     messages: [{
       role: 'user',
       content: `Summarize this daily log for ${params.project_name}:
@@ -469,7 +469,7 @@ Write only the 2-sentence summary.`,
   return response.content[0].type === 'text' ? response.content[0].text.trim() : ''
 }
 
-// ── CHANGE ORDER AI SUMMARY ───────────────────────────────
+// â”€â”€ CHANGE ORDER AI SUMMARY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function summarizeChangeOrder(params: {
   title: string
@@ -500,7 +500,7 @@ Write only the 2-sentence summary.`,
   return response.content[0].type === 'text' ? response.content[0].text.trim() : ''
 }
 
-// ── PROJECT CHAT ──────────────────────────────────────────
+// â”€â”€ PROJECT CHAT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Answers questions about the project using all available context.
 
 export async function chatWithProject(params: {
@@ -528,7 +528,7 @@ ${params.projectContext}`,
   return response.content[0].type === 'text' ? response.content[0].text : ''
 }
 
-// ── SUB REPLY DRAFTING ────────────────────────────────────
+// â”€â”€ SUB REPLY DRAFTING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function draftSubReply(params: {
   subName: string

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -62,7 +62,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
   function importChanges() {
     const lines = approvedChanges.map(c => ({ description: `Change Order: ${c.title}`, qty: 1, rate: Number(c.cost_impact), amount: Number(c.cost_impact) }))
     setLineItems(prev => [...prev, ...lines])
-    msg(`✓ Imported ${lines.length} change orders`)
+    msg(`âœ“ Imported ${lines.length} change orders`)
   }
 
   function onJobChange(id: string) {
@@ -84,7 +84,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
     }).select().single()
     if (!error && data) {
       setInvoices(prev => [data as Invoice, ...prev])
-      msg('✓ Invoice saved')
+      msg('âœ“ Invoice saved')
       setShowNew(false); setLineItems([{ description: '', qty: 1, rate: 0, amount: 0 }])
       setInvoiceNum(genNum()); setNotes('')
     } else msg('Failed to save')
@@ -96,7 +96,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
     if (!error) {
       setInvoices(prev => prev.map(i => i.id === id ? { ...i, status } : i))
       if (selected?.id === id) setSelected(prev => prev ? { ...prev, status } : null)
-      msg(`✓ Marked as ${status}`)
+      msg(`âœ“ Marked as ${status}`)
     }
   }
 
@@ -110,7 +110,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
     const win = window.open('', '_blank')
     if (!win) return
     win.document.write(`<html><head><title>${inv.invoice_number}</title><style>body{font-family:-apple-system,sans-serif;padding:48px;color:#0f0f0f;max-width:800px;margin:0 auto}h1{font-size:28px;font-weight:800;margin:0 0 4px}.meta{font-size:13px;color:#6b6a66}table{width:100%;border-collapse:collapse;margin:24px 0}th{text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#9e9d99;padding:8px 12px;border-bottom:2px solid #e8e3da}td{padding:11px 12px;border-bottom:1px solid #f1ede6;font-size:14px}.total{display:flex;justify-content:space-between;padding:6px 0;font-size:14px}.grand{border-top:2px solid #0f0f0f;padding-top:10px;font-size:18px;font-weight:800}@media print{body{padding:24px}}</style></head><body>
-    <div style="display:flex;justify-content:space-between;margin-bottom:40px"><div><div style="font-size:20px;font-weight:800">ConstructIQ</div><div class="meta">${project?.name||''}</div></div><div style="text-align:right"><h1>${inv.invoice_number}</h1><div class="meta">Issued: ${format(parseISO(inv.issue_date),'MMMM d, yyyy')}</div><div class="meta">Due: ${format(parseISO(inv.due_date),'MMMM d, yyyy')}</div></div></div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:40px"><div><div style="font-size:20px;font-weight:800">SubIQ</div><div class="meta">${project?.name||''}</div></div><div style="text-align:right"><h1>${inv.invoice_number}</h1><div class="meta">Issued: ${format(parseISO(inv.issue_date),'MMMM d, yyyy')}</div><div class="meta">Due: ${format(parseISO(inv.due_date),'MMMM d, yyyy')}</div></div></div>
     <div style="margin-bottom:28px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#9e9d99;margin-bottom:6px">Bill To</div><div style="font-size:16px;font-weight:700">${inv.client_name}</div>${inv.client_email?`<div class="meta">${inv.client_email}</div>`:''}</div>
     <table><thead><tr><th>Description</th><th style="text-align:right">Qty</th><th style="text-align:right">Rate</th><th style="text-align:right">Amount</th></tr></thead><tbody>${inv.line_items.map(l=>`<tr><td>${l.description}</td><td style="text-align:right">${l.qty}</td><td style="text-align:right">$${l.rate.toLocaleString()}</td><td style="text-align:right;font-weight:600">$${l.amount.toLocaleString()}</td></tr>`).join('')}</tbody></table>
     <div style="display:flex;justify-content:flex-end"><div style="width:260px"><div class="total"><span>Subtotal</span><span>$${inv.subtotal.toLocaleString()}</span></div>${inv.tax_rate>0?`<div class="total"><span>Tax (${inv.tax_rate}%)</span><span>$${inv.tax_amount.toLocaleString()}</span></div>`:''}<div class="total grand"><span>Total Due</span><span style="color:#d95f2b">$${inv.total.toLocaleString()}</span></div></div></div>
@@ -122,13 +122,13 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
   const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f' }
   const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9e9d99', display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
-  if (!project) return <div style={{ textAlign: 'center', padding: '60px 20px' }}><div style={{ fontSize: 40 }}>💵</div><a href="/dashboard" style={{ color: '#d95f2b', textDecoration: 'none', fontSize: 13 }}>Create a project first →</a></div>
+  if (!project) return <div style={{ textAlign: 'center', padding: '60px 20px' }}><div style={{ fontSize: 40 }}>ðŸ’µ</div><a href="/dashboard" style={{ color: '#d95f2b', textDecoration: 'none', fontSize: 13 }}>Create a project first â†’</a></div>
 
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 22, flexWrap: 'wrap', gap: 12 }}>
-        <div><div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px' }}>Invoices</div><div style={{ fontSize: 13, color: '#9e9d99', marginTop: 2 }}>Create, send, and track invoices — get paid faster</div></div>
-        <button onClick={() => setShowNew(v => !v)} style={{ padding: '10px 20px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: showNew ? '#0f0f0f' : '#d95f2b', color: 'white', fontFamily: 'inherit' }}>{showNew ? '✕ Cancel' : '+ New Invoice'}</button>
+        <div><div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px' }}>Invoices</div><div style={{ fontSize: 13, color: '#9e9d99', marginTop: 2 }}>Create, send, and track invoices â€” get paid faster</div></div>
+        <button onClick={() => setShowNew(v => !v)} style={{ padding: '10px 20px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: showNew ? '#0f0f0f' : '#d95f2b', color: 'white', fontFamily: 'inherit' }}>{showNew ? 'âœ• Cancel' : '+ New Invoice'}</button>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 20 }}>
@@ -181,7 +181,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
                   <input type="number" style={{ ...inp, background: 'transparent', border: 'none', padding: '6px 4px', textAlign: 'right' }} min="0" step="0.5" value={item.qty} onChange={e => updateLine(idx, 'qty', parseFloat(e.target.value)||0)} />
                   <input type="number" style={{ ...inp, background: 'transparent', border: 'none', padding: '6px 4px', textAlign: 'right' }} min="0" step="0.01" value={item.rate} onChange={e => updateLine(idx, 'rate', parseFloat(e.target.value)||0)} />
                   <div style={{ textAlign: 'right', fontSize: 13, fontWeight: 600, paddingRight: 8 }}>${item.amount.toLocaleString()}</div>
-                  <button onClick={() => setLineItems(prev => prev.filter((_,i) => i !== idx))} disabled={lineItems.length === 1} style={{ width: 28, height: 28, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: '#9e9d99', fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
+                  <button onClick={() => setLineItems(prev => prev.filter((_,i) => i !== idx))} disabled={lineItems.length === 1} style={{ width: 28, height: 28, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: '#9e9d99', fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Ã—</button>
                 </div>
               ))}
               <div style={{ padding: '8px 12px' }}>
@@ -214,7 +214,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
 
       {invoices.length === 0 && !showNew ? (
         <div style={{ textAlign: 'center', padding: '52px 20px', background: 'white', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
-          <div style={{ fontSize: 40, marginBottom: 12 }}>💵</div>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>ðŸ’µ</div>
           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>No invoices yet</div>
           <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 20 }}>Create professional invoices and track what you're owed</div>
           <button onClick={() => setShowNew(true)} style={{ padding: '10px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#d95f2b', color: 'white', fontFamily: 'inherit' }}>+ Create First Invoice</button>
@@ -232,8 +232,8 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
                       <span style={{ fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}>{inv.invoice_number}</span>
                       <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 9px', borderRadius: 20, background: sc.bg, color: sc.text }}>{sc.label}</span>
                     </div>
-                    <div style={{ fontSize: 13, color: '#6b6a66' }}>{inv.client_name}{job ? ` · ${job.title}` : ''}</div>
-                    <div style={{ fontSize: 11, color: '#9e9d99', marginTop: 2 }}>Issued {format(parseISO(inv.issue_date), 'MMM d')} · Due {format(parseISO(inv.due_date), 'MMM d, yyyy')}</div>
+                    <div style={{ fontSize: 13, color: '#6b6a66' }}>{inv.client_name}{job ? ` Â· ${job.title}` : ''}</div>
+                    <div style={{ fontSize: 11, color: '#9e9d99', marginTop: 2 }}>Issued {format(parseISO(inv.issue_date), 'MMM d')} Â· Due {format(parseISO(inv.due_date), 'MMM d, yyyy')}</div>
                   </div>
                   <div style={{ textAlign: 'right', flexShrink: 0 }}>
                     <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px' }}>${inv.total.toLocaleString()}</div>
@@ -258,7 +258,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
                       ))}
                     </div>
                     <div style={{ display: 'flex', gap: 8 }}>
-                      <button onClick={e => { e.stopPropagation(); printInvoice(inv) }} style={{ padding: '8px 16px', fontSize: 12, fontWeight: 600, borderRadius: 8, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>🖨️ Print / PDF</button>
+                      <button onClick={e => { e.stopPropagation(); printInvoice(inv) }} style={{ padding: '8px 16px', fontSize: 12, fontWeight: 600, borderRadius: 8, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>ðŸ–¨ï¸ Print / PDF</button>
                       <button onClick={e => { e.stopPropagation(); deleteInvoice(inv.id) }} style={{ padding: '8px 14px', fontSize: 12, fontWeight: 600, borderRadius: 8, cursor: 'pointer', border: '1px solid rgba(184,50,50,0.2)', background: '#fdf0f0', color: '#b83232', fontFamily: 'inherit' }}>Delete</button>
                     </div>
                   </div>

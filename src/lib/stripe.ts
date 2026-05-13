@@ -1,7 +1,7 @@
-// ─────────────────────────────────────────────────────────
-// CONSTRUCTIQ — Stripe Service
+﻿// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// SubIQ â€” Stripe Service
 // All payment operations go through here.
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 import Stripe from 'stripe'
 
@@ -23,7 +23,7 @@ export const PRICE_IDS = {
 
 export type PlanKey = keyof typeof PRICE_IDS
 
-// ── Create Stripe customer ────────────────────────────────
+// â”€â”€ Create Stripe customer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export async function createStripeCustomer(params: {
   email: string
   name: string
@@ -36,7 +36,7 @@ export async function createStripeCustomer(params: {
   })
 }
 
-// ── Create checkout session ───────────────────────────────
+// â”€â”€ Create checkout session â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export async function createCheckoutSession(params: {
   customerId: string
   priceId: string
@@ -58,7 +58,7 @@ export async function createCheckoutSession(params: {
   })
 }
 
-// ── Create billing portal session ────────────────────────
+// â”€â”€ Create billing portal session â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export async function createBillingPortalSession(params: {
   customerId: string
 }): Promise<Stripe.BillingPortal.Session> {
@@ -68,7 +68,7 @@ export async function createBillingPortalSession(params: {
   })
 }
 
-// ── Map Stripe status to our subscription_status ─────────
+// â”€â”€ Map Stripe status to our subscription_status â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function mapStripeStatus(
   status: Stripe.Subscription.Status
 ): 'trialing' | 'active' | 'past_due' | 'canceled' | 'unpaid' {
@@ -82,7 +82,7 @@ export function mapStripeStatus(
   }
 }
 
-// ── Map price ID back to plan name ────────────────────────
+// â”€â”€ Map price ID back to plan name â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function getPlanFromPriceId(priceId: string): PlanKey | null {
   for (const [plan, id] of Object.entries(PRICE_IDS)) {
     if (id === priceId) return plan as PlanKey
@@ -90,7 +90,7 @@ export function getPlanFromPriceId(priceId: string): PlanKey | null {
   return null
 }
 
-// ── Verify webhook signature ──────────────────────────────
+// â”€â”€ Verify webhook signature â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function constructWebhookEvent(
   payload: Buffer,
   signature: string

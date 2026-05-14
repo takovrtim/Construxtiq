@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { MockVideoPlayer } from '@/components/MockVideoPlayer'
 
 const PROBLEMS = [
   {
@@ -73,20 +74,7 @@ function Check({ yes, isSub }: { yes: boolean | string; isSub: boolean }) {
   return <span style={{ fontSize:13, fontWeight:700, color: isSub ? '#ea580c' : '#6b7280' }}>{yes as string}</span>
 }
 
-function VideoBlock({ title, sub }: { title: string; sub: string }) {
-  return (
-    <div style={{ background:'#0a0a0a', borderRadius:16, overflow:'hidden', aspectRatio:'16/9', display:'flex', alignItems:'center', justifyContent:'center', position:'relative', boxShadow:'0 20px 60px rgba(0,0,0,0.18)' }}>
-      <div style={{ textAlign:'center', position:'relative', zIndex:1 }}>
-        <div style={{ width:60, height:60, borderRadius:'50%', background:'rgba(234,88,12,0.92)', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 12px', cursor:'pointer', boxShadow:'0 8px 24px rgba(234,88,12,0.4)' }}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-        <div style={{ fontSize:14, fontWeight:700, color:'white', marginBottom:4 }}>{title}</div>
-        <div style={{ fontSize:12, color:'#6b7280' }}>{sub}</div>
-      </div>
-      <div style={{ position:'absolute', inset:0, backgroundImage:'radial-gradient(circle at 50% 50%, rgba(234,88,12,0.07) 0%, transparent 65%), linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px)', backgroundSize:'100% 100%, 36px 36px, 36px 36px', pointerEvents:'none' }} />
-    </div>
-  )
-}
+
 
 export default function LandingPage() {
   const [activeProblem, setActiveProblem] = useState(0)
@@ -136,7 +124,7 @@ export default function LandingPage() {
 
         {/* Hero video */}
         <div style={{ maxWidth:860, margin:'40px auto 0' }}>
-          <VideoBlock title="See SubIQ in action" sub="2 minute product walkthrough" />
+          <MockVideoPlayer defaultVideo="change-order" height={400} />
         </div>
       </section>
 
@@ -271,7 +259,7 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
-          <VideoBlock title="Daily Log + AI Summary" sub="See how 60 seconds a day builds your case" />
+          <MockVideoPlayer defaultVideo="delay-report" height={360} />
         </div>
       </section>
 
@@ -279,7 +267,7 @@ export default function LandingPage() {
       <section style={{ background:'#f9fafb', padding:'72px 32px' }}>
         <div style={{ maxWidth:1100, margin:'0 auto' }}>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(320px,1fr))', gap:56, alignItems:'center' }}>
-            <VideoBlock title="AI Document Reader" sub="Watch AI read a Clark County permit in seconds" />
+            <MockVideoPlayer defaultVideo="permit-scan" height={360} />
             <div>
               <div style={{ fontSize:11, fontWeight:700, color:'#ea580c', textTransform:'uppercase', letterSpacing:'1px', marginBottom:14 }}>AI Document Intelligence</div>
               <h2 style={{ fontSize:'clamp(24px,3.5vw,42px)', fontWeight:900, letterSpacing:'-1.2px', lineHeight:1.1, marginBottom:12 }}>Upload any document.<br />AI reads everything.</h2>

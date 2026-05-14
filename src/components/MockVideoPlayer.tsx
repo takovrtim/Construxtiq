@@ -369,7 +369,7 @@ export function MockVideoPlayer({ autoPlay = false, defaultVideo = 'change-order
 
         {/* Controls bar */}
         <div style={{ background: '#111', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
-          <button onClick={playing ? () => setPlaying(false) : play} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 28, height: 28, borderRadius: '50%', background: '#ea580c' }}>
+          <button onClick={playing ? () => setPlaying(false) : play} style={{ border: 'none', cursor: 'pointer', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 28, height: 28, borderRadius: '50%', background: '#ea580c' }}>
             {playing
               ? <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
               : <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>

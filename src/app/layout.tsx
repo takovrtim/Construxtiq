@@ -1,4 +1,4 @@
-﻿import type { Metadata, Viewport } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { DM_Sans, DM_Mono } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
@@ -20,9 +20,9 @@ const dmMono = DM_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'SubIQ â€” Built for Contractors',
-  description: 'The operating system for electrical and plumbing contractors. Permits, crew, change orders, and invoices â€” all in one place.',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://SubIQ.app'),
+  title: 'SubIQ — Built for Contractors',
+  description: 'The operating system for electrical and plumbing contractors. Permits, crew, change orders, and invoices — all in one place.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://subiq.app'),
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -30,14 +30,14 @@ export const metadata: Metadata = {
     title: 'SubIQ',
   },
   openGraph: {
-    title: 'SubIQ â€” Built for Contractors',
-    description: 'Permits, crew, change orders, and invoices â€” all in one place. Built for electrical and plumbing contractors.',
+    title: 'SubIQ — Built for Contractors',
+    description: 'Permits, crew, change orders, and invoices — all in one place. Built for electrical and plumbing contractors.',
     type: 'website',
     siteName: 'SubIQ',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SubIQ â€” Built for Contractors',
+    title: 'SubIQ — Built for Contractors',
     description: 'The operating system for electrical and plumbing contractors.',
   },
   icons: {
@@ -56,7 +56,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${dmSans.variable} ${dmMono.variable}`} suppressHydrationWarning>
-      <body className="font-sans antialiased" suppressHydrationWarning>
+      <body style={{ fontFamily: "var(--font-sans, 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif)", WebkitFontSmoothing: "antialiased", MozOsxFontSmoothing: "grayscale" }} suppressHydrationWarning>
         <PostHogProvider>
           <ThemeProvider>
             {children}

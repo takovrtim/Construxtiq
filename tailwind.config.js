@@ -8,18 +8,14 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['DM Sans', 'system-ui', 'sans-serif'],
-        mono: ['DM Mono', 'monospace'],
+        sans: ['var(--font-sans)', 'DM Sans', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        mono: ['var(--font-mono)', 'DM Mono', 'monospace'],
       },
       colors: {
-        brand: {
-          DEFAULT: '#1a1a1a',
-          50: '#f8f7f4',
-        },
         orange: {
-          DEFAULT: '#d95f2b',
-          light: '#fdf0e8',
-          dark: '#7a2d0d',
+          DEFAULT: '#ea580c',
+          light: '#fff7ed',
+          dark: '#c2410c',
         },
       },
     },

@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
@@ -9,7 +9,7 @@ import {
   LayoutDashboard, Briefcase, ClipboardList, FileText, Shield,
   Clock, MessageSquare, DollarSign, FileCheck, Receipt, Download,
   Users, ClipboardCheck, FolderOpen, Image, Package, FileWarning,
-  Hammer, UserCog, Settings, Menu, X, ChevronDown, LogOut,
+  Hammer, UserCog, Settings, Menu, X, ChevronDown, LogOut, PenLine,
 } from 'lucide-react'
 
 interface User    { id: string; full_name: string; email: string; plan: string; company_name?: string }
@@ -37,6 +37,7 @@ const FIELD = [
   { href: '/crew-time',   label: 'Crew Time',   Icon: Users          },
   { href: '/inspections', label: 'Inspections', Icon: ClipboardCheck },
   { href: '/documents',   label: 'Documents',   Icon: FolderOpen     },
+  { href: '/drawing-log', label: 'Drawing Log',  Icon: PenLine        },
   { href: '/photos',      label: 'Photos',      Icon: Image          },
   { href: '/materials',   label: 'Materials',   Icon: Package        },
   { href: '/warranty',    label: 'Warranties',  Icon: FileWarning    },

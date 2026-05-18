@@ -124,7 +124,7 @@ export default function LandingPage() {
 
         {/* Hero video */}
         <div style={{ maxWidth:860, margin:'40px auto 0' }}>
-          <MockVideoPlayer defaultVideo="change-order" height={400} />
+          <MockVideoPlayer defaultVideo="change-order" height={400} hideTabs={true} autoPlay={true} />
         </div>
       </section>
 
@@ -259,7 +259,7 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
-          <MockVideoPlayer defaultVideo="delay-report" height={360} />
+          <MockVideoPlayer defaultVideo="delay-report" height={360} hideTabs={true} autoPlay={true} />
         </div>
       </section>
 
@@ -267,7 +267,7 @@ export default function LandingPage() {
       <section style={{ background:'#f9fafb', padding:'72px 32px' }}>
         <div style={{ maxWidth:1100, margin:'0 auto' }}>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(320px,1fr))', gap:56, alignItems:'center' }}>
-            <MockVideoPlayer defaultVideo="permit-scan" height={360} />
+            <MockVideoPlayer defaultVideo="permit-scan" height={360} hideTabs={true} autoPlay={true} />
             <div>
               <div style={{ fontSize:11, fontWeight:700, color:'#ea580c', textTransform:'uppercase', letterSpacing:'1px', marginBottom:14 }}>AI Document Intelligence</div>
               <h2 style={{ fontSize:'clamp(24px,3.5vw,42px)', fontWeight:900, letterSpacing:'-1.2px', lineHeight:1.1, marginBottom:12 }}>Upload any document.<br />AI reads everything.</h2>

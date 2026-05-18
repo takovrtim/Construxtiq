@@ -232,9 +232,9 @@ const VIDEOS: VideoConfig[] = [
   { id: 'delay-report', title: 'Delay Tracker + Export',     sub: 'Document GC delays and generate a dispute-ready PDF report',      duration: '0:05', Component: DelayReportDemo },
 ]
 
-interface Props { autoPlay?: boolean; defaultVideo?: string; height?: number }
+interface Props { autoPlay?: boolean; defaultVideo?: string; height?: number; hideTabs?: boolean }
 
-export function MockVideoPlayer({ autoPlay = false, defaultVideo = 'change-order', height = 420 }: Props) {
+export function MockVideoPlayer({ autoPlay = false, defaultVideo = 'change-order', height = 420, hideTabs = false }: Props) {
   const [activeId, setActiveId] = useState(defaultVideo)
   const [playing, setPlaying]   = useState(autoPlay)
   const [loopKey, setLoopKey]   = useState(0)
@@ -265,7 +265,7 @@ export function MockVideoPlayer({ autoPlay = false, defaultVideo = 'change-order
   return (
     <div style={{ fontFamily: '-apple-system,sans-serif', width: '100%' }}>
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
+      {!hideTabs && <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
         {VIDEOS.map(v => (
           <button key={v.id} onClick={() => switchVideo(v.id)} style={{
             display: 'flex', alignItems: 'center', gap: 6,

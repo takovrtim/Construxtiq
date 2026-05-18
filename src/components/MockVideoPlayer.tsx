@@ -181,9 +181,9 @@ function DelayReportDemo({ playing }: { playing: boolean }) {
       <div style={{ background: 'white', borderRadius: 12, padding: 16, flex: 1 }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
           {[
-            { label: 'Total Days', value: '8d',  color: '#374151' },
-            { label: 'GC Caused', value: '7d',  color: '#dc2626' },
-            { label: 'GC Delays', value: '3',   color: '#dc2626' },
+            { label: 'Total Days', value: '8d', color: '#374151' },
+            { label: 'GC Caused', value: '7d', color: '#dc2626' },
+            { label: 'GC Delays', value: '3',  color: '#dc2626' },
           ].map((s, i) => (
             <div key={i} style={{ background: '#f9fafb', borderRadius: 8, padding: '10px', textAlign: 'center', opacity: step >= 1 ? 1 : 0, transition: `opacity 0.4s ${i * 0.1}s` }}>
               <div style={{ fontSize: 9, fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>{s.label}</div>
@@ -232,13 +232,18 @@ const VIDEOS: VideoConfig[] = [
   { id: 'delay-report', title: 'Delay Tracker + Export',     sub: 'Document GC delays and generate a dispute-ready PDF report',      duration: '0:05', Component: DelayReportDemo },
 ]
 
-interface Props { autoPlay?: boolean; defaultVideo?: string; height?: number; hideTabs?: boolean }
+interface Props {
+  autoPlay?: boolean
+  defaultVideo?: string
+  height?: number
+  hideTabs?: boolean
+}
 
 export function MockVideoPlayer({ autoPlay = false, defaultVideo = 'change-order', height = 420, hideTabs = false }: Props) {
   const [activeId, setActiveId] = useState(defaultVideo)
   const [playing, setPlaying]   = useState(autoPlay)
   const [loopKey, setLoopKey]   = useState(0)
-  const intervalRef              = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const active = VIDEOS.find(v => v.id === activeId) || VIDEOS[0]
 
@@ -255,34 +260,36 @@ export function MockVideoPlayer({ autoPlay = false, defaultVideo = 'change-order
 
   useEffect(() => {
     if (!playing) return
-    const timer = setTimeout(() => {
+    timerRef.current = setTimeout(() => {
       setPlaying(false)
       setTimeout(() => { setPlaying(true); setLoopKey(k => k + 1) }, 200)
     }, 7000)
-    return () => clearTimeout(timer)
+    return () => { if (timerRef.current) clearTimeout(timerRef.current) }
   }, [playing, loopKey])
 
   return (
     <div style={{ fontFamily: '-apple-system,sans-serif', width: '100%' }}>
-      {/* Tabs */}
-      {!hideTabs && <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
-        {VIDEOS.map(v => (
-          <button key={v.id} onClick={() => switchVideo(v.id)} style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            padding: '7px 14px', borderRadius: 20, fontFamily: 'inherit', fontSize: 12,
-            border: `1.5px solid ${activeId === v.id ? '#ea580c' : '#e5e7eb'}`,
-            background: activeId === v.id ? '#fff7ed' : 'white',
-            cursor: 'pointer', fontWeight: activeId === v.id ? 700 : 500,
-            color: activeId === v.id ? '#ea580c' : '#6b7280', transition: 'all 0.15s',
-          }}>
-            {v.id === 'change-order' ? '📝' : v.id === 'permit-scan' ? '🤖' : '📅'} {v.title}
-          </button>
-        ))}
-      </div>
 
-      {/* Player */}
+      {!hideTabs && (
+        <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
+          {VIDEOS.map(v => (
+            <button key={v.id} onClick={() => switchVideo(v.id)} style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '7px 14px', borderRadius: 20, fontFamily: 'inherit', fontSize: 12,
+              border: `1.5px solid ${activeId === v.id ? '#ea580c' : '#e5e7eb'}`,
+              background: activeId === v.id ? '#fff7ed' : 'white',
+              cursor: 'pointer',
+              fontWeight: activeId === v.id ? 700 : 500,
+              color: activeId === v.id ? '#ea580c' : '#6b7280',
+              transition: 'all 0.15s',
+            }}>
+              {v.id === 'change-order' ? '📝' : v.id === 'permit-scan' ? '🤖' : '📅'} {v.title}
+            </button>
+          ))}
+        </div>
+      )}
+
       <div style={{ background: '#0a0a0a', borderRadius: 16, overflow: 'hidden', boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
-        {/* Browser chrome */}
         <div style={{ background: '#1a1a1a', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 10, borderBottom: '1px solid #2a2a2a' }}>
           <div style={{ display: 'flex', gap: 6 }}>
             <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#ff5f57' }} />
@@ -294,7 +301,6 @@ export function MockVideoPlayer({ autoPlay = false, defaultVideo = 'change-order
           </div>
         </div>
 
-        {/* Screen */}
         <div style={{ height, position: 'relative', overflow: 'hidden', background: '#f3f4f6' }}>
           {!playing && (
             <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.55)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 10, backdropFilter: 'blur(2px)' }}>
@@ -308,7 +314,6 @@ export function MockVideoPlayer({ autoPlay = false, defaultVideo = 'change-order
           <active.Component key={`${activeId}-${loopKey}`} playing={playing} />
         </div>
 
-        {/* Controls */}
         <div style={{ background: '#111', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
           <button
             onClick={playing ? () => setPlaying(false) : play}

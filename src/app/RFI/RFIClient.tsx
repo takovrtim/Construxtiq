@@ -87,7 +87,7 @@ export function RFIClient({ user, project, initialRFIs, jobs }: Props) {
     }).select().single()
     if (!error && data) {
       setRFIs(prev => [data as RFI, ...prev])
-      msg('✓ RFI logged')
+      msg('v RFI logged')
       setShowNew(false)
       setSubject(''); setQuestion(''); setSubmittedTo(''); setCostImpact(''); setTimeImpact('')
       setRFINum('')
@@ -101,13 +101,13 @@ export function RFIClient({ user, project, initialRFIs, jobs }: Props) {
     }).eq('id', id)
     if (!error) {
       setRFIs(prev => prev.map(r => r.id === id ? { ...r, response, response_date: new Date().toISOString().split('T')[0], status: 'responded' } : r))
-      msg('✓ Response logged')
+      msg('v Response logged')
     }
   }
 
   async function closeRFI(id: string) {
     const { error } = await supabase.from('rfis').update({ status: 'closed' }).eq('id', id)
-    if (!error) { setRFIs(prev => prev.map(r => r.id === id ? { ...r, status: 'closed' } : r)); msg('✓ RFI closed') }
+    if (!error) { setRFIs(prev => prev.map(r => r.id === id ? { ...r, status: 'closed' } : r)); msg('v RFI closed') }
   }
 
   async function deleteRFI(id: string) {
@@ -119,17 +119,17 @@ export function RFIClient({ user, project, initialRFIs, jobs }: Props) {
   const inp: React.CSSProperties = { width: '100%', padding: '10px 13px', fontSize: 13, border: '1.5px solid #e5e7eb', borderRadius: 9, fontFamily: 'inherit', outline: 'none', background: '#f9fafb', color: '#111827' }
   const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9ca3af', display: 'block', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
-  if (!project) return <div style={{ textAlign: 'center', padding: '60px 20px' }}><div style={{ fontSize: 40 }}>📋</div><a href="/dashboard" style={{ color: '#d95f2b', textDecoration: 'none' }}>Create a project first →</a></div>
+  if (!project) return <div style={{ textAlign: 'center', padding: '60px 20px' }}><div style={{ fontSize: 22, fontWeight: 700, marginBottom: 12 }}>No project yet</div><a href='/dashboard' style={{ color: '#d95f2b', textDecoration: 'none', fontWeight: 600 }}>Create a project first</a></div>
 
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 22, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px' }}>RFI Tracker</div>
-          <div style={{ fontSize: 13, color: '#9ca3af', marginTop: 2 }}>Requests for Information — unanswered RFIs = documented delays</div>
+          <div style={{ fontSize: 13, color: '#9ca3af', marginTop: 2 }}>Requests for Information  unanswered RFIs = documented delays</div>
         </div>
         <button onClick={() => setShowNew(v => !v)} style={{ padding: '10px 20px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: showNew ? '#0f0f0f' : '#d95f2b', color: 'white', fontFamily: 'inherit' }}>
-          {showNew ? '✕ Cancel' : '+ New RFI'}
+          {showNew ? 'Cancel' : '+ New RFI'}
         </button>
       </div>
 
@@ -150,9 +150,9 @@ export function RFIClient({ user, project, initialRFIs, jobs }: Props) {
 
       {overdueCount > 0 && (
         <div style={{ background: '#fdf0f0', border: '1px solid rgba(184,50,50,0.2)', borderRadius: 12, padding: '14px 18px', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontSize: 22 }}>🚨</span>
+          <span style={{ fontSize: 22 }}></span>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: '#6e1a1a' }}>{overdueCount} RFI{overdueCount !== 1 ? 's' : ''} overdue — GC has not responded</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: '#6e1a1a' }}>{overdueCount} RFI{overdueCount !== 1 ? 's' : ''} overdue  GC has not responded</div>
             <div style={{ fontSize: 12, color: '#b83232' }}>Every day without a response is documented delay. Log it in your Delay Tracker too.</div>
           </div>
         </div>
@@ -175,7 +175,7 @@ export function RFIClient({ user, project, initialRFIs, jobs }: Props) {
               </select>
             </div>
           </div>
-          <div style={{ marginBottom: 14 }}><label style={lbl}>Subject *</label><input style={inp} placeholder="Panel location clarification — east vs west mechanical room" value={subject} onChange={e => setSubject(e.target.value)} autoFocus /></div>
+          <div style={{ marginBottom: 14 }}><label style={lbl}>Subject *</label><input style={inp} placeholder="Panel location clarification  east vs west mechanical room" value={subject} onChange={e => setSubject(e.target.value)} autoFocus /></div>
           <div style={{ marginBottom: 14 }}><label style={lbl}>Question / Issue *</label><textarea style={{ ...inp, resize: 'none' }} rows={3} placeholder="Describe the question precisely. Reference drawing numbers and spec sections where applicable." value={question} onChange={e => setQuestion(e.target.value)} /></div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 18 }}>
             <div><label style={lbl}>Potential Cost Impact ($)</label><input type="number" style={inp} placeholder="0" value={costImpact} onChange={e => setCostImpact(e.target.value)} /></div>
@@ -190,7 +190,7 @@ export function RFIClient({ user, project, initialRFIs, jobs }: Props) {
 
       {rfisWithStatus.length === 0 && !showNew ? (
         <div style={{ textAlign: 'center', padding: '52px 20px', background: 'white', borderRadius: 16, border: '2px dashed #e5e7eb' }}>
-          <div style={{ fontSize: 40, marginBottom: 12 }}>📋</div>
+          <div style={{ fontSize: 40, marginBottom: 12 }}></div>
           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>No RFIs yet</div>
           <div style={{ fontSize: 13, color: '#9ca3af', marginBottom: 20 }}>Every unanswered question to the GC should be a formal RFI. It creates a paper trail and documents delays.</div>
           <button onClick={() => setShowNew(true)} style={{ padding: '10px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#d95f2b', color: 'white', fontFamily: 'inherit' }}>+ Submit First RFI</button>
@@ -212,8 +212,8 @@ export function RFIClient({ user, project, initialRFIs, jobs }: Props) {
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 3 }}>{rfi.subject}</div>
                     <div style={{ fontSize: 11, color: '#9ca3af' }}>
-                      To: {rfi.submitted_to || '—'} · {rfi.submitted_date ? format(parseISO(rfi.submitted_date), 'MMM d') : '—'}
-                      {job ? ` · ${job.title}` : ''}
+                      To: {rfi.submitted_to || ''} - {rfi.submitted_date ? format(parseISO(rfi.submitted_date), 'MMM d') : ''}
+                      {job ? ` - ${job.title}` : ''}
                     </div>
                   </div>
                   <div style={{ flexShrink: 0, textAlign: 'right' }}>
@@ -228,7 +228,7 @@ export function RFIClient({ user, project, initialRFIs, jobs }: Props) {
                       <div style={{ fontSize: 11, color: '#9ca3af' }}>{rfi.response_date ? `Responded ${format(parseISO(rfi.response_date), 'MMM d')}` : ''}</div>
                     ) : null}
                   </div>
-                  <div style={{ fontSize: 18, color: '#9ca3af' }}>{isExpanded ? '↑' : '↓'}</div>
+                  <div style={{ fontSize: 18, color: '#9ca3af' }}>{isExpanded ? '' : ''}</div>
                 </div>
 
                 {isExpanded && (

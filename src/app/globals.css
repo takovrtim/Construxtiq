@@ -75,8 +75,9 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: 'liga' 0, 'calt' 0;
-  font-variant-ligatures: none;
+  font-feature-settings: normal;
+  font-variant-ligatures: no-common-ligatures;
+  -webkit-font-smoothing: antialiased;
 }
 
 #root, #__next {
@@ -820,3 +821,21 @@ a, button, [role="button"], input, select, textarea, label {
 .quick-action:active { transform: scale(0.95); background: var(--surface-3); }
 .quick-action-icon { font-size: 22px; line-height: 1; }
 .quick-action-label { font-size: 11px; font-weight: 600; color: var(--text); text-align: center; }
+
+/* ── TAB SCROLL FIX ──────────────────────────────────────
+   Prevents page from jumping when clicking tabs/buttons
+───────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: auto !important;
+}
+
+button:focus, a:focus, [role="tab"]:focus {
+  outline: none;
+  scroll-margin-top: 0;
+}
+
+/* Prevent anchor jump on tab click */
+.no-jump {
+  scroll-margin-top: 0;
+  overflow-anchor: none;
+}

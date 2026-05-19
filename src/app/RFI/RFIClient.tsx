@@ -212,7 +212,7 @@ export function RFIClient({ user, project, initialRFIs, jobs }: Props) {
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 3 }}>{rfi.subject}</div>
                     <div style={{ fontSize: 11, color: '#9ca3af' }}>
-                      To: {rfi.submitted_to || '—'} · {rfi.submitted_date ? rfi.submitted_date ? format(parseISO(rfi.submitted_date), 'MMM d') : '—'}
+                      To: {rfi.submitted_to || '—'} · {rfi.submitted_date ? format(parseISO(rfi.submitted_date), 'MMM d') : '—'}
                       {job ? ` · ${job.title}` : ''}
                     </div>
                   </div>
@@ -225,7 +225,7 @@ export function RFIClient({ user, project, initialRFIs, jobs }: Props) {
                         <div style={{ fontSize: 10, color: '#9ca3af' }}>to respond</div>
                       </div>
                     ) : rfi.response_date ? (
-                      <div style={{ fontSize: 11, color: '#9ca3af' }}>{rfi.response_date ? `Responded ${rfi.response_date ? format(parseISO(rfi.response_date), 'MMM d') : '—'}` : ''}</div>
+                      <div style={{ fontSize: 11, color: '#9ca3af' }}>{rfi.response_date ? `Responded ${format(parseISO(rfi.response_date), 'MMM d')}` : ''}</div>
                     ) : null}
                   </div>
                   <div style={{ fontSize: 18, color: '#9ca3af' }}>{isExpanded ? '↑' : '↓'}</div>

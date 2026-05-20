@@ -51,7 +51,7 @@ export default function LoginPage() {
               <label style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Password</label>
               <Link href="/auth/forgot-password" style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', textDecoration: 'none' }}>Forgot?</Link>
             </div>
-            <input type="password" required value={password} onChange={e => setPassword(e.target.value)} placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" style={inp} />
+            <input type="password" required value={password} onChange={e => setPassword(e.target.value)} placeholder="Your password" style={inp} />
           </div>
           <button type="submit" disabled={loading} style={{ width: '100%', padding: '13px', fontSize: 14, fontWeight: 700, borderRadius: 11, cursor: loading ? 'not-allowed' : 'pointer', border: 'none', background: loading ? 'rgba(217,95,43,0.4)' : '#d95f2b', color: 'white', fontFamily: 'inherit', marginTop: 4, letterSpacing: '-0.2px' }}>
             {loading ? 'Signing in...' : 'Sign in'}

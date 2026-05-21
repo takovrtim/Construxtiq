@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
@@ -39,7 +39,7 @@ export default function SignupPage() {
       <div style={{ width: '100%', maxWidth: 380, background: '#111', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, padding: '36px 32px', boxShadow: '0 32px 80px rgba(0,0,0,0.5)' }}>
         <div style={{ marginBottom: 28 }}>
           <h1 style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', color: 'white', marginBottom: 5 }}>Create your account</h1>
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)' }}>14 days free Â· No credit card required</p>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)' }}>14 days free · No credit card required</p>
         </div>
 
         {error && (
@@ -58,7 +58,7 @@ export default function SignupPage() {
             </div>
           ))}
           <button type="submit" disabled={loading} style={{ width: '100%', padding: '13px', fontSize: 14, fontWeight: 700, borderRadius: 11, cursor: loading ? 'not-allowed' : 'pointer', border: 'none', background: loading ? 'rgba(217,95,43,0.4)' : '#d95f2b', color: 'white', fontFamily: 'inherit', marginTop: 4, letterSpacing: '-0.2px' }}>
-            {loading ? 'Creating account...' : 'Create account â†’'}
+            {loading ? 'Creating account...' : 'Create account’'}
           </button>
           <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.18)', textAlign: 'center', lineHeight: 1.6 }}>
             By signing up you agree to our <Link href="/terms" style={{ color: 'rgba(255,255,255,0.3)', textDecoration: 'none' }}>Terms</Link> and <Link href="/privacy" style={{ color: 'rgba(255,255,255,0.3)', textDecoration: 'none' }}>Privacy Policy</Link>

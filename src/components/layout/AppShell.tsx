@@ -26,7 +26,7 @@ const CORE = [
 
 const PROTECTION = [
   { href: '/delay-tracker', label: 'Delay Tracker', Icon: Clock         },
-  { href: '/rfi',           label: 'RFI Tracker',   Icon: MessageSquare },
+  { href: '/RFI',           label: 'RFI Tracker',   Icon: MessageSquare },
   { href: '/retention',     label: 'Retention',     Icon: DollarSign    },
   { href: '/lien-waivers',  label: 'Lien Waivers',  Icon: FileCheck     },
   { href: '/invoices',      label: 'Invoices',      Icon: Receipt       },
@@ -306,3 +306,4 @@ export function AppShell({ user, projects, activeProject, children }: Props) {
     </>
   )
 }
+

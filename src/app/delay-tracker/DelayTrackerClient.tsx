@@ -219,7 +219,7 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
   if (!project) return (
     <div style={{ textAlign: 'center', padding: '60px 20px' }}>
       <div style={{ fontSize: 40 }}></div>
-      <a href="/dashboard" style={{ color: '#d95f2b', textDecoration: 'none', fontSize: 13 }}>Create a project first -></a>
+      <a href="/dashboard" style={{ color: '#d95f2b', textDecoration: 'none', fontSize: 13 }}>Create a project first</a>
     </div>
   )
 
@@ -379,3 +379,4 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
     </>
   )
 }
+

@@ -153,7 +153,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'changes@subiq.co',
       to: gc_email,
-      replyTo: subEmail || undefined,
+      reply_to: subEmail || undefined,
       subject: `Action Required: Change Order Approval -- ${co.title} (${coNum})`,
       html,
     })
@@ -162,3 +162,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: err.message }, { status: 500 })
   }
 }
+

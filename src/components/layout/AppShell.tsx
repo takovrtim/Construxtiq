@@ -94,7 +94,7 @@ function UserMenuDropdown({ user, onSignOut }: { user: User; onSignOut: () => vo
   const initial = (user?.full_name?.[0] || user?.email?.[0] || 'U').toUpperCase()
   return (
     <div style={{ position: 'relative' }}>
-      <button onClick={() => setOpen(v => !v)} style={{ width: 34, height: 34, borderRadius: '50%', background: '#ea580c', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: 'white', flexShrink: 0 }}>
+      <button onClick={() => setOpen(v => !v)} style={{ width: 34, height: 34, borderRadius: '50%', background: '#ea580c', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: 'white', flexShrink: 0 }}>
         {initial}
       </button>
       {open && (
@@ -102,7 +102,7 @@ function UserMenuDropdown({ user, onSignOut }: { user: User; onSignOut: () => vo
           <div onClick={() => setOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 98 }} />
           <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 8, width: 220, background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, boxShadow: '0 10px 40px rgba(0,0,0,0.12)', zIndex: 99, overflow: 'hidden' }}>
             <div style={{ padding: '14px 16px', borderBottom: '1px solid #f3f4f6', background: '#f9fafb' }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#111', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user?.full_name || 'Account'}</div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#111', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user?.full_name || 'Account'}</div>
               <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user?.email}</div>
               <div style={{ fontSize: 10, fontWeight: 700, color: '#ea580c', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
                 {user?.plan === 'trial' ? '14-day trial' : (user?.plan || 'Free')}
@@ -186,8 +186,8 @@ function SidebarInner({ projects, activeProject, user, onSignOut, onClose }: {
       )}
 
       {/* Scrollable nav */}
-      <nav style={{ flex: 1, overflowY: 'auto', padding: '16px 0', scrollbarWidth: 'none' }}>
-        <style>{`.sidebar-nav::-webkit-scrollbar{display:none}`}</style>
+      <nav className="sidebar-nav" style={{ flex: 1, overflowY: 'auto', padding: '8px 0', scrollbarWidth: 'none', overflowAnchor: 'none', WebkitOverflowScrolling: 'touch' }}>
+        <style>{`.sidebar-nav::-webkit-scrollbar{display:none}.sidebar-nav *{overflow-anchor:none}`}</style>
         <NavSection label="Core"          items={CORE}       pathname={pathname} onClick={onClose} />
         <NavSection label="Protection"    items={PROTECTION} pathname={pathname} onClick={onClose} />
         <NavSection label="Field & Admin" items={FIELD}      pathname={pathname} onClick={onClose} />
@@ -196,11 +196,11 @@ function SidebarInner({ projects, activeProject, user, onSignOut, onClose }: {
       {/* User footer */}
       <div style={{ padding: '12px 16px', borderTop: '1px solid #1f2937', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#ea580c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: 'white', flexShrink: 0 }}>
+          <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#ea580c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: 'white', flexShrink: 0 }}>
             {(user?.full_name?.[0] || user?.email?.[0] || 'U').toUpperCase()}
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {user?.company_name || user?.full_name || 'Account'}
             </div>
             <div style={{ fontSize: 11, color: '#6b7280' }}>
@@ -227,10 +227,10 @@ export function AppShell({ user, projects, activeProject, children }: Props) {
     <>
       <style>{`
         .app-shell-root { display: flex; height: 100vh; overflow: hidden; background: #f3f4f6; }
-        .sidebar-wrap   { width: 256px; flex-shrink: 0; }
+        .sidebar-wrap   { width: 256px; flex-shrink: 0; height: 100vh; display: flex; flex-direction: column; }
         .main-wrap      { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100vh; overflow: hidden; }
         .topbar-dark    { height: 64px; background: #000; border-bottom: 1px solid #1f2937; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; gap: 12px; }
-        .content-scroll { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+        .content-scroll { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overflow-anchor: none; scroll-behavior: auto !important; }
         .content-inner  { max-width: 1200px; margin: 0 auto; padding: 28px 28px 100px; }
         .hamburger-btn  { display: none; background: none; border: none; cursor: pointer; color: #fff; padding: 4px; align-items: center; }
         .hide-mob       { display: flex; }
@@ -306,4 +306,3 @@ export function AppShell({ user, projects, activeProject, children }: Props) {
     </>
   )
 }
-

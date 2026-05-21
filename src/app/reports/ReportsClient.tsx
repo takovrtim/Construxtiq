@@ -344,7 +344,7 @@ ${a.daily_logs.length > 0 ? `
                 <div style={{ fontSize: 28 }}></div>
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 3 }}>How to use this report</div>
-                  <div style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.6 }}>Download -> Open in browser -> Print to PDF (Ctrl+P). Bring to your next GC meeting. If there's a dispute, this is your evidence. It's timestamped, professionally formatted, and covers every day of work.</div>
+                  <div style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.6 }}>Download. Open in browser. Print to PDF (Ctrl+P). (Ctrl+P). Bring to your next GC meeting. If there's a dispute, this is your evidence. It's timestamped, professionally formatted, and covers every day of work.</div>
                 </div>
               </div>
             </div>
@@ -497,3 +497,4 @@ ${a.daily_logs.length > 0 ? `
     </>
   )
 }
+

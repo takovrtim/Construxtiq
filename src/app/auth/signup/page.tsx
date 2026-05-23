@@ -58,7 +58,7 @@ export default function SignupPage() {
             </div>
           ))}
           <button type="submit" disabled={loading} style={{ width: '100%', padding: '13px', fontSize: 14, fontWeight: 700, borderRadius: 11, cursor: loading ? 'not-allowed' : 'pointer', border: 'none', background: loading ? 'rgba(217,95,43,0.4)' : '#d95f2b', color: 'white', fontFamily: 'inherit', marginTop: 4, letterSpacing: '-0.2px' }}>
-            {loading ? 'Creating account...' : 'Create account’'}
+            {loading ? 'Creating account...' : 'Create account ’'}
           </button>
           <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.18)', textAlign: 'center', lineHeight: 1.6 }}>
             By signing up you agree to our <Link href="/terms" style={{ color: 'rgba(255,255,255,0.3)', textDecoration: 'none' }}>Terms</Link> and <Link href="/privacy" style={{ color: 'rgba(255,255,255,0.3)', textDecoration: 'none' }}>Privacy Policy</Link>

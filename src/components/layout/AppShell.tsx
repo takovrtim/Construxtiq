@@ -186,8 +186,8 @@ function SidebarInner({ projects, activeProject, user, onSignOut, onClose }: {
       )}
 
       {/* Scrollable nav */}
-      <nav className="sidebar-nav" style={{ flex: 1, overflowY: 'auto', padding: '8px 0', scrollbarWidth: 'none', overflowAnchor: 'none', WebkitOverflowScrolling: 'touch' }}>
-        <style>{`.sidebar-nav::-webkit-scrollbar{display:none}.sidebar-nav *{overflow-anchor:none}`}</style>
+      <nav className="sidebar-nav" style={{ flex: 1, padding: '8px 0', overflowAnchor: 'none' as const }}>
+        <style>{`html,body{height:100%;overflow:hidden}.sidebar-wrap::-webkit-scrollbar{display:none}.sidebar-wrap{scrollbar-width:none}.content-scroll{height:100vh;overflow-y:auto;overflow-anchor:none !important}.content-scroll *{overflow-anchor:none}`}</style>
         <NavSection label="Core"          items={CORE}       pathname={pathname} onClick={onClose} />
         <NavSection label="Protection"    items={PROTECTION} pathname={pathname} onClick={onClose} />
         <NavSection label="Field & Admin" items={FIELD}      pathname={pathname} onClick={onClose} />
@@ -247,7 +247,7 @@ export function AppShell({ user, projects, activeProject, children }: Props) {
       <div className="app-shell-root">
 
         {/* Desktop sidebar */}
-        <aside className="sidebar-wrap">
+        <aside className="sidebar-wrap" style={{ position: 'sticky', top: 0, height: '100vh', overflowY: 'auto', scrollbarWidth: 'none' as const }}>
           <SidebarInner projects={projects} activeProject={activeProject} user={user} onSignOut={signOut} />
         </aside>
 

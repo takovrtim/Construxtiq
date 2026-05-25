@@ -6,51 +6,54 @@
 ───────────────────────────────────────────── */
 :root {
   /* Brand */
-  --orange:       #E8520A;
-  --orange-light: #FFF4EE;
-  --orange-border:#FFD9C4;
-  --orange-hover: #c94408;
+  --orange:        #FF6B1F;
+  --orange-light:  rgba(255,107,31,0.1);
+  --orange-border: rgba(255,107,31,0.3);
+  --orange-hover:  #FF8F4D;
 
-  /* Surfaces */
-  --bg:           #F7F6F3;
-  --surface:      #FFFFFF;
-  --surface-2:    #F7F6F3;
-  --surface-3:    #EEECEA;
+  /* Dark surfaces */
+  --bg:            #0B0F16;
+  --bg-deep:       #07090E;
+  --surface:       #131A26;
+  --surface-2:     #1A2333;
+  --surface-3:     #232E42;
 
   /* Borders */
-  --border:       #E8E5E0;
-  --border-md:    #D4D0CA;
+  --border:        #232E42;
+  --border-md:     rgba(255,255,255,0.08);
 
   /* Text */
-  --text:         #0A0A0A;
-  --text-2:       #4A4845;
-  --text-3:       #9A9894;
-  --text-inv:     #FFFFFF;
+  --text:          #F1EEE5;
+  --text-2:        #B6BCCB;
+  --text-3:        #7B8497;
+  --text-4:        #545B6C;
+  --text-inv:      #0A0E14;
 
   /* Status */
-  --green:        #1a7a4a;
-  --green-bg:     #E8F5EF;
-  --red:          #C0392B;
-  --red-bg:       #FEF0EE;
-  --yellow:       #A05A00;
-  --yellow-bg:    #FEF8EE;
-  --blue:         #1A56DB;
-  --blue-bg:      #EEF5FF;
+  --green:         #4FE3B5;
+  --green-bg:      rgba(79,227,181,0.1);
+  --red:           #FF5260;
+  --red-bg:        rgba(255,82,96,0.1);
+  --yellow:        #FFB020;
+  --yellow-bg:     rgba(255,176,32,0.1);
+  --blue:          #6FA8FF;
+  --blue-bg:       rgba(111,168,255,0.1);
 
   /* Layout */
-  --sidebar-w:    220px;
-  --topbar-h:     52px;
-  --radius:       10px;
-  --radius-lg:    16px;
-  --radius-xl:    22px;
+  --sidebar-w:     232px;
+  --topbar-h:      56px;
+  --radius:        10px;
+  --radius-lg:     14px;
+  --radius-xl:     18px;
 
   /* Shadows */
-  --shadow-sm:    0 1px 3px rgba(0,0,0,0.06);
-  --shadow:       0 4px 16px rgba(0,0,0,0.07);
-  --shadow-lg:    0 12px 40px rgba(0,0,0,0.1);
+  --shadow-sm:     0 1px 3px rgba(0,0,0,0.3);
+  --shadow:        0 4px 16px rgba(0,0,0,0.4);
+  --shadow-lg:     0 12px 40px rgba(0,0,0,0.6);
 
   /* Font */
-  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font: 'Space Grotesk', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 /* ─────────────────────────────────────────────
@@ -838,4 +841,132 @@ button:focus, a:focus, [role="tab"]:focus {
 .no-jump {
   scroll-margin-top: 0;
   overflow-anchor: none;
+}
+
+
+/* ─────────────────────────────────────────────
+   DARK THEME GLOBAL OVERRIDES
+   Forces all page content into the dark system
+───────────────────────────────────────────── */
+
+/* Base */
+html, body {
+  background: #0B0F16 !important;
+  color: #F1EEE5 !important;
+  font-family: 'Space Grotesk', 'DM Sans', -apple-system, sans-serif;
+}
+
+/* Cards / surfaces that old pages use */
+.card, [class*="card"] {
+  background: #131A26 !important;
+  border-color: #232E42 !important;
+  color: #F1EEE5 !important;
+}
+
+/* White backgrounds on old pages */
+div[style*="background: white"],
+div[style*="background: #fff"],
+div[style*="background: #ffffff"],
+div[style*="background:#fff"],
+div[style*="background:#ffffff"],
+div[style*="background: rgb(255, 255, 255)"] {
+  background: #131A26 !important;
+}
+
+/* Light gray backgrounds */
+div[style*="background: #f9fafb"],
+div[style*="background: #f3f4f6"],
+div[style*="background: #f7f6f3"],
+div[style*="background: #F7F6F3"],
+div[style*="background:#f9fafb"],
+div[style*="background:#f3f4f6"] {
+  background: #1A2333 !important;
+}
+
+/* Text color overrides */
+div[style*="color: #111"],
+div[style*="color: #0a0a0a"],
+div[style*="color: #111827"],
+span[style*="color: #111"],
+span[style*="color: #111827"] {
+  color: #F1EEE5 !important;
+}
+
+div[style*="color: #374151"],
+div[style*="color: #6b7280"],
+span[style*="color: #374151"],
+span[style*="color: #6b7280"] {
+  color: #7B8497 !important;
+}
+
+div[style*="color: #9ca3af"],
+span[style*="color: #9ca3af"] {
+  color: #545B6C !important;
+}
+
+/* Input fields */
+input, textarea, select {
+  background: #0F1521 !important;
+  border-color: #232E42 !important;
+  color: #F1EEE5 !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #545B6C !important;
+}
+
+/* Borders */
+div[style*="border: 1px solid #e5e7eb"],
+div[style*="border: 1.5px solid #e5e7eb"],
+div[style*="border-bottom: 1px solid #e5e7eb"],
+div[style*="border-top: 1px solid #e5e7eb"] {
+  border-color: #232E42 !important;
+}
+
+/* Content scroll area */
+.sq-content {
+  background: #0B0F16 !important;
+}
+
+.sq-inner {
+  background: #0B0F16 !important;
+}
+
+/* Tables */
+table {
+  color: #F1EEE5;
+}
+
+th {
+  color: #545B6C !important;
+  border-color: #232E42 !important;
+}
+
+td {
+  border-color: #1A2333 !important;
+}
+
+/* Scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #232E42 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #232E42;
+  border-radius: 2px;
+}
+
+/* Links */
+a {
+  color: #FF6B1F;
 }

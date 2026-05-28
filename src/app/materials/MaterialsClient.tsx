@@ -136,7 +136,7 @@ export function MaterialsClient({ user, project, initialMaterials, jobs }: Props
     if (!error) { setMaterials(prev => prev.filter(m => m.id !== id)); setSelected(null); msg('Deleted') }
   }
 
-  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f' }
+  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#F1EEE5' }
   const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9e9d99', display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
   if (!project) return (
@@ -166,7 +166,7 @@ export function MaterialsClient({ user, project, initialMaterials, jobs }: Props
           { label: 'On Order', value: ordered, sub: 'awaiting delivery', accent: ordered > 0 ? '#1f5fa6' : '' },
           { label: 'Flagged', value: flaggedCount, sub: 'need attention', accent: flaggedCount > 0 ? '#b83232' : '' },
         ].map(s => (
-          <div key={s.label} style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+          <div key={s.label} style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: s.accent || 'rgba(0,0,0,0.05)', borderRadius: '14px 14px 0 0' }} />
             <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
             <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-1px', color: s.accent || '#0f0f0f', marginBottom: 2 }}>{s.value}</div>
@@ -177,7 +177,7 @@ export function MaterialsClient({ user, project, initialMaterials, jobs }: Props
 
       {/* ADD FORM */}
       {showAdd && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
           <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 16 }}>Add Material</div>
           <form onSubmit={addMaterial} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 12 }}>
@@ -187,7 +187,7 @@ export function MaterialsClient({ user, project, initialMaterials, jobs }: Props
               </div>
               <div>
                 <label style={lbl}>Job</label>
-                <select style={{ ...inp, background: 'white' }} value={jobId} onChange={e => setJobId(e.target.value)}>
+                <select style={{ ...inp, background: '#131A26' }} value={jobId} onChange={e => setJobId(e.target.value)}>
                   <option value="">No specific job</option>
                   {jobs.map(j => <option key={j.id} value={j.id}>{j.title}</option>)}
                 </select>
@@ -201,7 +201,7 @@ export function MaterialsClient({ user, project, initialMaterials, jobs }: Props
               </div>
               <div>
                 <label style={lbl}>Unit</label>
-                <select style={{ ...inp, background: 'white' }} value={unit} onChange={e => setUnit(e.target.value)}>
+                <select style={{ ...inp, background: '#131A26' }} value={unit} onChange={e => setUnit(e.target.value)}>
                   {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
                 </select>
               </div>
@@ -243,10 +243,10 @@ export function MaterialsClient({ user, project, initialMaterials, jobs }: Props
             </div>
 
             <div style={{ display: 'flex', gap: 8 }}>
-              <button type="submit" disabled={saving || !name.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>
+              <button type="submit" disabled={saving || !name.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>
                 {saving ? 'Saving...' : 'Add Material'}
               </button>
-              <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>Cancel</button>
+              <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit' }}>Cancel</button>
             </div>
           </form>
         </div>
@@ -265,7 +265,7 @@ export function MaterialsClient({ user, project, initialMaterials, jobs }: Props
 
       {/* MATERIALS LIST */}
       {filtered.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '52px 20px', background: 'white', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
+        <div style={{ textAlign: 'center', padding: '52px 20px', background: '#131A26', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>📦</div>
           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>{materials.length === 0 ? 'No materials tracked yet' : 'No results'}</div>
           <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 20 }}>Track materials to prevent delays from missing supplies</div>
@@ -277,7 +277,7 @@ export function MaterialsClient({ user, project, initialMaterials, jobs }: Props
             const sc = STATUS_CONFIG[mat.status]
             const job = jobs.find(j => j.id === mat.job_id)
             return (
-              <div key={mat.id} onClick={() => setSelected(mat === selected ? null : mat)} style={{ background: 'white', border: `1.5px solid ${mat.flagged ? 'rgba(184,50,50,0.3)' : selected?.id === mat.id ? '#0f0f0f' : 'rgba(0,0,0,0.07)'}`, borderRadius: 12, padding: '14px 18px', cursor: 'pointer', transition: 'all 0.15s', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+              <div key={mat.id} onClick={() => setSelected(mat === selected ? null : mat)} style={{ background: '#131A26', border: `1.5px solid ${mat.flagged ? 'rgba(184,50,50,0.3)' : selected?.id === mat.id ? '#0f0f0f' : 'rgba(0,0,0,0.07)'}`, borderRadius: 12, padding: '14px 18px', cursor: 'pointer', transition: 'all 0.15s', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <div style={{ width: 42, height: 42, borderRadius: 10, background: '#f8f7f4', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>📦</div>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -307,7 +307,7 @@ export function MaterialsClient({ user, project, initialMaterials, jobs }: Props
       {selected && (
         <>
           <div onClick={() => setSelected(null)} style={{ position: 'fixed', inset: 0, zIndex: 90, background: 'rgba(0,0,0,0.25)', backdropFilter: 'blur(3px)' }} />
-          <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: 400, background: 'white', borderLeft: '1px solid rgba(0,0,0,0.08)', boxShadow: '-12px 0 48px rgba(0,0,0,0.15)', zIndex: 100, overflowY: 'auto', padding: 24 }}>
+          <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: 400, background: '#131A26', borderLeft: '1px solid rgba(0,0,0,0.08)', boxShadow: '-12px 0 48px rgba(0,0,0,0.15)', zIndex: 100, overflowY: 'auto', padding: 24 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
               <div>
                 <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>{selected.name}</div>
@@ -317,7 +317,7 @@ export function MaterialsClient({ user, project, initialMaterials, jobs }: Props
             </div>
 
             {selected.total_cost && (
-              <div style={{ background: '#0f0f0f', borderRadius: 12, padding: 16, marginBottom: 16, color: 'white', textAlign: 'center' }}>
+              <div style={{ background: '#131A26', borderRadius: 12, padding: 16, marginBottom: 16, color: 'white', textAlign: 'center' }}>
                 <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 6 }}>Total Cost</div>
                 <div style={{ fontSize: 28, fontWeight: 800, color: '#d95f2b' }}>${selected.total_cost.toLocaleString()}</div>
                 {selected.unit_cost && <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>${selected.unit_cost} per {selected.unit}</div>}
@@ -361,7 +361,7 @@ export function MaterialsClient({ user, project, initialMaterials, jobs }: Props
       )}
 
       {toast && (
-        <div style={{ position: 'fixed', bottom: 24, right: selected ? 424 : 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: selected ? 424 : 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
           {toast}
         </div>
       )}

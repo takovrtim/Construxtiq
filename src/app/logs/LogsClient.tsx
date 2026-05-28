@@ -216,14 +216,14 @@ export function LogsClient({ user, project, initialLogs, jobs }: Props) {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 22 }}>
               <button type="button" onClick={() => setFlagged(v => !v)} style={{ width: 44, height: 26, borderRadius: 13, border: 'none', background: flagged ? '#b83232' : '#e0ddd8', cursor: 'pointer', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
-                <div style={{ position: 'absolute', top: 3, left: flagged ? 21 : 3, width: 20, height: 20, borderRadius: '50%', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.2s' }} />
+                <div style={{ position: 'absolute', top: 3, left: flagged ? 21 : 3, width: 20, height: 20, borderRadius: '50%', background: '#131A26', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.2s' }} />
               </button>
               <span style={{ fontSize: 13, color: flagged ? '#b83232' : 'var(--text-secondary)', fontWeight: flagged ? 700 : 400 }}>Flag this day (issue occurred)</span>
             </div>
           </div>
 
           <div style={{ display: 'flex', gap: 8 }}>
-            <button onClick={saveLog} disabled={saving || !workCompleted.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>
+            <button onClick={saveLog} disabled={saving || !workCompleted.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>
               {saving ? 'Saving...' : 'Save Log'}
             </button>
             <button onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 10, cursor: 'pointer', border: '1px solid var(--border)', background: 'var(--surface)', fontFamily: 'inherit', color: 'var(--text-primary)' }}>Cancel</button>
@@ -325,7 +325,7 @@ export function LogsClient({ user, project, initialLogs, jobs }: Props) {
         </div>
       )}
 
-      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
+      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
     </>
   )
 }

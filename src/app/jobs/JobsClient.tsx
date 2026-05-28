@@ -54,7 +54,7 @@ function JobCard({ job, onClick, isSelected }: { job: Job; onClick: () => void; 
     <div
       ref={setNodeRef} {...listeners} {...attributes} onClick={onClick}
       style={{
-        background: 'white',
+        background: '#131A26',
         border: `1.5px solid ${isSelected ? '#0f0f0f' : isDragging ? '#d95f2b' : 'rgba(0,0,0,0.07)'}`,
         borderRadius: 11, padding: 13,
         cursor: isDragging ? 'grabbing' : 'grab',
@@ -207,7 +207,7 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
   }
 
   const crewPreview = crewInput ? crewInput.split(',').map(s => s.trim()).filter(Boolean) : []
-  const inp: React.CSSProperties = { width: '100%', padding: '10px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f', transition: 'border-color 0.15s' }
+  const inp: React.CSSProperties = { width: '100%', padding: '10px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#F1EEE5', transition: 'border-color 0.15s' }
   const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9e9d99', display: 'block', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
   return (
@@ -233,14 +233,14 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
 
       {/* DELAY PREDICTION */}
       {showDelay && project && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 22, marginBottom: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 22, marginBottom: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <DelayPrediction projectId={project.id} />
         </div>
       )}
 
       {/* ADD FORM */}
       {showAdd && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 24, marginBottom: 20, boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 24, marginBottom: 20, boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}>
           <div style={{ display: 'flex', gap: 10, marginBottom: 20 }}>
             {(['electrical', 'plumbing', 'both'] as JobType[]).map(t => (
               <button key={t} type="button" onClick={() => setJobType(t)} style={{ flex: 1, padding: '10px 8px', borderRadius: 10, border: `2px solid ${jobType === t ? (t === 'electrical' ? '#EF9F27' : t === 'plumbing' ? '#378ADD' : '#7F77DD') : 'rgba(0,0,0,0.08)'}`, background: jobType === t ? TYPE_COLOR[t] : 'white', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, transition: 'all 0.15s' }}>
@@ -282,7 +282,7 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
               </div>
               <div>
                 <label style={lbl}>Status</label>
-                <select style={{ ...inp, background: 'white', cursor: 'pointer' }} value={status} onChange={e => setStatus(e.target.value as JobStatus)}>
+                <select style={{ ...inp, background: '#131A26', cursor: 'pointer' }} value={status} onChange={e => setStatus(e.target.value as JobStatus)}>
                   {Object.entries(STATUS_CONFIG).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
                 </select>
               </div>
@@ -312,7 +312,7 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
               <button type="submit" disabled={saving || !title.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: saving || !title.trim() ? 'not-allowed' : 'pointer', border: 'none', background: !title.trim() ? '#f1ede6' : '#0f0f0f', color: !title.trim() ? '#9e9d99' : 'white', fontFamily: 'inherit', transition: 'all 0.15s' }}>
                 {saving ? 'Saving...' : title.trim() ? `Save "${title.trim().slice(0,20)}${title.trim().length > 20 ? '…' : ''}"` : 'Enter a job title'}
               </button>
-              <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit', color: '#6b6a66' }}>Cancel</button>
+              <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit', color: '#6b6a66' }}>Cancel</button>
             </div>
           </form>
         </div>
@@ -329,7 +329,7 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
           ))}
         </div>
       ) : jobs.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '64px 20px', background: 'white', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
+        <div style={{ textAlign: 'center', padding: '64px 20px', background: '#131A26', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
           <div style={{ fontSize: 44, marginBottom: 14 }}>🔧</div>
           <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 6, letterSpacing: '-0.3px' }}>No jobs on the board yet</div>
           <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 24 }}>Add a job and drag it through the pipeline as work progresses</div>
@@ -344,7 +344,7 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
           </div>
           <DragOverlay dropAnimation={null}>
             {activeJob && (
-              <div style={{ background: 'white', border: '2px solid #d95f2b', borderRadius: 11, padding: 13, boxShadow: '0 20px 48px rgba(0,0,0,0.25)', transform: 'rotate(1.5deg)', cursor: 'grabbing', width: 200 }}>
+              <div style={{ background: '#131A26', border: '2px solid #d95f2b', borderRadius: 11, padding: 13, boxShadow: '0 20px 48px rgba(0,0,0,0.25)', transform: 'rotate(1.5deg)', cursor: 'grabbing', width: 200 }}>
                 <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 4 }}>{activeJob.title}</div>
                 <div style={{ fontSize: 11, color: '#9e9d99', marginBottom: 6 }}>{activeJob.client_name}</div>
                 <div style={{ fontSize: 18 }}>{TYPE_ICON[activeJob.job_type]}</div>
@@ -358,7 +358,7 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
       {selected && (
         <>
           <div onClick={() => setSelected(null)} style={{ position: 'fixed', inset: 0, zIndex: 90, background: 'rgba(0,0,0,0.25)', backdropFilter: 'blur(3px)' }} />
-          <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: 420, background: 'white', borderLeft: '1px solid rgba(0,0,0,0.08)', boxShadow: '-12px 0 48px rgba(0,0,0,0.15)', zIndex: 100, display: 'flex', flexDirection: 'column' }}>
+          <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: 420, background: '#131A26', borderLeft: '1px solid rgba(0,0,0,0.08)', boxShadow: '-12px 0 48px rgba(0,0,0,0.15)', zIndex: 100, display: 'flex', flexDirection: 'column' }}>
 
             {/* Panel header */}
             <div style={{ padding: '20px 24px 0', flexShrink: 0 }}>
@@ -488,7 +488,7 @@ export function JobsClient({ user, projects }: { user: any; projects: any[] }) {
       )}
 
       {toast && (
-        <div style={{ position: 'fixed', bottom: 24, right: selected ? 444 : 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)', transition: 'right 0.2s' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: selected ? 444 : 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)', transition: 'right 0.2s' }}>
           {toast}
         </div>
       )}

@@ -114,7 +114,7 @@ export function WarrantyClient({ user, project, initialWarranties, jobs }: Props
     if (!error) { setWarranties(prev => prev.filter(w => w.id !== id)); setSelected(null); msg('Deleted') }
   }
 
-  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f' }
+  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#F1EEE5' }
   const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9e9d99', display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
   if (!project) return <div style={{ textAlign: 'center', padding: '60px 20px' }}><div style={{ fontSize: 40 }}>🛡️</div><a href="/dashboard" style={{ color: '#d95f2b', textDecoration: 'none', fontSize: 13 }}>Create a project first →</a></div>
@@ -138,7 +138,7 @@ export function WarrantyClient({ user, project, initialWarranties, jobs }: Props
           { label: 'Expired', value: expired, sub: 'warranties', accent: expired > 0 ? '#b83232' : '' },
           { label: 'Total', value: warranties.length, sub: 'tracked', accent: '' },
         ].map(s => (
-          <div key={s.label} style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+          <div key={s.label} style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: s.accent || 'rgba(0,0,0,0.05)', borderRadius: '14px 14px 0 0' }} />
             <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
             <div style={{ fontSize: 24, fontWeight: 800, color: s.accent || '#0f0f0f', marginBottom: 2 }}>{s.value}</div>
@@ -148,7 +148,7 @@ export function WarrantyClient({ user, project, initialWarranties, jobs }: Props
       </div>
 
       {showAdd && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
           <form onSubmit={addWarranty} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             {/* Type */}
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -162,7 +162,7 @@ export function WarrantyClient({ user, project, initialWarranties, jobs }: Props
             <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 12 }}>
               <div><label style={lbl}>Item / Work *</label><input style={inp} placeholder="Panel upgrade, copper piping, HVAC unit..." value={itemName} onChange={e => setItemName(e.target.value)} required autoFocus /></div>
               <div><label style={lbl}>Job</label>
-                <select style={{ ...inp, background: 'white' }} value={jobId} onChange={e => setJobId(e.target.value)}>
+                <select style={{ ...inp, background: '#131A26' }} value={jobId} onChange={e => setJobId(e.target.value)}>
                   <option value="">No specific job</option>
                   {jobs.map(j => <option key={j.id} value={j.id}>{j.title}</option>)}
                 </select>
@@ -173,7 +173,7 @@ export function WarrantyClient({ user, project, initialWarranties, jobs }: Props
               <div><label style={lbl}>Start Date</label><input type="date" style={inp} value={startDate} onChange={e => { setStartDate(e.target.value); setExpiryDate(calcExpiry(e.target.value, durationYears)) }} /></div>
               <div>
                 <label style={lbl}>Duration (Years)</label>
-                <select style={{ ...inp, background: 'white' }} value={durationYears} onChange={e => { setDurationYears(e.target.value); setExpiryDate(calcExpiry(startDate, e.target.value)) }}>
+                <select style={{ ...inp, background: '#131A26' }} value={durationYears} onChange={e => { setDurationYears(e.target.value); setExpiryDate(calcExpiry(startDate, e.target.value)) }}>
                   {['1','2','3','5','10','lifetime'].map(y => <option key={y} value={y}>{y === 'lifetime' ? 'Lifetime' : `${y} Year${y === '1' ? '' : 's'}`}</option>)}
                 </select>
               </div>
@@ -190,15 +190,15 @@ export function WarrantyClient({ user, project, initialWarranties, jobs }: Props
             <div><label style={lbl}>Notes</label><input style={inp} placeholder="What's covered, exclusions, claim process..." value={notes} onChange={e => setNotes(e.target.value)} /></div>
 
             <div style={{ display: 'flex', gap: 8 }}>
-              <button type="submit" disabled={saving || !itemName.trim() || !expiryDate} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>{saving ? 'Saving...' : 'Add Warranty'}</button>
-              <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>Cancel</button>
+              <button type="submit" disabled={saving || !itemName.trim() || !expiryDate} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>{saving ? 'Saving...' : 'Add Warranty'}</button>
+              <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit' }}>Cancel</button>
             </div>
           </form>
         </div>
       )}
 
       {warranties.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '52px 20px', background: 'white', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
+        <div style={{ textAlign: 'center', padding: '52px 20px', background: '#131A26', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>🛡️</div>
           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>No warranties tracked yet</div>
           <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 20 }}>Log warranties so you know exactly what's covered and when it expires</div>
@@ -217,7 +217,7 @@ export function WarrantyClient({ user, project, initialWarranties, jobs }: Props
             const statusLabel = isExpired ? 'Expired' : isExpiringSoon ? `${daysLeft}d left` : `${Math.round(daysLeft/30)}mo left`
 
             return (
-              <div key={w.id} onClick={() => setSelected(w === selected ? null : w)} style={{ background: 'white', border: `1.5px solid ${selected?.id === w.id ? '#0f0f0f' : isExpired ? 'rgba(184,50,50,0.2)' : 'rgba(0,0,0,0.07)'}`, borderRadius: 14, padding: '16px 20px', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+              <div key={w.id} onClick={() => setSelected(w === selected ? null : w)} style={{ background: '#131A26', border: `1.5px solid ${selected?.id === w.id ? '#0f0f0f' : isExpired ? 'rgba(184,50,50,0.2)' : 'rgba(0,0,0,0.07)'}`, borderRadius: 14, padding: '16px 20px', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                   <div style={{ width: 44, height: 44, borderRadius: 10, background: `${tc.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>{tc.icon}</div>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -253,7 +253,7 @@ export function WarrantyClient({ user, project, initialWarranties, jobs }: Props
         </div>
       )}
 
-      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
+      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
     </>
   )
 }

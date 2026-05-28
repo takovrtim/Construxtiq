@@ -112,7 +112,7 @@ export function PhotosClient({ user, project, initialPhotos, jobs }: Props) {
     if (!error) { setPhotos(prev => prev.filter(p => p.id !== id)); setSelected(null); msg('Deleted') }
   }
 
-  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f' }
+  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#F1EEE5' }
 
   if (!project) return (
     <div style={{ textAlign: 'center', padding: '60px 20px' }}>
@@ -141,7 +141,7 @@ export function PhotosClient({ user, project, initialPhotos, jobs }: Props) {
           { label: 'Milestones', value: photos.filter(p => p.stage === 'milestone').length, sub: 'captured', accent: '#7F77DD' },
           { label: 'Flagged', value: photos.filter(p => p.flagged).length, sub: 'need attention', accent: photos.filter(p => p.flagged).length > 0 ? '#b06e1a' : '' },
         ].map(s => (
-          <div key={s.label} style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+          <div key={s.label} style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: s.accent || 'rgba(0,0,0,0.05)', borderRadius: '14px 14px 0 0' }} />
             <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
             <div style={{ fontSize: 24, fontWeight: 800, color: s.accent || '#0f0f0f', marginBottom: 2 }}>{s.value}</div>
@@ -151,17 +151,17 @@ export function PhotosClient({ user, project, initialPhotos, jobs }: Props) {
       </div>
 
       {/* UPLOAD AREA */}
-      <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 20, marginBottom: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+      <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 20, marginBottom: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 2fr', gap: 12, marginBottom: 14 }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 5 }}>Stage</div>
-            <select style={{ ...inp, background: 'white' }} value={stage} onChange={e => setStage(e.target.value)}>
+            <select style={{ ...inp, background: '#131A26' }} value={stage} onChange={e => setStage(e.target.value)}>
               {STAGES.map(s => <option key={s} value={s}>{STAGE_CONFIG[s].icon} {STAGE_CONFIG[s].label}</option>)}
             </select>
           </div>
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 5 }}>Job</div>
-            <select style={{ ...inp, background: 'white' }} value={jobId} onChange={e => setJobId(e.target.value)}>
+            <select style={{ ...inp, background: '#131A26' }} value={jobId} onChange={e => setJobId(e.target.value)}>
               <option value="">No specific job</option>
               {jobs.map(j => <option key={j.id} value={j.id}>{j.title}</option>)}
             </select>
@@ -199,7 +199,7 @@ export function PhotosClient({ user, project, initialPhotos, jobs }: Props) {
 
       {/* PHOTO GRID BY DATE */}
       {Object.keys(grouped).length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '52px 20px', background: 'white', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
+        <div style={{ textAlign: 'center', padding: '52px 20px', background: '#131A26', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>📸</div>
           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>No photos yet</div>
           <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 20 }}>Document your job site — before photos protect you, after photos impress clients</div>
@@ -208,7 +208,7 @@ export function PhotosClient({ user, project, initialPhotos, jobs }: Props) {
       ) : (
         Object.entries(grouped).sort(([a],[b]) => b.localeCompare(a)).map(([date, dayPhotos]) => (
           <div key={date} style={{ marginBottom: 28 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 12, color: '#0f0f0f' }}>
+            <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 12, color: '#F1EEE5' }}>
               {format(parseISO(date), 'EEEE, MMMM d, yyyy')} <span style={{ fontSize: 11, color: '#9e9d99', fontWeight: 400 }}>· {dayPhotos.length} photo{dayPhotos.length !== 1 ? 's' : ''}</span>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10 }}>
@@ -225,7 +225,7 @@ export function PhotosClient({ user, project, initialPhotos, jobs }: Props) {
                     )}
                     {photo.flagged && <div style={{ position: 'absolute', top: 8, right: 8, background: '#b83232', color: 'white', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 20 }}>🚩</div>}
                     {photo.caption && (
-                      <div style={{ padding: '8px 10px', background: 'white', fontSize: 11, color: '#6b6a66', lineHeight: 1.4 }}>{photo.caption}</div>
+                      <div style={{ padding: '8px 10px', background: '#131A26', fontSize: 11, color: '#6b6a66', lineHeight: 1.4 }}>{photo.caption}</div>
                     )}
                   </div>
                 )
@@ -240,8 +240,8 @@ export function PhotosClient({ user, project, initialPhotos, jobs }: Props) {
         <>
           <div onClick={() => setSelected(null)} style={{ position: 'fixed', inset: 0, zIndex: 90, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }} />
           <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-            <div style={{ background: 'white', borderRadius: 20, overflow: 'hidden', maxWidth: 700, width: '100%', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
-              <img src={selected.url} alt={selected.caption || ''} style={{ width: '100%', maxHeight: '60vh', objectFit: 'contain', background: '#0f0f0f' }} />
+            <div style={{ background: '#131A26', borderRadius: 20, overflow: 'hidden', maxWidth: 700, width: '100%', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+              <img src={selected.url} alt={selected.caption || ''} style={{ width: '100%', maxHeight: '60vh', objectFit: 'contain', background: '#131A26' }} />
               <div style={{ padding: 20 }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14 }}>
                   <div>
@@ -255,7 +255,7 @@ export function PhotosClient({ user, project, initialPhotos, jobs }: Props) {
                   <button onClick={() => setSelected(null)} style={{ width: 32, height: 32, borderRadius: 8, border: 'none', background: '#f8f7f4', cursor: 'pointer', fontSize: 18, color: '#9e9d99', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
-                  <a href={selected.url} download target="_blank" rel="noopener noreferrer" style={{ flex: 1, padding: '9px', fontSize: 13, fontWeight: 600, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit', textAlign: 'center', textDecoration: 'none', color: '#0f0f0f' }}>
+                  <a href={selected.url} download target="_blank" rel="noopener noreferrer" style={{ flex: 1, padding: '9px', fontSize: 13, fontWeight: 600, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit', textAlign: 'center', textDecoration: 'none', color: '#F1EEE5' }}>
                     ↓ Download
                   </a>
                   <button onClick={() => toggleFlag(selected.id, selected.flagged)} style={{ flex: 1, padding: '9px', fontSize: 13, fontWeight: 600, borderRadius: 9, cursor: 'pointer', border: `1px solid ${selected.flagged ? 'rgba(184,50,50,0.2)' : 'rgba(0,0,0,0.1)'}`, background: selected.flagged ? '#fdf0f0' : 'white', color: selected.flagged ? '#b83232' : '#6b6a66', fontFamily: 'inherit' }}>
@@ -269,7 +269,7 @@ export function PhotosClient({ user, project, initialPhotos, jobs }: Props) {
         </>
       )}
 
-      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
+      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
     </>
   )
 }

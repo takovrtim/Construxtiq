@@ -161,7 +161,7 @@ export function BidsClient({ user, project, initialBids, initialSubs }: Props) {
     if (!error) { setSubs(prev => prev.filter(s => s.id !== id)); msg('Sub removed') }
   }
 
-  const inputStyle: React.CSSProperties = { width: '100%', padding: '9px 11px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f' }
+  const inputStyle: React.CSSProperties = { width: '100%', padding: '9px 11px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#F1EEE5' }
   const labelStyle: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9e9d99', display: 'block', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
   if (!project) return (
@@ -196,7 +196,7 @@ export function BidsClient({ user, project, initialBids, initialSubs }: Props) {
           { label: 'Pending', value: bids.filter(b=>b.status==='bidding').length, sub: 'waiting on bids', accent: '' },
           { label: 'AI Flags', value: flagged, sub: 'pricing concerns', accent: flagged > 0 ? '#b83232' : '' },
         ].map(s => (
-          <div key={s.label} style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+          <div key={s.label} style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: s.accent || 'rgba(0,0,0,0.05)', borderRadius: '14px 14px 0 0' }} />
             <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
             <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-1px', color: s.accent || '#0f0f0f', marginBottom: 2 }}>{s.value}</div>
@@ -219,13 +219,13 @@ export function BidsClient({ user, project, initialBids, initialSubs }: Props) {
         <>
           {/* Add Bid Form */}
           {showAdd && (
-            <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 22, marginBottom: 16, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+            <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 22, marginBottom: 16, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
               <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 16 }}>New Bid Line Item</div>
               <form onSubmit={addBid} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
                   <div>
                     <label style={labelStyle}>Trade *</label>
-                    <select style={{ ...inputStyle, background: 'white' }} value={trade} onChange={e => setTrade(e.target.value)}>
+                    <select style={{ ...inputStyle, background: '#131A26' }} value={trade} onChange={e => setTrade(e.target.value)}>
                       {TRADES.map(t => <option key={t}>{t}</option>)}
                     </select>
                   </div>
@@ -235,7 +235,7 @@ export function BidsClient({ user, project, initialBids, initialSubs }: Props) {
                   </div>
                   <div>
                     <label style={labelStyle}>Status</label>
-                    <select style={{ ...inputStyle, background: 'white' }} value={status} onChange={e => setStatus(e.target.value as any)}>
+                    <select style={{ ...inputStyle, background: '#131A26' }} value={status} onChange={e => setStatus(e.target.value as any)}>
                       {Object.entries(STATUS_CONFIG).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
                     </select>
                   </div>
@@ -249,7 +249,7 @@ export function BidsClient({ user, project, initialBids, initialSubs }: Props) {
                   </div>
                   <div>
                     <label style={labelStyle}>Assign Sub</label>
-                    <select style={{ ...inputStyle, background: 'white' }} value={subId} onChange={e => setSubId(e.target.value)}>
+                    <select style={{ ...inputStyle, background: '#131A26' }} value={subId} onChange={e => setSubId(e.target.value)}>
                       <option value="">Unassigned</option>
                       {subs.map(s => <option key={s.id} value={s.id}>{s.company_name}</option>)}
                     </select>
@@ -272,17 +272,17 @@ export function BidsClient({ user, project, initialBids, initialSubs }: Props) {
                   </div>
                 )}
                 <div style={{ display: 'flex', gap: 8 }}>
-                  <button type="submit" disabled={saving} style={{ padding: '10px 22px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>
+                  <button type="submit" disabled={saving} style={{ padding: '10px 22px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>
                     {saving ? 'Saving...' : 'Save Bid'}
                   </button>
-                  <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '10px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>Cancel</button>
+                  <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '10px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit' }}>Cancel</button>
                 </div>
               </form>
             </div>
           )}
 
           {/* Bids Table */}
-          <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, boxShadow: '0 1px 3px rgba(0,0,0,0.04)', overflow: 'hidden' }}>
+          <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, boxShadow: '0 1px 3px rgba(0,0,0,0.04)', overflow: 'hidden' }}>
             {bids.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '52px 20px' }}>
                 <div style={{ fontSize: 40, marginBottom: 12 }}>💰</div>
@@ -357,7 +357,7 @@ export function BidsClient({ user, project, initialBids, initialSubs }: Props) {
           {selected && (
             <>
               <div onClick={() => setSelected(null)} style={{ position: 'fixed', inset: 0, zIndex: 90, background: 'rgba(0,0,0,0.25)', backdropFilter: 'blur(3px)' }} />
-              <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: 380, background: 'white', borderLeft: '1px solid rgba(0,0,0,0.08)', boxShadow: '-12px 0 48px rgba(0,0,0,0.15)', zIndex: 100, overflowY: 'auto', padding: 24 }}>
+              <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: 380, background: '#131A26', borderLeft: '1px solid rgba(0,0,0,0.08)', boxShadow: '-12px 0 48px rgba(0,0,0,0.15)', zIndex: 100, overflowY: 'auto', padding: 24 }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
                   <div>
                     <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-0.3px', marginBottom: 3 }}>{selected.trade}</div>
@@ -374,7 +374,7 @@ export function BidsClient({ user, project, initialBids, initialSubs }: Props) {
                 )}
 
                 {/* Financials */}
-                <div style={{ background: '#0f0f0f', borderRadius: 12, padding: 16, marginBottom: 16, color: 'white' }}>
+                <div style={{ background: '#131A26', borderRadius: 12, padding: 16, marginBottom: 16, color: 'white' }}>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
                       <div style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>Bid Amount</div>
@@ -424,13 +424,13 @@ export function BidsClient({ user, project, initialBids, initialSubs }: Props) {
       {activeTab === 'subs' && (
         <>
           {showAddSub && (
-            <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 22, marginBottom: 16, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+            <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 22, marginBottom: 16, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
               <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 16 }}>Add Subcontractor</div>
               <form onSubmit={addSub} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                   <div><label style={labelStyle}>Company Name *</label><input style={inputStyle} placeholder="ABC Electric LLC" value={subCompany} onChange={e => setSubCompany(e.target.value)} required autoFocus /></div>
                   <div><label style={labelStyle}>Trade</label>
-                    <select style={{ ...inputStyle, background: 'white' }} value={subTrade} onChange={e => setSubTrade(e.target.value)}>
+                    <select style={{ ...inputStyle, background: '#131A26' }} value={subTrade} onChange={e => setSubTrade(e.target.value)}>
                       {TRADES.map(t => <option key={t}>{t}</option>)}
                     </select>
                   </div>
@@ -441,16 +441,16 @@ export function BidsClient({ user, project, initialBids, initialSubs }: Props) {
                   <div><label style={labelStyle}>Bid Amount ($)</label><input style={inputStyle} type="number" placeholder="25000" value={subBid} onChange={e => setSubBid(e.target.value)} /></div>
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
-                  <button type="submit" disabled={savingSub} style={{ padding: '10px 22px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>
+                  <button type="submit" disabled={savingSub} style={{ padding: '10px 22px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>
                     {savingSub ? 'Saving...' : 'Add Sub'}
                   </button>
-                  <button type="button" onClick={() => setShowAddSub(false)} style={{ padding: '10px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>Cancel</button>
+                  <button type="button" onClick={() => setShowAddSub(false)} style={{ padding: '10px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit' }}>Cancel</button>
                 </div>
               </form>
             </div>
           )}
 
-          <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, boxShadow: '0 1px 3px rgba(0,0,0,0.04)', overflow: 'hidden' }}>
+          <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, boxShadow: '0 1px 3px rgba(0,0,0,0.04)', overflow: 'hidden' }}>
             {subs.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '52px 20px' }}>
                 <div style={{ fontSize: 40, marginBottom: 12 }}>👷</div>
@@ -499,7 +499,7 @@ export function BidsClient({ user, project, initialBids, initialSubs }: Props) {
       )}
 
       {toast && (
-        <div style={{ position: 'fixed', bottom: 24, right: selected ? 404 : 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: selected ? 404 : 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
           {toast}
         </div>
       )}

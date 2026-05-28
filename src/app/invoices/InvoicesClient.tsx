@@ -119,7 +119,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
     win.document.close()
   }
 
-  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f' }
+  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#F1EEE5' }
   const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9e9d99', display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
   if (!project) return <div style={{ textAlign: 'center', padding: '60px 20px' }}><div style={{ fontSize: 40 }}>$</div><a href="/dashboard" style={{ color: '#d95f2b', textDecoration: 'none', fontSize: 13 }}>Create a project first</a></div>
@@ -138,7 +138,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
           { label: 'Outstanding', value: `$${(totalInvoiced-totalPaid).toLocaleString()}`, sub: `${invoices.filter(i=>['sent','overdue'].includes(i.status)).length} open`, accent: totalInvoiced-totalPaid > 0 ? '#b06e1a' : '' },
           { label: 'Overdue', value: invoices.filter(i=>i.status==='overdue').length, sub: 'need follow-up', accent: invoices.filter(i=>i.status==='overdue').length > 0 ? '#b83232' : '' },
         ].map(s => (
-          <div key={s.label} style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+          <div key={s.label} style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: s.accent || 'rgba(0,0,0,0.05)', borderRadius: '14px 14px 0 0' }} />
             <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
             <div style={{ fontSize: 22, fontWeight: 800, color: s.accent || '#0f0f0f', marginBottom: 2 }}>{s.value}</div>
@@ -148,7 +148,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
       </div>
 
       {showNew && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 28, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 28, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
           <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 20 }}>New Invoice</div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, marginBottom: 14 }}>
             <div><label style={lbl}>Invoice #</label><input style={inp} value={invoiceNum} onChange={e => setInvoiceNum(e.target.value)} /></div>
@@ -157,7 +157,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
             <div><label style={lbl}>Job</label>
-              <select style={{ ...inp, background: 'white' }} value={jobId} onChange={e => onJobChange(e.target.value)}>
+              <select style={{ ...inp, background: '#131A26' }} value={jobId} onChange={e => onJobChange(e.target.value)}>
                 <option value="">No specific job</option>
                 {jobs.map(j => <option key={j.id} value={j.id}>{j.title}</option>)}
               </select>
@@ -169,7 +169,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
           <div style={{ marginBottom: 16 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
               <div style={{ fontSize: 13, fontWeight: 700 }}>Line Items</div>
-              {approvedChanges.length > 0 && <button onClick={importChanges} style={{ padding: '5px 12px', fontSize: 11, fontWeight: 600, borderRadius: 7, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit', color: '#1f5fa6' }}>+ Import {approvedChanges.length} Change Order{approvedChanges.length !== 1 ? 's' : ''}</button>}
+              {approvedChanges.length > 0 && <button onClick={importChanges} style={{ padding: '5px 12px', fontSize: 11, fontWeight: 600, borderRadius: 7, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit', color: '#1f5fa6' }}>+ Import {approvedChanges.length} Change Order{approvedChanges.length !== 1 ? 's' : ''}</button>}
             </div>
             <div style={{ background: '#f8f7f4', borderRadius: 12, overflow: 'hidden' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '3fr 70px 100px 100px 36px', padding: '8px 12px', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
@@ -206,14 +206,14 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
 
           <div style={{ marginBottom: 16 }}><label style={lbl}>Notes</label><textarea style={{ ...inp, resize: 'none' }} rows={2} placeholder="Payment due within 30 days..." value={notes} onChange={e => setNotes(e.target.value)} /></div>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button onClick={saveInvoice} disabled={saving} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>{saving ? 'Saving...' : 'Save Invoice'}</button>
-            <button onClick={() => setShowNew(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>Cancel</button>
+            <button onClick={saveInvoice} disabled={saving} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>{saving ? 'Saving...' : 'Save Invoice'}</button>
+            <button onClick={() => setShowNew(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit' }}>Cancel</button>
           </div>
         </div>
       )}
 
       {invoices.length === 0 && !showNew ? (
-        <div style={{ textAlign: 'center', padding: '52px 20px', background: 'white', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
+        <div style={{ textAlign: 'center', padding: '52px 20px', background: '#131A26', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>$</div>
           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>No invoices yet</div>
           <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 20 }}>Create professional invoices and track what you're owed</div>
@@ -225,7 +225,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
             const sc = STATUS_CONFIG[inv.status]
             const job = jobs.find(j => j.id === inv.job_id)
             return (
-              <div key={inv.id} onClick={() => setSelected(inv === selected ? null : inv)} style={{ background: 'white', border: `1.5px solid ${selected?.id === inv.id ? '#0f0f0f' : 'rgba(0,0,0,0.07)'}`, borderRadius: 14, padding: '16px 20px', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+              <div key={inv.id} onClick={() => setSelected(inv === selected ? null : inv)} style={{ background: '#131A26', border: `1.5px solid ${selected?.id === inv.id ? '#0f0f0f' : 'rgba(0,0,0,0.07)'}`, borderRadius: 14, padding: '16px 20px', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
@@ -258,7 +258,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
                       ))}
                     </div>
                     <div style={{ display: 'flex', gap: 8 }}>
-                      <button onClick={e => { e.stopPropagation(); printInvoice(inv) }} style={{ padding: '8px 16px', fontSize: 12, fontWeight: 600, borderRadius: 8, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}> Print / PDF</button>
+                      <button onClick={e => { e.stopPropagation(); printInvoice(inv) }} style={{ padding: '8px 16px', fontSize: 12, fontWeight: 600, borderRadius: 8, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}> Print / PDF</button>
                       <button onClick={e => { e.stopPropagation(); deleteInvoice(inv.id) }} style={{ padding: '8px 14px', fontSize: 12, fontWeight: 600, borderRadius: 8, cursor: 'pointer', border: '1px solid rgba(184,50,50,0.2)', background: '#fdf0f0', color: '#b83232', fontFamily: 'inherit' }}>Delete</button>
                     </div>
                   </div>
@@ -269,7 +269,7 @@ export function InvoicesClient({ user, project, initialInvoices, jobs, approvedC
         </div>
       )}
 
-      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
+      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
     </>
   )
 }

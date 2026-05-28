@@ -20,20 +20,20 @@ function ChangeOrderDemo({ playing }: { playing: boolean }) {
     return () => t.forEach(clearTimeout)
   }, [playing])
   return (
-    <div style={{ padding: 20, height: '100%', display: 'flex', flexDirection: 'column', gap: 10, background: '#f3f4f6', fontFamily: '-apple-system,sans-serif' }}>
+    <div style={{ padding: 20, height: '100%', display: 'flex', flexDirection: 'column', gap: 10, background: '#1A2333', fontFamily: '-apple-system,sans-serif' }}>
       <div style={{ background: '#000', borderRadius: 9, padding: '8px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ color: 'white', fontSize: 12, fontWeight: 800 }}>SubIQ</span>
-        <span style={{ color: '#6b7280', fontSize: 11 }}>Hardrock Hotel</span>
+        <span style={{ color: '#7B8497', fontSize: 11 }}>Hardrock Hotel</span>
       </div>
-      <div style={{ background: 'white', borderRadius: 12, padding: 14, flex: 1 }}>
-        <div style={{ fontSize: 13, fontWeight: 800, color: '#111', marginBottom: 12 }}>New Change Order</div>
+      <div style={{ background: '#131A26', borderRadius: 12, padding: 14, flex: 1 }}>
+        <div style={{ fontSize: 13, fontWeight: 800, color: '#F1EEE5', marginBottom: 12 }}>New Change Order</div>
         <div style={{ marginBottom: 10 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>Title</div>
-          <div style={{ padding: '8px 10px', border: `1.5px solid ${step >= 1 ? '#ea580c' : '#e5e7eb'}`, borderRadius: 8, fontSize: 12, color: '#111', background: step >= 1 ? '#fff7ed' : '#f9fafb', transition: 'all 0.3s' }}>Panel Location Change — Turner Directive</div>
+          <div style={{ fontSize: 10, fontWeight: 700, color: '#545B6C', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>Title</div>
+          <div style={{ padding: '8px 10px', border: `1.5px solid ${step >= 1 ? '#ea580c' : '#e5e7eb'}`, borderRadius: 8, fontSize: 12, color: '#F1EEE5', background: step >= 1 ? '#fff7ed' : '#f9fafb', transition: 'all 0.3s' }}>Panel Location Change — Turner Directive</div>
         </div>
         <div style={{ marginBottom: 10 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>Description</div>
-          <div style={{ padding: '8px 10px', border: `1.5px solid ${step >= 2 ? '#ea580c' : '#e5e7eb'}`, borderRadius: 8, fontSize: 11, color: '#374151', background: '#f9fafb', minHeight: 36, lineHeight: 1.5 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: '#545B6C', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>Description</div>
+          <div style={{ padding: '8px 10px', border: `1.5px solid ${step >= 2 ? '#ea580c' : '#e5e7eb'}`, borderRadius: 8, fontSize: 11, color: '#B6BCCB', background: '#1A2333', minHeight: 36, lineHeight: 1.5 }}>
             {typed}{step >= 2 && typed.length < full.length && <span style={{ borderRight: '2px solid #ea580c' }}>&nbsp;</span>}
           </div>
         </div>
@@ -66,9 +66,9 @@ function VideoPlayer({ Component, title, sub, duration }: { Component: React.Com
           <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#febc2e' }} />
           <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#28c840' }} />
         </div>
-        <div style={{ flex: 1, background: '#2a2a2a', borderRadius: 5, padding: '3px 10px', fontSize: 11, color: '#6b7280', textAlign: 'center' }}>app.subiq.co</div>
+        <div style={{ flex: 1, background: '#2a2a2a', borderRadius: 5, padding: '3px 10px', fontSize: 11, color: '#7B8497', textAlign: 'center' }}>app.subiq.co</div>
       </div>
-      <div style={{ height: 340, position: 'relative', overflow: 'hidden', background: '#f3f4f6' }}>
+      <div style={{ height: 340, position: 'relative', overflow: 'hidden', background: '#1A2333' }}>
         {!playing && (
           <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 10 }}>
             <button onClick={play} style={{ width: 64, height: 64, borderRadius: '50%', background: '#ea580c', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14, boxShadow: '0 8px 32px rgba(234,88,12,0.5)' }}>
@@ -80,14 +80,14 @@ function VideoPlayer({ Component, title, sub, duration }: { Component: React.Com
         )}
         <Component key={key} playing={playing} />
       </div>
-      <div style={{ background: '#111', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div style={{ background: '#07090E', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
         <button onClick={playing ? () => setPlaying(false) : play} style={{ width: 26, height: 26, borderRadius: '50%', background: '#ea580c', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {playing ? <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" /></svg> : <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>}
         </button>
         <div style={{ flex: 1, height: 3, background: '#2a2a2a', borderRadius: 20 }}>
           <div style={{ height: '100%', background: '#ea580c', borderRadius: 20, width: playing ? '100%' : '0%', transition: playing ? 'width 7s linear' : 'none' }} />
         </div>
-        <span style={{ fontSize: 11, color: '#6b7280' }}>{duration}</span>
+        <span style={{ fontSize: 11, color: '#7B8497' }}>{duration}</span>
       </div>
     </div>
   )
@@ -161,7 +161,7 @@ export default function LandingPage() {
 
   const check = (v: boolean) => v
     ? <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#22c55e', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto' }}><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="3" strokeLinecap="round" /></svg></div>
-    : <div style={{ color: '#374151', fontSize: 18, textAlign: 'center' }}>--</div>
+    : <div style={{ color: '#B6BCCB', fontSize: 18, textAlign: 'center' }}>--</div>
 
   return (
     <div style={{ fontFamily: "'DM Sans', -apple-system, sans-serif", background: '#080808', color: 'white', overflowX: 'hidden' }}>
@@ -277,7 +277,7 @@ export default function LandingPage() {
 
           <Reveal>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, borderRadius: 20, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <div style={{ background: '#0f0f0f', padding: '40px 36px' }}>
+              <div style={{ background: '#131A26', padding: '40px 36px' }}>
                 <div style={{ fontSize: 11, fontWeight: 800, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 16 }}>Without SubIQ</div>
                 <h3 style={{ fontSize: 22, fontWeight: 800, color: 'white', letterSpacing: '-0.5px', marginBottom: 16, lineHeight: 1.3 }}>{SCENARIOS[activeTab].trigger}</h3>
                 <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.45)', lineHeight: 1.8 }}>{SCENARIOS[activeTab].pain}</p>
@@ -325,7 +325,7 @@ export default function LandingPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
             {FEATURES.map((f, i) => (
               <Reveal key={i} delay={i * 80}>
-                <div className="feat-card" style={{ background: '#0f0f0f', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '28px 24px' }}>
+                <div className="feat-card" style={{ background: '#131A26', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '28px 24px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
                     <span style={{ fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 20, background: f.tag === 'AI' ? 'rgba(59,130,246,0.1)' : f.tag === 'Core' ? 'rgba(234,88,12,0.1)' : 'rgba(34,197,94,0.1)', color: f.tag === 'AI' ? '#3b82f6' : f.tag === 'Core' ? '#ea580c' : '#22c55e', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{f.tag}</span>
                   </div>
@@ -348,7 +348,7 @@ export default function LandingPage() {
             </div>
           </Reveal>
           <Reveal delay={200}>
-            <div style={{ background: '#0f0f0f', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, overflow: 'hidden' }}>
+            <div style={{ background: '#131A26', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, overflow: 'hidden' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>

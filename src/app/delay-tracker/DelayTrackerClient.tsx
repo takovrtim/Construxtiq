@@ -213,8 +213,8 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
     win.document.close()
   }
 
-  const inp: React.CSSProperties = { width: '100%', padding: '10px 13px', fontSize: 13, border: '1.5px solid #e5e7eb', borderRadius: 9, fontFamily: 'inherit', outline: 'none', background: '#f9fafb', color: '#111827' }
-  const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9ca3af', display: 'block', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.4px' }
+  const inp: React.CSSProperties = { width: '100%', padding: '10px 13px', fontSize: 13, border: '1.5px solid #232E42', borderRadius: 9, fontFamily: 'inherit', outline: 'none', background: '#1A2333', color: '#F1EEE5' }
+  const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#545B6C', display: 'block', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
   if (!project) return (
     <div style={{ textAlign: 'center', padding: '60px 20px' }}>
@@ -228,11 +228,11 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 22, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px' }}>Delay Tracker</div>
-          <div style={{ fontSize: 13, color: '#9ca3af', marginTop: 2 }}>Log every delay, who caused it, and how many days it cost</div>
+          <div style={{ fontSize: 13, color: '#545B6C', marginTop: 2 }}>Log every delay, who caused it, and how many days it cost</div>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           {delays.length > 0 && (
-            <button onClick={exportReport} style={{ padding: '10px 16px', fontSize: 13, fontWeight: 600, borderRadius: 10, cursor: 'pointer', border: '1px solid #e5e7eb', background: 'white', color: '#111827', fontFamily: 'inherit' }}>
+            <button onClick={exportReport} style={{ padding: '10px 16px', fontSize: 13, fontWeight: 600, borderRadius: 10, cursor: 'pointer', border: '1px solid #232E42', background: '#131A26', color: '#F1EEE5', fontFamily: 'inherit' }}>
                Export PDF
             </button>
           )}
@@ -250,10 +250,10 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
           { label: 'Owner-Caused', value: `+${ownerDays}d`, sub: `${delays.filter(d=>d.caused_by==='owner').length} incidents`, accent: ownerDays > 0 ? '#7F77DD' : '' },
           { label: 'Not Documented', value: undocumented, sub: 'need paper trail', accent: undocumented > 0 ? '#b06e1a' : '' },
         ].map(s => (
-          <div key={s.label} style={{ background: 'white', border: '1px solid #e5e7eb', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+          <div key={s.label} style={{ background: '#131A26', border: '1px solid #232E42', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: s.accent || 'rgba(0,0,0,0.05)', borderRadius: '14px 14px 0 0' }} />
-            <div style={{ fontSize: 10, fontWeight: 700, color: '#9ca3af', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
-            <div style={{ fontSize: 24, fontWeight: 800, color: s.accent || '#111827', marginBottom: 2 }}>{s.value}</div>
+            <div style={{ fontSize: 10, fontWeight: 700, color: '#545B6C', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
+            <div style={{ fontSize: 24, fontWeight: 800, color: s.accent || '#F1EEE5', marginBottom: 2 }}>{s.value}</div>
             <div style={{ fontSize: 11, color: s.accent || '#9ca3af' }}>{s.sub}</div>
           </div>
         ))}
@@ -275,7 +275,7 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
 
       {/* NEW DELAY FORM */}
       {showNew && (
-        <div style={{ background: 'white', border: '1px solid #e5e7eb', borderRadius: 16, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+        <div style={{ background: '#131A26', border: '1px solid #232E42', borderRadius: 16, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
           <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 18 }}>Log New Delay</div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, marginBottom: 14 }}>
             <div>
@@ -288,7 +288,7 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
             </div>
             <div>
               <label style={lbl}>Caused By</label>
-              <select style={{ ...inp, background: 'white' }} value={causedBy} onChange={e => setCausedBy(e.target.value as Delay['caused_by'])}>
+              <select style={{ ...inp, background: '#131A26' }} value={causedBy} onChange={e => setCausedBy(e.target.value as Delay['caused_by'])}>
                 {Object.entries(CAUSED_BY).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
               </select>
             </div>
@@ -296,16 +296,16 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 14 }}>
             <div>
               <label style={lbl}>Job</label>
-              <select style={{ ...inp, background: 'white' }} value={jobId} onChange={e => setJobId(e.target.value)}>
+              <select style={{ ...inp, background: '#131A26' }} value={jobId} onChange={e => setJobId(e.target.value)}>
                 <option value="">No specific job</option>
                 {jobs.map(j => <option key={j.id} value={j.id}>{j.title}</option>)}
               </select>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 22 }}>
               <button type="button" onClick={() => setDocumented(v => !v)} style={{ width: 44, height: 26, borderRadius: 13, border: 'none', background: documented ? '#0f0f0f' : '#e0ddd8', cursor: 'pointer', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
-                <div style={{ position: 'absolute', top: 3, left: documented ? 21 : 3, width: 20, height: 20, borderRadius: '50%', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.2s' }} />
+                <div style={{ position: 'absolute', top: 3, left: documented ? 21 : 3, width: 20, height: 20, borderRadius: '50%', background: '#131A26', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.2s' }} />
               </button>
-              <span style={{ fontSize: 13, color: '#6b7280', fontWeight: documented ? 600 : 400 }}>Documented with GC</span>
+              <span style={{ fontSize: 13, color: '#7B8497', fontWeight: documented ? 600 : 400 }}>Documented with GC</span>
             </div>
           </div>
           <div style={{ marginBottom: 14 }}>
@@ -321,20 +321,20 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
             <input style={inp} placeholder="This pushes our finish date from May 15 to May 17..." value={impact} onChange={e => setImpact(e.target.value)} />
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button onClick={saveDelay} disabled={saving || !description.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>
+            <button onClick={saveDelay} disabled={saving || !description.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>
               {saving ? 'Saving...' : 'Log Delay'}
             </button>
-            <button onClick={() => setShowNew(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 10, cursor: 'pointer', border: '1px solid #e5e7eb', background: 'white', fontFamily: 'inherit', color: '#111827' }}>Cancel</button>
+            <button onClick={() => setShowNew(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 10, cursor: 'pointer', border: '1px solid #232E42', background: '#131A26', fontFamily: 'inherit', color: '#F1EEE5' }}>Cancel</button>
           </div>
         </div>
       )}
 
       {/* DELAY LIST */}
       {delays.length === 0 && !showNew ? (
-        <div style={{ textAlign: 'center', padding: '52px 20px', background: 'white', borderRadius: 16, border: '2px dashed #e5e7eb' }}>
+        <div style={{ textAlign: 'center', padding: '52px 20px', background: '#131A26', borderRadius: 16, border: '2px dashed #e5e7eb' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>Cal</div>
           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>No delays logged</div>
-          <div style={{ fontSize: 13, color: '#9ca3af', marginBottom: 20 }}>Start logging delays to build your paper trail. When the GC blames you, you'll have proof.</div>
+          <div style={{ fontSize: 13, color: '#545B6C', marginBottom: 20 }}>Start logging delays to build your paper trail. When the GC blames you, you'll have proof.</div>
           <button onClick={() => setShowNew(true)} style={{ padding: '10px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#d95f2b', color: 'white', fontFamily: 'inherit' }}>+ Log First Delay</button>
         </div>
       ) : (
@@ -343,7 +343,7 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
             const cfg = CAUSED_BY[delay.caused_by]
             const job = jobs.find(j => j.id === delay.job_id)
             return (
-              <div key={delay.id} style={{ background: 'white', border: '1px solid #e5e7eb', borderRadius: 14, padding: '16px 20px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+              <div key={delay.id} style={{ background: '#131A26', border: '1px solid #232E42', borderRadius: 14, padding: '16px 20px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
                   <div style={{ width: 44, height: 44, borderRadius: 12, background: cfg.bg, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: `1px solid ${cfg.color}20` }}>
                     <div style={{ fontSize: 15, fontWeight: 800, color: cfg.color, lineHeight: 1 }}>+{delay.days_lost}</div>
@@ -352,12 +352,12 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5, flexWrap: 'wrap' }}>
                       <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 9px', borderRadius: 20, background: cfg.bg, color: cfg.color }}>{cfg.label}</span>
-                      {job && <span style={{ fontSize: 11, color: '#9ca3af' }}>{job.title}</span>}
-                      <span style={{ fontSize: 11, color: '#9ca3af', marginLeft: 'auto' }}>{format(parseISO(delay.delay_date), 'MMM d, yyyy')}</span>
+                      {job && <span style={{ fontSize: 11, color: '#545B6C' }}>{job.title}</span>}
+                      <span style={{ fontSize: 11, color: '#545B6C', marginLeft: 'auto' }}>{format(parseISO(delay.delay_date), 'MMM d, yyyy')}</span>
                     </div>
-                    <div style={{ fontSize: 13, color: '#111827', lineHeight: 1.5, marginBottom: delay.cumulative_impact ? 6 : 0 }}>{delay.description}</div>
+                    <div style={{ fontSize: 13, color: '#F1EEE5', lineHeight: 1.5, marginBottom: delay.cumulative_impact ? 6 : 0 }}>{delay.description}</div>
                     {delay.cumulative_impact && (
-                      <div style={{ fontSize: 12, color: '#9ca3af', fontStyle: 'italic', marginTop: 4 }}>Impact: {delay.cumulative_impact}</div>
+                      <div style={{ fontSize: 12, color: '#545B6C', fontStyle: 'italic', marginTop: 4 }}>Impact: {delay.cumulative_impact}</div>
                     )}
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8, flexShrink: 0 }}>
@@ -375,7 +375,7 @@ ${gcDays > 0 ? `<div style="background:#fdf0f0;border:1px solid rgba(192,57,43,0
         </div>
       )}
 
-      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
+      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
     </>
   )
 }

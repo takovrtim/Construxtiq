@@ -99,8 +99,8 @@ export default function OnboardingFlow({ user }: Props) {
       {/* Progress bar */}
       <div style={{ width: '100%', maxWidth: 480, marginBottom: 32 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-          <span style={{ fontSize: 12, color: '#6b7280' }}>Step {step} of {totalSteps}</span>
-          <span style={{ fontSize: 12, color: '#6b7280' }}>{Math.round(progressPct)}% complete</span>
+          <span style={{ fontSize: 12, color: '#7B8497' }}>Step {step} of {totalSteps}</span>
+          <span style={{ fontSize: 12, color: '#7B8497' }}>{Math.round(progressPct)}% complete</span>
         </div>
         <div style={{ height: 3, background: '#1f2937', borderRadius: 20, overflow: 'hidden' }}>
           <div style={{ width: `${progressPct}%`, height: '100%', background: '#ea580c', borderRadius: 20, transition: 'width 0.4s ease' }} />
@@ -108,7 +108,7 @@ export default function OnboardingFlow({ user }: Props) {
       </div>
 
       {/* Card */}
-      <div style={{ width: '100%', maxWidth: 480, background: '#111', border: '1px solid #1f2937', borderRadius: 20, padding: '32px 28px' }}>
+      <div style={{ width: '100%', maxWidth: 480, background: '#07090E', border: '1px solid #1f2937', borderRadius: 20, padding: '32px 28px' }}>
 
         {/* ── STEP 1 — TRADE ───────────────────────────── */}
         {step === 1 && (
@@ -117,7 +117,7 @@ export default function OnboardingFlow({ user }: Props) {
             <h2 style={{ fontSize: 24, fontWeight: 900, color: '#fff', letterSpacing: '-0.5px', marginBottom: 6, lineHeight: 1.2 }}>
               What trade are you in?
             </h2>
-            <p style={{ fontSize: 14, color: '#6b7280', marginBottom: 24 }}>
+            <p style={{ fontSize: 14, color: '#7B8497', marginBottom: 24 }}>
               SubIQ personalizes everything to your trade.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -150,7 +150,7 @@ export default function OnboardingFlow({ user }: Props) {
             <h2 style={{ fontSize: 24, fontWeight: 900, color: '#fff', letterSpacing: '-0.5px', marginBottom: 6, lineHeight: 1.2 }}>
               What costs you the most money?
             </h2>
-            <p style={{ fontSize: 14, color: '#6b7280', marginBottom: 24 }}>
+            <p style={{ fontSize: 14, color: '#7B8497', marginBottom: 24 }}>
               SubIQ protects you where it hurts most.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -183,12 +183,12 @@ export default function OnboardingFlow({ user }: Props) {
             <h2 style={{ fontSize: 24, fontWeight: 900, color: '#fff', letterSpacing: '-0.5px', marginBottom: 6, lineHeight: 1.2 }}>
               Who do you work for?
             </h2>
-            <p style={{ fontSize: 14, color: '#6b7280', marginBottom: 24 }}>
+            <p style={{ fontSize: 14, color: '#7B8497', marginBottom: 24 }}>
               SubIQ uses this to personalize your change orders and delays.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
-                <label style={{ fontSize: 11, fontWeight: 700, color: '#6b7280', display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                <label style={{ fontSize: 11, fontWeight: 700, color: '#7B8497', display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
                   Your Company Name
                 </label>
                 <input
@@ -200,7 +200,7 @@ export default function OnboardingFlow({ user }: Props) {
                 />
               </div>
               <div>
-                <label style={{ fontSize: 11, fontWeight: 700, color: '#6b7280', display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                <label style={{ fontSize: 11, fontWeight: 700, color: '#7B8497', display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
                   General Contractor (GC)
                 </label>
                 <input
@@ -211,7 +211,7 @@ export default function OnboardingFlow({ user }: Props) {
                 />
               </div>
               <div>
-                <label style={{ fontSize: 11, fontWeight: 700, color: '#6b7280', display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                <label style={{ fontSize: 11, fontWeight: 700, color: '#7B8497', display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
                   Phone Number (optional)
                 </label>
                 <input
@@ -238,7 +238,7 @@ export default function OnboardingFlow({ user }: Props) {
             <h2 style={{ fontSize: 24, fontWeight: 900, color: '#fff', letterSpacing: '-0.5px', marginBottom: 6, lineHeight: 1.2 }}>
               Name your first job
             </h2>
-            <p style={{ fontSize: 14, color: '#6b7280', marginBottom: 24 }}>
+            <p style={{ fontSize: 14, color: '#7B8497', marginBottom: 24 }}>
               Your case file starts building the moment you create it.
             </p>
             <input
@@ -260,7 +260,7 @@ export default function OnboardingFlow({ user }: Props) {
               ].map((item, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: '#0a0a0a', borderRadius: 9, border: '1px solid #1f2937' }}>
                   <span style={{ fontSize: 18 }}>{item.icon}</span>
-                  <span style={{ fontSize: 13, color: '#9ca3af' }}>{item.text}</span>
+                  <span style={{ fontSize: 13, color: '#545B6C' }}>{item.text}</span>
                 </div>
               ))}
             </div>
@@ -295,21 +295,21 @@ export default function OnboardingFlow({ user }: Props) {
 
         {/* Skip option for step 3 */}
         {step === 3 && (
-          <button onClick={() => setStep(4)} style={{ width: '100%', marginTop: 10, padding: '10px', fontSize: 13, fontWeight: 500, color: '#6b7280', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
+          <button onClick={() => setStep(4)} style={{ width: '100%', marginTop: 10, padding: '10px', fontSize: 13, fontWeight: 500, color: '#7B8497', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
             Skip for now
           </button>
         )}
 
         {/* Back button */}
         {step > 1 && (
-          <button onClick={() => setStep(s => s - 1)} style={{ display: 'block', marginTop: step === 3 ? 0 : 12, marginLeft: 'auto', marginRight: 'auto', fontSize: 12, color: '#6b7280', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
+          <button onClick={() => setStep(s => s - 1)} style={{ display: 'block', marginTop: step === 3 ? 0 : 12, marginLeft: 'auto', marginRight: 'auto', fontSize: 12, color: '#7B8497', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
             Back
           </button>
         )}
       </div>
 
       {/* Bottom reassurance */}
-      <div style={{ marginTop: 20, fontSize: 12, color: '#374151', textAlign: 'center' }}>
+      <div style={{ marginTop: 20, fontSize: 12, color: '#B6BCCB', textAlign: 'center' }}>
         Takes 2 minutes. No credit card. Cancel anytime.
       </div>
     </div>

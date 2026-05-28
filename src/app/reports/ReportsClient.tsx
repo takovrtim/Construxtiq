@@ -18,10 +18,10 @@ function ProtectionMeter({ score, label }: { score: number; label: string }) {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-        <span style={{ fontSize: 13, color: '#6b7280' }}>{label}</span>
+        <span style={{ fontSize: 13, color: '#7B8497' }}>{label}</span>
         <span style={{ fontSize: 13, fontWeight: 700, color }}>{score}%</span>
       </div>
-      <div style={{ height: 6, background: '#f3f4f6', borderRadius: 20, overflow: 'hidden' }}>
+      <div style={{ height: 6, background: '#1A2333', borderRadius: 20, overflow: 'hidden' }}>
         <div style={{ width: `${score}%`, height: '100%', background: color, borderRadius: 20, transition: 'width 1s ease' }} />
       </div>
     </div>
@@ -217,20 +217,20 @@ ${a.daily_logs.length > 0 ? `
 
   const inp: React.CSSProperties = {
     padding: '10px 13px', fontSize: 13,
-    border: '1.5px solid #e5e7eb', borderRadius: 9,
+    border: '1.5px solid #232E42', borderRadius: 9,
     fontFamily: 'inherit', outline: 'none',
-    background: '#f9fafb', color: '#111827',
+    background: '#1A2333', color: '#F1EEE5',
   }
 
   return (
     <>
       <div style={{ marginBottom: 24 }}>
         <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px' }}>Reports & Intelligence</div>
-        <div style={{ fontSize: 13, color: '#9ca3af', marginTop: 2 }}>Legal case file  GC reputation  Protection score</div>
+        <div style={{ fontSize: 13, color: '#545B6C', marginTop: 2 }}>Legal case file  GC reputation  Protection score</div>
       </div>
 
       {/* TABS */}
-      <div style={{ display: 'flex', gap: 6, marginBottom: 20, borderBottom: '1px solid #e5e7eb', paddingBottom: 0 }}>
+      <div style={{ display: 'flex', gap: 6, marginBottom: 20, borderBottom: '1px solid #232E42', paddingBottom: 0 }}>
         {([
           { id: 'audit',    label: ' Audit Export' },
           { id: 'gc',       label: ' GC Score' },
@@ -253,16 +253,16 @@ ${a.daily_logs.length > 0 ? `
         <div>
           {!audit ? (
             <div>
-              <div style={{ background: 'white', border: '1px solid #e5e7eb', borderRadius: 16, padding: '32px', marginBottom: 16, textAlign: 'center' }}>
+              <div style={{ background: '#131A26', border: '1px solid #232E42', borderRadius: 16, padding: '32px', marginBottom: 16, textAlign: 'center' }}>
                 <div style={{ fontSize: 48, marginBottom: 16 }}></div>
                 <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.3px', marginBottom: 8 }}>Generate Your Case File</div>
-                <div style={{ fontSize: 14, color: '#6b7280', marginBottom: 24, maxWidth: 440, margin: '0 auto 24px', lineHeight: 1.7 }}>
+                <div style={{ fontSize: 14, color: '#7B8497', marginBottom: 24, maxWidth: 440, margin: '0 auto 24px', lineHeight: 1.7 }}>
                   One click pulls every delay, RFI, change order, daily log, and safety record into a professional legal-grade report. Drop it on the table at your next GC meeting.
                 </div>
                 <button onClick={generateAudit} disabled={generating || !project} style={{ padding: '14px 32px', fontSize: 15, fontWeight: 700, borderRadius: 12, cursor: generating || !project ? 'not-allowed' : 'pointer', border: 'none', background: generating || !project ? '#f3f4f6' : '#0a0a0a', color: generating || !project ? '#9ca3af' : 'white', fontFamily: 'inherit' }}>
                   {generating ? ' Compiling records...' : ' Generate Audit Report'}
                 </button>
-                {!project && <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 12 }}>Create a project first</div>}
+                {!project && <div style={{ fontSize: 12, color: '#545B6C', marginTop: 12 }}>Create a project first</div>}
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12 }}>
@@ -274,10 +274,10 @@ ${a.daily_logs.length > 0 ? `
                   { icon: '', title: 'Safety Records', body: 'Every safety checklist completed. Your OSHA protection.' },
                   { icon: '', title: 'Financial Summary', body: 'Outstanding retention, approved change values, what you\'re owed.' },
                 ].map(f => (
-                  <div key={f.title} style={{ background: 'white', border: '1px solid #e5e7eb', borderRadius: 12, padding: '16px 18px' }}>
+                  <div key={f.title} style={{ background: '#131A26', border: '1px solid #232E42', borderRadius: 12, padding: '16px 18px' }}>
                     <div style={{ fontSize: 22, marginBottom: 8 }}>{f.icon}</div>
                     <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 4 }}>{f.title}</div>
-                    <div style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>{f.body}</div>
+                    <div style={{ fontSize: 12, color: '#545B6C', lineHeight: 1.5 }}>{f.body}</div>
                   </div>
                 ))}
               </div>
@@ -340,11 +340,11 @@ ${a.daily_logs.length > 0 ? `
                 </div>
               )}
 
-              <div style={{ background: 'white', border: '1px solid #e5e7eb', borderRadius: 12, padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div style={{ background: '#131A26', border: '1px solid #232E42', borderRadius: 12, padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14 }}>
                 <div style={{ fontSize: 28 }}></div>
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 3 }}>How to use this report</div>
-                  <div style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.6 }}>Download. Open in browser. Print to PDF (Ctrl+P). (Ctrl+P). Bring to your next GC meeting. If there's a dispute, this is your evidence. It's timestamped, professionally formatted, and covers every day of work.</div>
+                  <div style={{ fontSize: 12, color: '#7B8497', lineHeight: 1.6 }}>Download. Open in browser. Print to PDF (Ctrl+P). (Ctrl+P). Bring to your next GC meeting. If there's a dispute, this is your evidence. It's timestamped, professionally formatted, and covers every day of work.</div>
                 </div>
               </div>
             </div>
@@ -355,9 +355,9 @@ ${a.daily_logs.length > 0 ? `
       {/*  GC REPUTATION SCORE  */}
       {activeTab === 'gc' && (
         <div>
-          <div style={{ background: 'white', border: '1px solid #e5e7eb', borderRadius: 16, padding: '24px', marginBottom: 20 }}>
+          <div style={{ background: '#131A26', border: '1px solid #232E42', borderRadius: 16, padding: '24px', marginBottom: 20 }}>
             <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 4 }}>GC Reputation Score</div>
-            <div style={{ fontSize: 13, color: '#6b7280', marginBottom: 20, lineHeight: 1.6 }}>
+            <div style={{ fontSize: 13, color: '#7B8497', marginBottom: 20, lineHeight: 1.6 }}>
               Based on your logged delays, RFIs, change orders, and retention data. The more you log, the more accurate the score.
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
@@ -371,7 +371,7 @@ ${a.daily_logs.length > 0 ? `
 
           {gcScore && (
             <div>
-              <div style={{ background: 'white', border: '1px solid #e5e7eb', borderRadius: 16, padding: '24px', marginBottom: 14 }}>
+              <div style={{ background: '#131A26', border: '1px solid #232E42', borderRadius: 16, padding: '24px', marginBottom: 14 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 24 }}>
                   <div style={{ width: 80, height: 80, borderRadius: '50%', background: GRADE_CONFIG[gcScore.grade]?.bg || '#f6f4f1', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <span style={{ fontSize: 36, fontWeight: 900, color: GRADE_CONFIG[gcScore.grade]?.color || '#0a0a0a' }}>{gcScore.grade}</span>
@@ -379,7 +379,7 @@ ${a.daily_logs.length > 0 ? `
                   <div>
                     <div style={{ fontSize: 22, fontWeight: 900, letterSpacing: '-0.5px', marginBottom: 4 }}>{gcScore.gc_name}</div>
                     <div style={{ fontSize: 28, fontWeight: 900, color: GRADE_CONFIG[gcScore.grade]?.color }}>{gcScore.score}/100</div>
-                    <div style={{ fontSize: 13, color: '#9ca3af', marginTop: 2 }}>{gcScore.note}</div>
+                    <div style={{ fontSize: 13, color: '#545B6C', marginTop: 2 }}>{gcScore.note}</div>
                   </div>
                 </div>
 
@@ -387,10 +387,10 @@ ${a.daily_logs.length > 0 ? `
                   {Object.entries(gcScore.breakdown).map(([key, val]: [string, any]) => (
                     <div key={key}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-                        <span style={{ fontSize: 13, color: '#6b7280' }}>{val.label}</span>
-                        <span style={{ fontSize: 11, color: '#9ca3af' }}>{val.weight}</span>
+                        <span style={{ fontSize: 13, color: '#7B8497' }}>{val.label}</span>
+                        <span style={{ fontSize: 11, color: '#545B6C' }}>{val.weight}</span>
                       </div>
-                      <div style={{ height: 6, background: '#f3f4f6', borderRadius: 20, overflow: 'hidden' }}>
+                      <div style={{ height: 6, background: '#1A2333', borderRadius: 20, overflow: 'hidden' }}>
                         <div style={{ width: `${val.score}%`, height: '100%', background: val.score >= 70 ? '#1a7a4a' : val.score >= 50 ? '#A05A00' : '#C0392B', borderRadius: 20 }} />
                       </div>
                     </div>
@@ -419,10 +419,10 @@ ${a.daily_logs.length > 0 ? `
                 { icon: '', title: 'Change Order Speed', body: 'Average days from submission to approval. Fast GCs get better scores.' },
                 { icon: 'Cal', title: 'Delays Caused', body: 'How many days of delay has this GC caused across your jobs? It compounds.' },
               ].map(f => (
-                <div key={f.title} style={{ background: 'white', border: '1px solid #e5e7eb', borderRadius: 12, padding: '16px 18px' }}>
+                <div key={f.title} style={{ background: '#131A26', border: '1px solid #232E42', borderRadius: 12, padding: '16px 18px' }}>
                   <div style={{ fontSize: 24, marginBottom: 8 }}>{f.icon}</div>
                   <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 4 }}>{f.title}</div>
-                  <div style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>{f.body}</div>
+                  <div style={{ fontSize: 12, color: '#545B6C', lineHeight: 1.5 }}>{f.body}</div>
                 </div>
               ))}
             </div>
@@ -441,7 +441,7 @@ ${a.daily_logs.length > 0 ? `
             </div>
           </div>
 
-          <div style={{ background: 'white', border: '1px solid #e5e7eb', borderRadius: 16, padding: '24px', marginBottom: 14 }}>
+          <div style={{ background: '#131A26', border: '1px solid #232E42', borderRadius: 16, padding: '24px', marginBottom: 14 }}>
             <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 20 }}>Documentation Coverage</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <ProtectionMeter score={85} label="Daily Logs  Proof of work completed each day" />
@@ -453,7 +453,7 @@ ${a.daily_logs.length > 0 ? `
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <div style={{ background: 'white', border: '1px solid #e5e7eb', borderRadius: 12, padding: '18px' }}>
+            <div style={{ background: '#131A26', border: '1px solid #232E42', borderRadius: 12, padding: '18px' }}>
               <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 12 }}>What protects you</div>
               {[
                 'Timestamped daily logs',
@@ -463,7 +463,7 @@ ${a.daily_logs.length > 0 ? `
                 'Delay cause attribution',
                 'Lien waiver tracking',
               ].map(item => (
-                <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, fontSize: 12, color: '#6b7280' }}>
+                <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, fontSize: 12, color: '#7B8497' }}>
                   <div style={{ width: 16, height: 16, borderRadius: '50%', background: '#E8F5EF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <svg width="8" height="8" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#1a7a4a" strokeWidth="3" strokeLinecap="round"/></svg>
                   </div>

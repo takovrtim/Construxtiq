@@ -13,7 +13,7 @@ const Toggle = ({ on, onChange, label }: { on: boolean; onChange: (v: boolean) =
   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '13px 0', borderBottom: '1px solid var(--border)' }}>
     <span style={{ fontSize: 14, color: 'var(--text)' }}>{label}</span>
     <button type="button" onClick={() => onChange(!on)} style={{ width: 44, height: 26, borderRadius: 13, border: 'none', background: on ? '#ea580c' : '#e0ddd8', cursor: 'pointer', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
-      <div style={{ position: 'absolute', top: 3, left: on ? 21 : 3, width: 20, height: 20, borderRadius: '50%', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.2s' }} />
+      <div style={{ position: 'absolute', top: 3, left: on ? 21 : 3, width: 20, height: 20, borderRadius: '50%', background: '#131A26', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.2s' }} />
     </button>
   </div>
 )

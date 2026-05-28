@@ -77,13 +77,13 @@ export function ApprovalClient({ change, token }: Props) {
       <div style={{ maxWidth: 600, margin: '0 auto', padding: '28px 20px 0' }}>
 
         {/* LEGAL HEADER */}
-        <div style={{ background: 'white', borderRadius: 16, padding: '24px 28px', marginBottom: 14, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', border: '1px solid #e8e3da' }}>
+        <div style={{ background: '#131A26', borderRadius: 16, padding: '24px 28px', marginBottom: 14, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', border: '1px solid #e8e3da' }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, marginBottom: 20 }}>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 6 }}>
                 Change Order Request
               </div>
-              <div style={{ fontSize: 22, fontWeight: 900, letterSpacing: '-0.5px', lineHeight: 1.2, color: '#0a0a0a', marginBottom: 6 }}>
+              <div style={{ fontSize: 22, fontWeight: 900, letterSpacing: '-0.5px', lineHeight: 1.2, color: '#F1EEE5', marginBottom: 6 }}>
                 {change.title}
               </div>
               {project && (
@@ -93,7 +93,7 @@ export function ApprovalClient({ change, token }: Props) {
               )}
             </div>
             <div style={{ textAlign: 'right', flexShrink: 0 }}>
-              <div style={{ fontSize: 32, fontWeight: 900, letterSpacing: '-1.5px', color: '#0a0a0a' }}>
+              <div style={{ fontSize: 32, fontWeight: 900, letterSpacing: '-1.5px', color: '#F1EEE5' }}>
                 +${Number(change.cost_impact || 0).toLocaleString()}
               </div>
               {Number(change.time_impact_days) > 0 && (
@@ -113,7 +113,7 @@ export function ApprovalClient({ change, token }: Props) {
             ].map(item => (
               <div key={item.label} style={{ background: '#f6f4f1', borderRadius: 10, padding: '11px 13px' }}>
                 <div style={{ fontSize: 9, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>{item.label}</div>
-                <div style={{ fontSize: 13, fontWeight: 600, color: '#0a0a0a' }}>{item.value}</div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#F1EEE5' }}>{item.value}</div>
               </div>
             ))}
           </div>
@@ -168,7 +168,7 @@ export function ApprovalClient({ change, token }: Props) {
 
         {/* DECISION PANEL */}
         {done ? (
-          <div style={{ background: 'white', borderRadius: 16, padding: '32px 28px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', border: '1px solid #e8e3da', textAlign: 'center' }}>
+          <div style={{ background: '#131A26', borderRadius: 16, padding: '32px 28px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', border: '1px solid #e8e3da', textAlign: 'center' }}>
             <div style={{ width: 64, height: 64, borderRadius: '50%', background: decision === 'approved' ? '#edf5f0' : '#fdf0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontSize: 32 }}>
               {decision === 'approved' ? '✅' : '❌'}
             </div>
@@ -191,7 +191,7 @@ export function ApprovalClient({ change, token }: Props) {
             </div>
           </div>
         ) : (
-          <div style={{ background: 'white', borderRadius: 16, padding: '24px 28px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', border: '1px solid #e8e3da' }}>
+          <div style={{ background: '#131A26', borderRadius: 16, padding: '24px 28px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', border: '1px solid #e8e3da' }}>
             <div style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-0.3px', marginBottom: 4 }}>Your Decision</div>
             <div style={{ fontSize: 13, color: '#888', marginBottom: 20 }}>
               Approving authorizes the contractor to proceed. Your name and timestamp will be recorded.

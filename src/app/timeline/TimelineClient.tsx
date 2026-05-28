@@ -67,9 +67,9 @@ export function TimelineClient({ project, jobs, inspections, changes }: Props) {
               <button key={v} onClick={() => setView(v)} style={{ padding: '6px 12px', fontSize: 12, fontWeight: view===v?700:500, borderRadius: 7, border: 'none', cursor: 'pointer', fontFamily: 'inherit', background: view===v?'white':'transparent', color: view===v?'#0f0f0f':'#9e9d99', boxShadow: view===v?'0 1px 4px rgba(0,0,0,0.08)':'none', textTransform: 'capitalize' }}>{v}</button>
             ))}
           </div>
-          <button onClick={prevMonth} style={{ padding: '7px 12px', fontSize: 13, borderRadius: 8, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>←</button>
-          <button onClick={() => setViewMonth(new Date())} style={{ padding: '7px 12px', fontSize: 12, borderRadius: 8, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit', fontWeight: 600 }}>Today</button>
-          <button onClick={nextMonth} style={{ padding: '7px 12px', fontSize: 13, borderRadius: 8, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>→</button>
+          <button onClick={prevMonth} style={{ padding: '7px 12px', fontSize: 13, borderRadius: 8, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit' }}>←</button>
+          <button onClick={() => setViewMonth(new Date())} style={{ padding: '7px 12px', fontSize: 12, borderRadius: 8, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit', fontWeight: 600 }}>Today</button>
+          <button onClick={nextMonth} style={{ padding: '7px 12px', fontSize: 13, borderRadius: 8, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit' }}>→</button>
         </div>
       </div>
 
@@ -81,7 +81,7 @@ export function TimelineClient({ project, jobs, inspections, changes }: Props) {
           { label: 'Delay Days', value: totalDelayDays, sub: 'from changes', accent: totalDelayDays>0?'#b83232':'' },
           { label: 'Completed', value: jobs.filter(j=>j.status==='completed').length, sub: 'jobs done', accent: '#2d7a4f' },
         ].map(s => (
-          <div key={s.label} style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+          <div key={s.label} style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: s.accent||'rgba(0,0,0,0.05)', borderRadius: '14px 14px 0 0' }} />
             <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
             <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-1px', color: s.accent||'#0f0f0f', marginBottom: 2 }}>{s.value}</div>
@@ -101,7 +101,7 @@ export function TimelineClient({ project, jobs, inspections, changes }: Props) {
 
       {/* GANTT */}
       {view === 'gantt' && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: 16 }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: 16 }}>
           <div style={{ padding: '14px 20px', borderBottom: '1px solid rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ fontSize: 14, fontWeight: 700 }}>{format(viewMonth, 'MMMM yyyy')}</div>
             <div style={{ display: 'flex', gap: 10, fontSize: 11 }}>
@@ -157,7 +157,7 @@ export function TimelineClient({ project, jobs, inspections, changes }: Props) {
 
       {/* CALENDAR */}
       {view === 'calendar' && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: 16, padding: 20 }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: 16, padding: 20 }}>
           <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 14 }}>{format(viewMonth,'MMMM yyyy')}</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: 3, marginBottom: 4 }}>
             {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => <div key={d} style={{ textAlign: 'center', fontSize: 9, fontWeight: 700, color: '#9e9d99', padding: '3px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{d}</div>)}
@@ -185,7 +185,7 @@ export function TimelineClient({ project, jobs, inspections, changes }: Props) {
 
       {/* PIPELINE */}
       {view === 'pipeline' && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: 16 }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: 16 }}>
           <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 16 }}>Job Pipeline</div>
           {jobs.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '32px 0', color: '#9e9d99', fontSize: 13 }}>No jobs — <Link href="/jobs" style={{ color: '#d95f2b', textDecoration: 'none', fontWeight: 600 }}>add jobs →</Link></div>
@@ -200,7 +200,7 @@ export function TimelineClient({ project, jobs, inspections, changes }: Props) {
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
                         <span style={{ fontSize: 14, fontWeight: 700 }}>{job.title}</span>
-                        {job.permit_number && <span style={{ fontSize: 10, fontFamily: 'monospace', fontWeight: 700, background: 'white', padding: '1px 6px', borderRadius: 4, color: '#6b6a66' }}>{job.permit_number}</span>}
+                        {job.permit_number && <span style={{ fontSize: 10, fontFamily: 'monospace', fontWeight: 700, background: '#131A26', padding: '1px 6px', borderRadius: 4, color: '#6b6a66' }}>{job.permit_number}</span>}
                       </div>
                       <div style={{ fontSize: 12, color: '#9e9d99', marginBottom: jobInspections.length>0?5:0 }}>{job.client_name||'—'} · {format(parseISO(job.created_at),'MMM d')}</div>
                       {jobInspections.length > 0 && (
@@ -223,7 +223,7 @@ export function TimelineClient({ project, jobs, inspections, changes }: Props) {
 
       {/* DELAY IMPACT */}
       {changes.filter(c=>c.time_impact_days>0&&c.status!=='rejected').length > 0 && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 16, padding: 20, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
             <div style={{ fontSize: 14, fontWeight: 700 }}>⚠️ Delay Impact</div>
             <span style={{ fontSize: 12, fontWeight: 700, color: '#b83232', background: '#fdf0f0', padding: '3px 10px', borderRadius: 20 }}>+{totalDelayDays} days total</span>
@@ -246,7 +246,7 @@ export function TimelineClient({ project, jobs, inspections, changes }: Props) {
       {selected && (
         <>
           <div onClick={() => setSelected(null)} style={{ position: 'fixed', inset: 0, zIndex: 90, background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)' }} />
-          <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: 360, background: 'white', borderLeft: '1px solid rgba(0,0,0,0.08)', boxShadow: '-16px 0 48px rgba(0,0,0,0.15)', zIndex: 100, overflowY: 'auto', padding: 24 }}>
+          <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: 360, background: '#131A26', borderLeft: '1px solid rgba(0,0,0,0.08)', boxShadow: '-16px 0 48px rgba(0,0,0,0.15)', zIndex: 100, overflowY: 'auto', padding: 24 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: '#9e9d99', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{selected.type}</div>
               <button onClick={() => setSelected(null)} style={{ width: 30, height: 30, borderRadius: 8, border: 'none', background: '#f8f7f4', cursor: 'pointer', fontSize: 18, color: '#9e9d99' }}>×</button>
@@ -261,7 +261,7 @@ export function TimelineClient({ project, jobs, inspections, changes }: Props) {
                   {selected.data.contract_value && <div><span style={{ color: '#9e9d99' }}>Value </span><span style={{ fontWeight: 700, color: '#2d7a4f' }}>${Number(selected.data.contract_value).toLocaleString()}</span></div>}
                   <div><span style={{ color: '#9e9d99' }}>Added </span>{format(parseISO(selected.data.created_at),'MMMM d, yyyy')}</div>
                 </div>
-                <Link href="/jobs" style={{ display: 'block', marginTop: 16, padding: '11px', fontSize: 13, fontWeight: 700, borderRadius: 10, textAlign: 'center', background: '#0f0f0f', color: 'white', textDecoration: 'none' }}>Open Job Board →</Link>
+                <Link href="/jobs" style={{ display: 'block', marginTop: 16, padding: '11px', fontSize: 13, fontWeight: 700, borderRadius: 10, textAlign: 'center', background: '#131A26', color: 'white', textDecoration: 'none' }}>Open Job Board →</Link>
               </>
             )}
             {selected.type === 'inspection' && (
@@ -271,7 +271,7 @@ export function TimelineClient({ project, jobs, inspections, changes }: Props) {
                   <div><span style={{ color: '#9e9d99' }}>Date </span><strong>{format(parseISO(selected.data.scheduled_date),'MMMM d, yyyy')}</strong></div>
                   <div><span style={{ color: '#9e9d99' }}>Status </span>{selected.data.status}</div>
                 </div>
-                <Link href="/inspections" style={{ display: 'block', marginTop: 16, padding: '11px', fontSize: 13, fontWeight: 700, borderRadius: 10, textAlign: 'center', background: '#0f0f0f', color: 'white', textDecoration: 'none' }}>View Inspections →</Link>
+                <Link href="/inspections" style={{ display: 'block', marginTop: 16, padding: '11px', fontSize: 13, fontWeight: 700, borderRadius: 10, textAlign: 'center', background: '#131A26', color: 'white', textDecoration: 'none' }}>View Inspections →</Link>
               </>
             )}
           </div>

@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -104,7 +104,7 @@ export default function OnboardingPage() {
       </div>
 
       {/* Card */}
-      <div style={{ width: '100%', maxWidth: 560, background: 'white', borderRadius: 24, padding: '40px 40px', boxShadow: '0 8px 40px rgba(0,0,0,0.08)' }}>
+      <div style={{ width: '100%', maxWidth: 560, background: '#131A26', borderRadius: 24, padding: '40px 40px', boxShadow: '0 8px 40px rgba(0,0,0,0.08)' }}>
 
         {/* WELCOME */}
         {step === 0 && (
@@ -112,7 +112,7 @@ export default function OnboardingPage() {
             <div style={{ fontSize: 56, marginBottom: 20 }}>{STEPS[0].icon}</div>
             <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 12 }}>{STEPS[0].title}</div>
             <div style={{ fontSize: 15, color: '#6b6a66', marginBottom: 32, lineHeight: 1.6 }}>{STEPS[0].subtitle}</div>
-            <div style={{ background: '#0f0f0f', borderRadius: 16, padding: '24px 28px', marginBottom: 32, textAlign: 'left', color: 'white' }}>
+            <div style={{ background: '#131A26', borderRadius: 16, padding: '24px 28px', marginBottom: 32, textAlign: 'left', color: 'white' }}>
               <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 700, marginBottom: 14 }}>Built for</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {['Electrical contractors', 'Plumbing contractors', 'General contractors doing both'].map(item => (
@@ -196,7 +196,7 @@ export default function OnboardingPage() {
                 </div>
               ))}
             </div>
-            <button onClick={() => setStep(3)} style={{ width: '100%', padding: '15px', fontSize: 15, fontWeight: 700, borderRadius: 12, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>
+            <button onClick={() => setStep(3)} style={{ width: '100%', padding: '15px', fontSize: 15, fontWeight: 700, borderRadius: 12, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>
               Got it â†’
             </button>
           </div>

@@ -148,7 +148,7 @@ export function InspectionsClient({ user, project, initialInspections, jobs }: P
     if (!error) { setInspections(prev => prev.filter(i => i.id !== id)); setSelected(null); msg('Deleted') }
   }
 
-  const inp: React.CSSProperties = { width: '100%', padding: '10px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 9, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f' }
+  const inp: React.CSSProperties = { width: '100%', padding: '10px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 9, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#F1EEE5' }
   const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9e9d99', display: 'block', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
   if (!project) return (
@@ -180,7 +180,7 @@ export function InspectionsClient({ user, project, initialInspections, jobs }: P
           { label: 'Passed', value: passed, sub: 'inspections cleared', accent: '#2d7a4f' },
           { label: 'Reinspection', value: needsReinspection, sub: 'required', accent: needsReinspection > 0 ? '#b06e1a' : '' },
         ].map(s => (
-          <div key={s.label} style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+          <div key={s.label} style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: s.accent || 'rgba(0,0,0,0.05)', borderRadius: '14px 14px 0 0' }} />
             <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
             <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-1px', color: s.accent || '#0f0f0f', marginBottom: 2 }}>{s.value}</div>
@@ -206,7 +206,7 @@ export function InspectionsClient({ user, project, initialInspections, jobs }: P
 
       {/* ADD FORM */}
       {showAdd && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
           <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 16 }}>Schedule Inspection</div>
           <form onSubmit={addInspection} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
 
@@ -229,7 +229,7 @@ export function InspectionsClient({ user, project, initialInspections, jobs }: P
               </div>
               <div>
                 <label style={lbl}>Related Job</label>
-                <select style={{ ...inp, background: 'white' }} value={jobId} onChange={e => setJobId(e.target.value)}>
+                <select style={{ ...inp, background: '#131A26' }} value={jobId} onChange={e => setJobId(e.target.value)}>
                   <option value="">No specific job</option>
                   {jobs.map(j => <option key={j.id} value={j.id}>{j.title}</option>)}
                 </select>
@@ -260,7 +260,7 @@ export function InspectionsClient({ user, project, initialInspections, jobs }: P
               <button type="submit" disabled={saving || !scheduledDate} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: saving || !scheduledDate ? 'not-allowed' : 'pointer', border: 'none', background: !scheduledDate ? '#f1ede6' : '#0f0f0f', color: !scheduledDate ? '#9e9d99' : 'white', fontFamily: 'inherit' }}>
                 {saving ? 'Saving...' : 'Schedule Inspection'}
               </button>
-              <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>Cancel</button>
+              <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit' }}>Cancel</button>
             </div>
           </form>
         </div>
@@ -277,7 +277,7 @@ export function InspectionsClient({ user, project, initialInspections, jobs }: P
 
       {/* INSPECTIONS LIST */}
       {sortedFiltered.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '52px 20px', background: 'white', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
+        <div style={{ textAlign: 'center', padding: '52px 20px', background: '#131A26', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>🔍</div>
           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>{inspections.length === 0 ? 'No inspections scheduled' : 'No results'}</div>
           <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 20 }}>Schedule your first inspection to stay on top of timelines</div>
@@ -292,7 +292,7 @@ export function InspectionsClient({ user, project, initialInspections, jobs }: P
             const daysUntil = differenceInDays(parseISO(insp.scheduled_date), new Date())
 
             return (
-              <div key={insp.id} onClick={() => setSelected(insp === selected ? null : insp)} style={{ background: 'white', border: `1.5px solid ${selected?.id === insp.id ? '#0f0f0f' : urgency && (urgency.text === 'Today' || urgency.text === 'Overdue') ? '#b83232' : 'rgba(0,0,0,0.07)'}`, borderRadius: 14, padding: 18, cursor: 'pointer', transition: 'all 0.15s', boxShadow: selected?.id === insp.id ? '0 4px 16px rgba(0,0,0,0.08)' : '0 1px 3px rgba(0,0,0,0.04)' }}>
+              <div key={insp.id} onClick={() => setSelected(insp === selected ? null : insp)} style={{ background: '#131A26', border: `1.5px solid ${selected?.id === insp.id ? '#0f0f0f' : urgency && (urgency.text === 'Today' || urgency.text === 'Overdue') ? '#b83232' : 'rgba(0,0,0,0.07)'}`, borderRadius: 14, padding: 18, cursor: 'pointer', transition: 'all 0.15s', boxShadow: selected?.id === insp.id ? '0 4px 16px rgba(0,0,0,0.08)' : '0 1px 3px rgba(0,0,0,0.04)' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
                   {/* Date block */}
                   <div style={{ width: 52, flexShrink: 0, textAlign: 'center', background: insp.status === 'passed' ? '#edf5f0' : insp.status === 'failed' ? '#fdf0f0' : urgency ? urgency.bg : '#f8f7f4', borderRadius: 10, padding: '8px 6px' }}>
@@ -341,7 +341,7 @@ export function InspectionsClient({ user, project, initialInspections, jobs }: P
       {selected && (
         <>
           <div onClick={() => setSelected(null)} style={{ position: 'fixed', inset: 0, zIndex: 90, background: 'rgba(0,0,0,0.25)', backdropFilter: 'blur(3px)' }} />
-          <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: 400, background: 'white', borderLeft: '1px solid rgba(0,0,0,0.08)', boxShadow: '-12px 0 48px rgba(0,0,0,0.15)', zIndex: 100, overflowY: 'auto', padding: 24 }}>
+          <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, width: 400, background: '#131A26', borderLeft: '1px solid rgba(0,0,0,0.08)', boxShadow: '-12px 0 48px rgba(0,0,0,0.15)', zIndex: 100, overflowY: 'auto', padding: 24 }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
               <div>
                 <div style={{ fontSize: 12, color: '#9e9d99', marginBottom: 4 }}>{selected.inspection_type}</div>
@@ -351,7 +351,7 @@ export function InspectionsClient({ user, project, initialInspections, jobs }: P
             </div>
 
             {/* Date/time block */}
-            <div style={{ background: '#0f0f0f', borderRadius: 12, padding: 16, marginBottom: 16, color: 'white' }}>
+            <div style={{ background: '#131A26', borderRadius: 12, padding: 16, marginBottom: 16, color: 'white' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <div>
                   <div style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>Date</div>
@@ -402,7 +402,7 @@ export function InspectionsClient({ user, project, initialInspections, jobs }: P
                     ✗ Mark Failed
                   </button>
                 </div>
-                <button onClick={() => updateStatus(selected.id, 'rescheduled', resultNotes)} disabled={updatingResult} style={{ width: '100%', marginTop: 8, padding: '10px', fontSize: 13, fontWeight: 600, borderRadius: 10, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit', color: '#6b6a66' }}>
+                <button onClick={() => updateStatus(selected.id, 'rescheduled', resultNotes)} disabled={updatingResult} style={{ width: '100%', marginTop: 8, padding: '10px', fontSize: 13, fontWeight: 600, borderRadius: 10, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit', color: '#6b6a66' }}>
                   ↻ Reschedule
                 </button>
               </div>
@@ -428,7 +428,7 @@ export function InspectionsClient({ user, project, initialInspections, jobs }: P
       )}
 
       {toast && (
-        <div style={{ position: 'fixed', bottom: 24, right: selected ? 424 : 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: selected ? 424 : 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
           {toast}
         </div>
       )}

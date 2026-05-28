@@ -58,7 +58,7 @@ export function JobCostingClient({ user, project, jobs, materials, crewTime, cha
       </div>
 
       {/* Project totals */}
-      <div style={{ background: '#0f0f0f', borderRadius: 16, padding: 24, marginBottom: 20, color: 'white' }}>
+      <div style={{ background: '#131A26', borderRadius: 16, padding: 24, marginBottom: 20, color: 'white' }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 16 }}>Project Overview</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 20 }}>
           {[
@@ -80,7 +80,7 @@ export function JobCostingClient({ user, project, jobs, materials, crewTime, cha
 
       {/* Per job breakdown */}
       {jobCosts.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '52px 20px', background: 'white', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
+        <div style={{ textAlign: 'center', padding: '52px 20px', background: '#131A26', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>💰</div>
           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>No jobs yet</div>
           <div style={{ fontSize: 13, color: '#9e9d99' }}>Add jobs, log crew time, and track materials to see profit per job</div>
@@ -94,7 +94,7 @@ export function JobCostingClient({ user, project, jobs, materials, crewTime, cha
 
             return (
               <div key={job.id}>
-                <div onClick={() => setSelectedJob(isSelected ? null : job.id)} style={{ background: 'white', border: `1.5px solid ${isSelected ? '#0f0f0f' : 'rgba(0,0,0,0.07)'}`, borderRadius: 14, padding: '18px 20px', cursor: 'pointer', transition: 'all 0.15s', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                <div onClick={() => setSelectedJob(isSelected ? null : job.id)} style={{ background: '#131A26', border: `1.5px solid ${isSelected ? '#0f0f0f' : 'rgba(0,0,0,0.07)'}`, borderRadius: 14, padding: '18px 20px', cursor: 'pointer', transition: 'all 0.15s', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{job.title}</div>
@@ -141,7 +141,7 @@ export function JobCostingClient({ user, project, jobs, materials, crewTime, cha
                         { label: '👷 Labor', value: laborCost, sub: `${crewTime.filter(c => c.job_id === job.id).reduce((s: number, c: any) => s + (c.hours || 0), 0)}h logged` },
                         { label: '🔄 Change Orders', value: changeCost, sub: `${changes.filter(c => c.job_id === job.id).length} changes` },
                       ].map(item => (
-                        <div key={item.label} style={{ background: 'white', borderRadius: 10, padding: '14px 16px' }}>
+                        <div key={item.label} style={{ background: '#131A26', borderRadius: 10, padding: '14px 16px' }}>
                           <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 6 }}>{item.label}</div>
                           <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 3 }}>${item.value.toLocaleString()}</div>
                           <div style={{ fontSize: 11, color: '#9e9d99' }}>{item.sub}</div>
@@ -149,7 +149,7 @@ export function JobCostingClient({ user, project, jobs, materials, crewTime, cha
                       ))}
                     </div>
                     <div style={{ marginTop: 12, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                      <div style={{ background: 'white', borderRadius: 10, padding: '14px 16px' }}>
+                      <div style={{ background: '#131A26', borderRadius: 10, padding: '14px 16px' }}>
                         <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 6 }}>💵 Collected</div>
                         <div style={{ fontSize: 20, fontWeight: 800, color: '#2d7a4f' }}>${collected.toLocaleString()}</div>
                         <div style={{ fontSize: 11, color: '#9e9d99' }}>of ${invoiced.toLocaleString()} invoiced</div>

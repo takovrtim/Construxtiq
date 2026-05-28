@@ -105,13 +105,13 @@ function SendToGC({ change, approvalUrl, generating, onGenerate, onMsg }: {
 
           {/* Link copy */}
           <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-            <div style={{ flex: 1, fontSize: 12, fontFamily: 'monospace', color: '#1a4d31', background: 'white', padding: '8px 10px', borderRadius: 7, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', border: '1px solid rgba(45,122,79,0.15)' }}>{approvalUrl}</div>
+            <div style={{ flex: 1, fontSize: 12, fontFamily: 'monospace', color: '#1a4d31', background: '#131A26', padding: '8px 10px', borderRadius: 7, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', border: '1px solid rgba(45,122,79,0.15)' }}>{approvalUrl}</div>
             <button onClick={() => { navigator.clipboard.writeText(approvalUrl).catch(() => {}); onMsg('✓ Link copied!') }} style={{ padding: '8px 14px', fontSize: 12, fontWeight: 700, borderRadius: 7, cursor: 'pointer', border: 'none', background: '#2d7a4f', color: 'white', fontFamily: 'inherit', flexShrink: 0 }}>Copy</button>
           </div>
 
           {/* Send options */}
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button onClick={() => window.open(`sms:?body=Please review and approve this change order: ${approvalUrl}`, '_blank')} style={{ padding: '7px 14px', fontSize: 12, fontWeight: 600, borderRadius: 7, cursor: 'pointer', border: '1px solid rgba(45,122,79,0.2)', background: 'white', color: '#2d7a4f', fontFamily: 'inherit' }}>
+            <button onClick={() => window.open(`sms:?body=Please review and approve this change order: ${approvalUrl}`, '_blank')} style={{ padding: '7px 14px', fontSize: 12, fontWeight: 600, borderRadius: 7, cursor: 'pointer', border: '1px solid rgba(45,122,79,0.2)', background: '#131A26', color: '#2d7a4f', fontFamily: 'inherit' }}>
               📱 Text to GC
             </button>
             <button onClick={() => setShowEmail(v => !v)} style={{ padding: '7px 14px', fontSize: 12, fontWeight: 600, borderRadius: 7, cursor: 'pointer', border: '1px solid rgba(45,122,79,0.2)', background: showEmail ? '#2d7a4f' : 'white', color: showEmail ? 'white' : '#2d7a4f', fontFamily: 'inherit' }}>
@@ -121,7 +121,7 @@ function SendToGC({ change, approvalUrl, generating, onGenerate, onMsg }: {
 
           {/* Email form */}
           {showEmail && (
-            <div style={{ marginTop: 12, padding: 12, background: 'white', borderRadius: 8, border: '1px solid rgba(45,122,79,0.15)' }}>
+            <div style={{ marginTop: 12, padding: 12, background: '#131A26', borderRadius: 8, border: '1px solid rgba(45,122,79,0.15)' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
                 <div>
                   <div style={{ fontSize: 10, fontWeight: 700, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 4 }}>GC Email *</div>
@@ -330,12 +330,12 @@ export function ChangesClient({ user, project, initialChanges, jobs }: Props) {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
             <button type="button" onClick={() => setRequiresPermit(v => !v)} style={{ width: 44, height: 26, borderRadius: 13, border: 'none', background: requiresPermit ? '#0f0f0f' : '#e0ddd8', cursor: 'pointer', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
-              <div style={{ position: 'absolute', top: 3, left: requiresPermit ? 21 : 3, width: 20, height: 20, borderRadius: '50%', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.2s' }} />
+              <div style={{ position: 'absolute', top: 3, left: requiresPermit ? 21 : 3, width: 20, height: 20, borderRadius: '50%', background: '#131A26', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.2s' }} />
             </button>
             <span style={{ fontSize: 13, color: 'var(--text-secondary)', fontWeight: requiresPermit ? 600 : 400 }}>Requires permit revision</span>
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button onClick={saveChange} disabled={saving || !title.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>
+            <button onClick={saveChange} disabled={saving || !title.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>
               {saving ? 'Saving...' : 'Save Change Order'}
             </button>
             <button onClick={() => setShowNew(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 10, cursor: 'pointer', border: '1px solid var(--border)', background: 'var(--surface)', fontFamily: 'inherit', color: 'var(--text-primary)' }}>Cancel</button>
@@ -456,7 +456,7 @@ export function ChangesClient({ user, project, initialChanges, jobs }: Props) {
         </div>
       )}
 
-      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
+      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
     </>
   )
 }

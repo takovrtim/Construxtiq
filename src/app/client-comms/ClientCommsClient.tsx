@@ -108,7 +108,7 @@ export function ClientCommsClient({ user, project, initialLogs, jobs }: Props) {
     if (!error) { setLogs(prev => prev.filter(l => l.id !== id)); msg('Deleted') }
   }
 
-  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f' }
+  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#F1EEE5' }
   const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9e9d99', display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
   if (!project) return <div style={{ textAlign: 'center', padding: '60px 20px' }}><div style={{ fontSize: 40 }}>💬</div><a href="/dashboard" style={{ color: '#d95f2b', textDecoration: 'none', fontSize: 13 }}>Create a project first →</a></div>
@@ -132,7 +132,7 @@ export function ClientCommsClient({ user, project, initialLogs, jobs }: Props) {
           { label: 'Follow-ups', value: followUpCount, sub: 'pending', accent: followUpCount > 0 ? '#b06e1a' : '' },
           { label: 'Flagged', value: flaggedCount, sub: 'need attention', accent: flaggedCount > 0 ? '#b83232' : '' },
         ].map(s => (
-          <div key={s.label} style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+          <div key={s.label} style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: s.accent || 'rgba(0,0,0,0.05)', borderRadius: '14px 14px 0 0' }} />
             <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
             <div style={{ fontSize: 24, fontWeight: 800, color: s.accent || '#0f0f0f', marginBottom: 2 }}>{s.value}</div>
@@ -142,7 +142,7 @@ export function ClientCommsClient({ user, project, initialLogs, jobs }: Props) {
       </div>
 
       {showAdd && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
           <form onSubmit={addLog} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             {/* Type selector */}
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -169,7 +169,7 @@ export function ClientCommsClient({ user, project, initialLogs, jobs }: Props) {
             </div>
 
             <div><label style={lbl}>Job</label>
-              <select style={{ ...inp, background: 'white' }} value={jobId} onChange={e => setJobId(e.target.value)}>
+              <select style={{ ...inp, background: '#131A26' }} value={jobId} onChange={e => setJobId(e.target.value)}>
                 <option value="">No specific job</option>
                 {jobs.map(j => <option key={j.id} value={j.id}>{j.title} {j.client_name ? `(${j.client_name})` : ''}</option>)}
               </select>
@@ -193,8 +193,8 @@ export function ClientCommsClient({ user, project, initialLogs, jobs }: Props) {
             </div>
 
             <div style={{ display: 'flex', gap: 8 }}>
-              <button type="submit" disabled={saving} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>{saving ? 'Saving...' : 'Log Communication'}</button>
-              <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>Cancel</button>
+              <button type="submit" disabled={saving} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>{saving ? 'Saving...' : 'Log Communication'}</button>
+              <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit' }}>Cancel</button>
             </div>
           </form>
         </div>
@@ -215,7 +215,7 @@ export function ClientCommsClient({ user, project, initialLogs, jobs }: Props) {
       </div>
 
       {filtered.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '52px 20px', background: 'white', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
+        <div style={{ textAlign: 'center', padding: '52px 20px', background: '#131A26', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>💬</div>
           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>No communications logged yet</div>
           <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 20 }}>Log every owner interaction — protects you when they dispute what was said</div>
@@ -227,7 +227,7 @@ export function ClientCommsClient({ user, project, initialLogs, jobs }: Props) {
             const tc = TYPE_CONFIG[log.type]
             const job = jobs.find(j => j.id === log.job_id)
             return (
-              <div key={log.id} style={{ background: 'white', border: `1.5px solid ${log.flagged ? 'rgba(184,50,50,0.3)' : 'rgba(0,0,0,0.07)'}`, borderRadius: 14, padding: '16px 20px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+              <div key={log.id} style={{ background: '#131A26', border: `1.5px solid ${log.flagged ? 'rgba(184,50,50,0.3)' : 'rgba(0,0,0,0.07)'}`, borderRadius: 14, padding: '16px 20px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
                   <div style={{ width: 44, height: 44, borderRadius: 10, background: `${tc.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>{tc.icon}</div>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -238,7 +238,7 @@ export function ClientCommsClient({ user, project, initialLogs, jobs }: Props) {
                       {log.flagged && <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 20, background: '#fdf0f0', color: '#b83232' }}>🚩 Flagged</span>}
                       {log.follow_up_needed && <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 20, background: '#fdf4e3', color: '#6b4010' }}>📅 Follow-up</span>}
                     </div>
-                    <div style={{ fontSize: 13, color: '#0f0f0f', lineHeight: 1.6, marginBottom: 6 }}>{log.summary}</div>
+                    <div style={{ fontSize: 13, color: '#F1EEE5', lineHeight: 1.6, marginBottom: 6 }}>{log.summary}</div>
                     {log.outcome && <div style={{ fontSize: 12, color: '#6b6a66', fontStyle: 'italic' }}>→ {log.outcome}</div>}
                     <div style={{ fontSize: 11, color: '#9e9d99', marginTop: 6 }}>
                       {format(parseISO(log.comm_date), 'MMM d, yyyy')}{log.comm_time ? ` at ${log.comm_time}` : ''}
@@ -246,7 +246,7 @@ export function ClientCommsClient({ user, project, initialLogs, jobs }: Props) {
                     </div>
                   </div>
                   <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
-                    <button onClick={() => toggleFlag(log.id, log.flagged)} style={{ padding: '4px 10px', fontSize: 11, borderRadius: 7, border: '1px solid rgba(0,0,0,0.1)', background: 'white', cursor: 'pointer', fontFamily: 'inherit', color: '#9e9d99' }}>🚩</button>
+                    <button onClick={() => toggleFlag(log.id, log.flagged)} style={{ padding: '4px 10px', fontSize: 11, borderRadius: 7, border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', cursor: 'pointer', fontFamily: 'inherit', color: '#9e9d99' }}>🚩</button>
                     <button onClick={() => deleteLog(log.id)} style={{ padding: '4px 10px', fontSize: 11, borderRadius: 7, border: '1px solid rgba(184,50,50,0.15)', background: '#fdf0f0', cursor: 'pointer', fontFamily: 'inherit', color: '#b83232' }}>×</button>
                   </div>
                 </div>
@@ -256,7 +256,7 @@ export function ClientCommsClient({ user, project, initialLogs, jobs }: Props) {
         </div>
       )}
 
-      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
+      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>{toast}</div>}
     </>
   )
 }

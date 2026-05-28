@@ -111,7 +111,7 @@ export function CrewTimeClient({ user, project, initialEntries, jobs, subs }: Pr
     if (!error) { setEntries(prev => prev.filter(e => e.id !== id)); msg('Deleted') }
   }
 
-  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f' }
+  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#F1EEE5' }
   const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9e9d99', display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
   if (!project) return (
@@ -141,7 +141,7 @@ export function CrewTimeClient({ user, project, initialEntries, jobs, subs }: Pr
           { label: "Today's Entries", value: todayEntries.length, sub: 'workers logged', accent: todayEntries.length > 0 ? '#2d7a4f' : '' },
           { label: 'Crew Members', value: uniqueWorkers.length, sub: 'on this project', accent: '' },
         ].map(s => (
-          <div key={s.label} style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+          <div key={s.label} style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: s.accent || 'rgba(0,0,0,0.05)', borderRadius: '14px 14px 0 0' }} />
             <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
             <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-1px', color: s.accent || '#0f0f0f', marginBottom: 2 }}>{s.value}</div>
@@ -152,7 +152,7 @@ export function CrewTimeClient({ user, project, initialEntries, jobs, subs }: Pr
 
       {/* ADD FORM */}
       {showAdd && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
           <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 16 }}>Log Time Entry</div>
           <form onSubmit={addEntry} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
 
@@ -172,7 +172,7 @@ export function CrewTimeClient({ user, project, initialEntries, jobs, subs }: Pr
               </div>
               <div>
                 <label style={lbl}>Job</label>
-                <select style={{ ...inp, background: 'white' }} value={jobId} onChange={e => setJobId(e.target.value)}>
+                <select style={{ ...inp, background: '#131A26' }} value={jobId} onChange={e => setJobId(e.target.value)}>
                   <option value="">No specific job</option>
                   {jobs.map(j => <option key={j.id} value={j.id}>{j.title}</option>)}
                 </select>
@@ -197,7 +197,7 @@ export function CrewTimeClient({ user, project, initialEntries, jobs, subs }: Pr
 
             {/* Live preview */}
             {hours > 0 && (
-              <div style={{ background: '#0f0f0f', borderRadius: 10, padding: '14px 18px', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ background: '#131A26', borderRadius: 10, padding: '14px 18px', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
                   <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>Time Summary</div>
                   <div style={{ fontSize: 18, fontWeight: 800 }}>{hours} hours</div>
@@ -223,10 +223,10 @@ export function CrewTimeClient({ user, project, initialEntries, jobs, subs }: Pr
             </div>
 
             <div style={{ display: 'flex', gap: 8 }}>
-              <button type="submit" disabled={saving || !workerName.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>
+              <button type="submit" disabled={saving || !workerName.trim()} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>
                 {saving ? 'Saving...' : 'Log Time'}
               </button>
-              <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>Cancel</button>
+              <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit' }}>Cancel</button>
             </div>
           </form>
         </div>
@@ -247,7 +247,7 @@ export function CrewTimeClient({ user, project, initialEntries, jobs, subs }: Pr
 
       {/* WORKER SUMMARY */}
       {uniqueWorkers.length > 0 && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 20, marginBottom: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 20, marginBottom: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 12 }}>Worker Summary</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 8 }}>
             {uniqueWorkers.map((worker, i) => {
@@ -271,7 +271,7 @@ export function CrewTimeClient({ user, project, initialEntries, jobs, subs }: Pr
 
       {/* TIME ENTRIES BY DATE */}
       {Object.keys(grouped).length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '52px 20px', background: 'white', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
+        <div style={{ textAlign: 'center', padding: '52px 20px', background: '#131A26', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>⏱️</div>
           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>No time entries yet</div>
           <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 20 }}>Track crew hours to know exactly what each job costs</div>
@@ -299,7 +299,7 @@ export function CrewTimeClient({ user, project, initialEntries, jobs, subs }: Pr
                     const job = jobs.find(j => j.id === entry.job_id)
                     const overtime = (entry.hours || 0) > 8
                     return (
-                      <div key={entry.id} style={{ background: 'white', border: `1px solid ${overtime ? 'rgba(176,110,26,0.3)' : 'rgba(0,0,0,0.07)'}`, borderRadius: 12, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 14 }}>
+                      <div key={entry.id} style={{ background: '#131A26', border: `1px solid ${overtime ? 'rgba(176,110,26,0.3)' : 'rgba(0,0,0,0.07)'}`, borderRadius: 12, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 14 }}>
                         <div style={{ width: 40, height: 40, borderRadius: '50%', background: entry.worker_type === 'sub' ? '#eef3fb' : entry.worker_type === 'owner' ? '#EEEDFE' : '#f1ede6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>
                           {entry.worker_type === 'sub' ? '🔧' : entry.worker_type === 'owner' ? '👤' : '👷'}
                         </div>
@@ -330,7 +330,7 @@ export function CrewTimeClient({ user, project, initialEntries, jobs, subs }: Pr
       )}
 
       {toast && (
-        <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
           {toast}
         </div>
       )}

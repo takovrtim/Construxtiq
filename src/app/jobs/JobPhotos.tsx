@@ -27,7 +27,7 @@ const STAGES = [
   { id: 'rough_inspection', label: 'Rough Inspection',   icon: '🔍', color: '#7F77DD' },
   { id: 'in_progress',      label: 'In Progress',        icon: '⚡', color: '#378ADD' },
   { id: 'final_inspection', label: 'Final Inspection',   icon: '✅', color: '#2d7a4f' },
-  { id: 'completed',        label: 'Completed',          icon: '🏁', color: '#0f0f0f' },
+  { id: 'completed',        label: 'Completed',          icon: '🏁', color: '#F1EEE5' },
   { id: 'issue',            label: 'Issue / Problem',    icon: '⚠️', color: '#b83232' },
   { id: 'other',            label: 'Other',              icon: '📄', color: '#6b6a66' },
 ]
@@ -110,7 +110,7 @@ export function JobPhotos({ projectId, jobId, jobTitle }: Props) {
     <div>
       {/* Upload section */}
       <div style={{ background: '#f8f7f4', borderRadius: 12, padding: 16, marginBottom: 20 }}>
-        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 12, color: '#0f0f0f' }}>
+        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 12, color: '#F1EEE5' }}>
           📸 Add Photo Proof
         </div>
 
@@ -126,7 +126,7 @@ export function JobPhotos({ projectId, jobId, jobTitle }: Props) {
         {/* Caption input */}
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <input
-            style={{ flex: 1, padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 9, fontFamily: 'inherit', outline: 'none', background: 'white' }}
+            style={{ flex: 1, padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 9, fontFamily: 'inherit', outline: 'none', background: '#131A26' }}
             placeholder="Optional caption (e.g. 'Panel before upgrade')"
             value={caption}
             onChange={e => setCaption(e.target.value)}
@@ -159,7 +159,7 @@ export function JobPhotos({ projectId, jobId, jobTitle }: Props) {
           {[1,2,3,4,5,6].map(i => <div key={i} style={{ aspectRatio: '1', background: 'rgba(0,0,0,0.06)', borderRadius: 10, animation: 'pulse 1.5s infinite' }} />)}
         </div>
       ) : photos.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px 20px', background: 'white', borderRadius: 14, border: '2px dashed rgba(0,0,0,0.08)' }}>
+        <div style={{ textAlign: 'center', padding: '40px 20px', background: '#131A26', borderRadius: 14, border: '2px dashed rgba(0,0,0,0.08)' }}>
           <div style={{ fontSize: 36, marginBottom: 10 }}>📸</div>
           <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 6 }}>No photos yet</div>
           <div style={{ fontSize: 13, color: '#9e9d99' }}>Upload photos to document each stage of the job</div>
@@ -249,7 +249,7 @@ export function JobPhotos({ projectId, jobId, jobTitle }: Props) {
       )}
 
       {toast && (
-        <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
           {toast}
         </div>
       )}

@@ -16,7 +16,7 @@ const TYPE_CONFIG = {
   job_start:     { color: '#1f5fa6', bg: '#eef3fb', label: 'Job Start',        dot: '#1f5fa6' },
   job_end:       { color: '#2d7a4f', bg: '#edf5f0', label: 'Job End',          dot: '#2d7a4f' },
   change:        { color: '#b06e1a', bg: '#fdf4e3', label: 'Change Order',     dot: '#b06e1a' },
-  custom:        { color: '#0f0f0f', bg: '#f1ede6', label: 'Event',            dot: '#0f0f0f' },
+  custom:        { color: '#F1EEE5', bg: '#f1ede6', label: 'Event',            dot: '#0f0f0f' },
 }
 
 interface Props {
@@ -142,7 +142,7 @@ export function CalendarClient({ user, project, permits, inspections, jobs, chan
                 {Object.entries(TYPE_CONFIG).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
               </select>
             </div>
-            <button type="submit" style={{ padding: '9px 20px', fontSize: 13, fontWeight: 700, borderRadius: 8, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>Add</button>
+            <button type="submit" style={{ padding: '9px 20px', fontSize: 13, fontWeight: 700, borderRadius: 8, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>Add</button>
           </form>
         </div>
       )}
@@ -228,7 +228,7 @@ export function CalendarClient({ user, project, permits, inspections, jobs, chan
         {/* SIDEBAR */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {/* Today card */}
-          <div style={{ background: '#0f0f0f', borderRadius: 14, padding: '18px 20px', color: 'white', flexShrink: 0 }}>
+          <div style={{ background: '#131A26', borderRadius: 14, padding: '18px 20px', color: 'white', flexShrink: 0 }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 4 }}>Today</div>
             <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px', marginBottom: 2 }}>{format(today, 'MMMM d')}</div>
             <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', marginBottom: 12 }}>{format(today, 'EEEE')}</div>

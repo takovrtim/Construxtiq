@@ -109,7 +109,7 @@ export function DashboardClient({ user, project, projects, stats }: Props) {
     { label: 'Submit RFI', sub: 'Question on record. Clock starts.', href: '/RFI', color: '#3b82f6' },
     { label: 'Daily Log', sub: '60 seconds. Legally timestamped.', href: '/daily-log', color: '#22c55e' },
     { label: 'Scan Document', sub: 'AI reads permits instantly.', href: '/documents', color: '#8b5cf6' },
-    { label: 'Audit Export', sub: 'Full case file. One click.', href: '/reports', color: '#6b7280' },
+    { label: 'Audit Export', sub: 'Full case file. One click.', href: '/reports', color: '#7B8497' },
   ]
 
   return (
@@ -181,7 +181,7 @@ export function DashboardClient({ user, project, projects, stats }: Props) {
                 { label: 'Pending COs', value: stats.pendingChanges, sub: stats.pendingChangeValue > 0 ? `$${stats.pendingChangeValue.toLocaleString()} pending` : 'None pending', alert: false },
                 { label: 'Logs This Week', value: stats.logsThisWeek, sub: stats.logsThisWeek >= 5 ? 'On track' : `${5 - stats.logsThisWeek} more needed`, alert: stats.logsThisWeek < 3 },
               ].map(s => (
-                <div key={s.label} style={{ background: '#0f0f0f', border: `1px solid ${s.alert ? 'rgba(239,68,68,0.2)' : 'rgba(255,255,255,0.06)'}`, borderRadius: 14, padding: '18px 16px' }}>
+                <div key={s.label} style={{ background: '#131A26', border: `1px solid ${s.alert ? 'rgba(239,68,68,0.2)' : 'rgba(255,255,255,0.06)'}`, borderRadius: 14, padding: '18px 16px' }}>
                   <div style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>{s.label}</div>
                   <div style={{ fontSize: 28, fontWeight: 900, color: s.alert ? '#ef4444' : '#ea580c', letterSpacing: '-1px', marginBottom: 4 }}>{s.value}</div>
                   <div style={{ fontSize: 11, color: s.alert ? 'rgba(239,68,68,0.7)' : 'rgba(255,255,255,0.25)' }}>{s.sub}</div>
@@ -190,7 +190,7 @@ export function DashboardClient({ user, project, projects, stats }: Props) {
             </div>
 
             {/* Quick Actions */}
-            <div style={{ background: '#0f0f0f', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '20px' }}>
+            <div style={{ background: '#131A26', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '20px' }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 14 }}>Quick Actions</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                 {QUICK_LINKS.map((q, i) => (
@@ -206,7 +206,7 @@ export function DashboardClient({ user, project, projects, stats }: Props) {
             </div>
 
             {/* Recent Activity */}
-            <div style={{ background: '#0f0f0f', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '20px' }}>
+            <div style={{ background: '#131A26', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Recent Delays</div>
                 <Link href="/delay-tracker" style={{ fontSize: 12, color: '#ea580c', textDecoration: 'none', fontWeight: 600 }}>View all</Link>
@@ -231,7 +231,7 @@ export function DashboardClient({ user, project, projects, stats }: Props) {
 
           {/* RIGHT — Protection Score */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <div style={{ background: '#0f0f0f', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16 }}>
+            <div style={{ background: '#131A26', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16 }}>
               <div style={{ padding: '16px 18px 0', fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Case File Strength</div>
               <ProtectionScore score={score} />
               <div style={{ padding: '0 18px 18px', display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -271,7 +271,7 @@ export function DashboardClient({ user, project, projects, stats }: Props) {
 
             {/* Recent changes */}
             {stats.recentChanges.length > 0 && (
-              <div style={{ background: '#0f0f0f', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '16px' }}>
+              <div style={{ background: '#131A26', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '16px' }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 12 }}>Recent Change Orders</div>
                 {stats.recentChanges.slice(0, 3).map((c: any, i: number) => (
                   <div key={i} style={{ padding: '8px 0', borderBottom: i < 2 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
@@ -289,7 +289,7 @@ export function DashboardClient({ user, project, projects, stats }: Props) {
       </div>
 
       {toast && (
-        <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#111827', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
           {toast}
         </div>
       )}

@@ -90,7 +90,7 @@ export function DelayPrediction({ projectId }: Props) {
       {!loading && predictions.length > 0 && (
         <div>
           {/* Summary bar */}
-          <div style={{ background: '#0f0f0f', borderRadius: 12, padding: 16, marginBottom: 16, color: 'white', display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+          <div style={{ background: '#131A26', borderRadius: 12, padding: 16, marginBottom: 16, color: 'white', display: 'flex', gap: 20, flexWrap: 'wrap' }}>
             <div>
               <div style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>Max Delay Risk</div>
               <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.5px', color: criticals > 0 ? '#f87171' : '#fbbf24' }}>{totalDelayDays} days</div>

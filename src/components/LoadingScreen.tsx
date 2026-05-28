@@ -45,11 +45,11 @@ export function LoadingScreen() {
         SubIQ
       </div>
 
-      <div style={{ fontSize: 12, color: '#6b7280', marginTop: 5, opacity: 0, animation: 'tg 0.5s ease forwards', fontFamily: '-apple-system, sans-serif' }}>
+      <div style={{ fontSize: 12, color: '#7B8497', marginTop: 5, opacity: 0, animation: 'tg 0.5s ease forwards', fontFamily: '-apple-system, sans-serif' }}>
         Built for subs. Not against them.
       </div>
 
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, background: '#111' }}>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, background: '#07090E' }}>
         <div style={{ height: '100%', background: '#ea580c', animation: 'br 0.9s ease forwards', borderRadius: 2 }} />
       </div>
     </div>

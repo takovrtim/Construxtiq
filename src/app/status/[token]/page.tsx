@@ -78,7 +78,7 @@ export default async function ClientStatusPage({ params }: { params: { token: st
           </div>
 
           {/* Project banner */}
-          <div style={{ background: '#0f0f0f', borderRadius: 16, padding: 24, marginBottom: 16, color: 'white' }}>
+          <div style={{ background: '#131A26', borderRadius: 16, padding: 24, marginBottom: 16, color: 'white' }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 6 }}>Project Status</div>
             <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-0.8px', marginBottom: 4 }}>{project.name}</div>
             <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginBottom: 20 }}>{[project.city, project.state].filter(Boolean).join(', ')}</div>
@@ -124,7 +124,7 @@ export default async function ClientStatusPage({ params }: { params: { token: st
           )}
 
           {/* Jobs */}
-          <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 20, marginBottom: 14, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+          <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 20, marginBottom: 14, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
             <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 16 }}>🔧 Job Status</div>
             {(jobs || []).length === 0 ? (
               <div style={{ textAlign: 'center', padding: '20px 0', color: '#9e9d99', fontSize: 13 }}>No jobs added yet</div>
@@ -150,7 +150,7 @@ export default async function ClientStatusPage({ params }: { params: { token: st
 
           {/* Permits */}
           {(permits || []).length > 0 && (
-            <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 20, marginBottom: 14, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+            <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 20, marginBottom: 14, boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
               <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 16 }}>📋 Permits</div>
               {(permits || []).map(p => {
                 const days = p.expiry_date ? differenceInDays(parseISO(p.expiry_date), today) : null

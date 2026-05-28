@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
@@ -31,7 +31,7 @@ export default function LoginPage() {
         <span style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-0.5px', color: 'white' }}>SubIQ</span>
       </Link>
 
-      <div style={{ width: '100%', maxWidth: 380, background: '#111', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, padding: '36px 32px', boxShadow: '0 32px 80px rgba(0,0,0,0.5)' }}>
+      <div style={{ width: '100%', maxWidth: 380, background: '#07090E', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, padding: '36px 32px', boxShadow: '0 32px 80px rgba(0,0,0,0.5)' }}>
         <div style={{ marginBottom: 28 }}>
           <h1 style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px', color: 'white', marginBottom: 5 }}>Sign in</h1>
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)' }}>Welcome back to SubIQ</p>

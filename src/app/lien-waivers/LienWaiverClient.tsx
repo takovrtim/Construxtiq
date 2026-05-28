@@ -148,7 +148,7 @@ export function LienWaiverClient({ user, project, initialWaivers, jobs }: Props)
           </div>
           <div style={{ marginBottom: 18 }}><label style={lbl}>Notes</label><input style={inp} placeholder="Payment #12, draw #3..." value={notes} onChange={e => setNotes(e.target.value)} /></div>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button onClick={saveWaiver} disabled={saving || !gcName.trim() || !amount} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>{saving ? 'Saving...' : 'Log Waiver'}</button>
+            <button onClick={saveWaiver} disabled={saving || !gcName.trim() || !amount} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>{saving ? 'Saving...' : 'Log Waiver'}</button>
             <button onClick={() => setShowNew(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 10, cursor: 'pointer', border: '1px solid var(--border)', background: 'var(--surface)', fontFamily: 'inherit', color: 'var(--text-primary)' }}>Cancel</button>
           </div>
         </div>
@@ -188,7 +188,7 @@ export function LienWaiverClient({ user, project, initialWaivers, jobs }: Props)
           })}
         </div>
       )}
-      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500 }}>{toast}</div>}
+      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500 }}>{toast}</div>}
     </>
   )
 }

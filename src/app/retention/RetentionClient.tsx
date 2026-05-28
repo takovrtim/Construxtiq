@@ -101,7 +101,7 @@ export function RetentionClient({ user, project, initialEntries, jobs }: Props) 
       </div>
 
       {/* BIG NUMBERS */}
-      <div style={{ background: '#0f0f0f', borderRadius: 18, padding: '24px 28px', marginBottom: 20, color: 'white', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ background: '#131A26', borderRadius: 18, padding: '24px 28px', marginBottom: 20, color: 'white', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: -40, right: -40, width: 160, height: 160, borderRadius: '50%', background: 'rgba(217,95,43,0.12)', pointerEvents: 'none' }} />
         <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.6px', fontWeight: 700, marginBottom: 12 }}>Money the GC is holding</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16 }}>
@@ -148,7 +148,7 @@ export function RetentionClient({ user, project, initialEntries, jobs }: Props) 
           </div>
           <div style={{ marginBottom: 18 }}><label style={lbl}>Notes</label><input style={inp} placeholder="Punch list items, conditions for release..." value={notes} onChange={e => setNotes(e.target.value)} /></div>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button onClick={saveEntry} disabled={saving || !gcName.trim() || !contractValue} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>{saving ? 'Saving...' : 'Save'}</button>
+            <button onClick={saveEntry} disabled={saving || !gcName.trim() || !contractValue} style={{ padding: '11px 24px', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>{saving ? 'Saving...' : 'Save'}</button>
             <button onClick={() => setShowNew(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 10, cursor: 'pointer', border: '1px solid var(--border)', background: 'var(--surface)', fontFamily: 'inherit', color: 'var(--text-primary)' }}>Cancel</button>
           </div>
         </div>
@@ -208,7 +208,7 @@ export function RetentionClient({ user, project, initialEntries, jobs }: Props) 
           })}
         </div>
       )}
-      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500 }}>{toast}</div>}
+      {toast && <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500 }}>{toast}</div>}
     </>
   )
 }

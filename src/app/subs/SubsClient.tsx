@@ -201,7 +201,7 @@ export function SubsClient({ user, project, initialSubs, initialJobs }: Props) {
               <textarea style={{ ...inp, resize: 'none' }} rows={2} placeholder="Reliability notes, past performance, anything to remember..." value={notes} onChange={e => setNotes(e.target.value)} />
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
-              <button type="submit" disabled={saving} style={{ padding: '10px 22px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>
+              <button type="submit" disabled={saving} style={{ padding: '10px 22px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: '#131A26', color: 'white', fontFamily: 'inherit' }}>
                 {saving ? 'Saving...' : 'Add to Crew'}
               </button>
               <button type="button" onClick={() => setShowAdd(false)} style={{ padding: '10px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-primary)', fontFamily: 'inherit' }}>Cancel</button>
@@ -452,7 +452,7 @@ export function SubsClient({ user, project, initialSubs, initialJobs }: Props) {
       )}
 
       {toast && (
-        <div style={{ position: 'fixed', bottom: 24, right: selected ? 414 : 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: 'var(--shadow-lg)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: selected ? 414 : 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: 'var(--shadow-lg)' }}>
           {toast}
         </div>
       )}

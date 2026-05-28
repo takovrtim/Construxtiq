@@ -125,7 +125,7 @@ export function SafetyClient({ user, project, initialChecklists, jobs }: Props) 
     setSaving(false)
   }
 
-  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#0f0f0f' }
+  const inp: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'inherit', outline: 'none', background: '#f8f7f4', color: '#F1EEE5' }
   const lbl: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: '#9e9d99', display: 'block', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.4px' }
 
   if (!project) return (
@@ -155,7 +155,7 @@ export function SafetyClient({ user, project, initialChecklists, jobs }: Props) 
           { label: 'Incomplete', value: checklists.filter(c => !c.all_clear).length, sub: 'had issues', accent: checklists.filter(c => !c.all_clear).length > 0 ? '#b83232' : '' },
           { label: "Today's Check", value: todayChecklist ? '✓' : '—', sub: todayChecklist ? 'completed' : 'not done yet', accent: todayChecklist ? '#2d7a4f' : '#b06e1a' },
         ].map(s => (
-          <div key={s.label} style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
+          <div key={s.label} style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: s.accent || 'rgba(0,0,0,0.05)', borderRadius: '14px 14px 0 0' }} />
             <div style={{ fontSize: 10, fontWeight: 700, color: '#9e9d99', letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: 6 }}>{s.label}</div>
             <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-1px', color: s.accent || '#0f0f0f', marginBottom: 2 }}>{s.value}</div>
@@ -182,7 +182,7 @@ export function SafetyClient({ user, project, initialChecklists, jobs }: Props) 
 
       {/* NEW CHECKLIST */}
       {showNew && (
-        <div style={{ background: 'white', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+        <div style={{ background: '#131A26', border: '1px solid rgba(0,0,0,0.07)', borderRadius: 14, padding: 24, marginBottom: 20, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
           {/* Header */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
             <div style={{ fontSize: 15, fontWeight: 700 }}>Pre-Job Safety Checklist</div>
@@ -210,7 +210,7 @@ export function SafetyClient({ user, project, initialChecklists, jobs }: Props) 
             </div>
             <div>
               <label style={lbl}>Job</label>
-              <select style={{ ...inp, background: 'white' }} value={jobId} onChange={e => setJobId(e.target.value)}>
+              <select style={{ ...inp, background: '#131A26' }} value={jobId} onChange={e => setJobId(e.target.value)}>
                 <option value="">No specific job</option>
                 {jobs.map(j => <option key={j.id} value={j.id}>{j.title}</option>)}
               </select>
@@ -232,7 +232,7 @@ export function SafetyClient({ user, project, initialChecklists, jobs }: Props) 
                       <span style={{ fontSize: 11, color: catAllClear ? '#2d7a4f' : '#9e9d99', background: catAllClear ? '#edf5f0' : '#f1ede6', padding: '1px 7px', borderRadius: 20, fontWeight: 600 }}>{catChecked}/{catItems.length}</span>
                     </div>
                     {!catAllClear && (
-                      <button onClick={() => checkAll(cat)} style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 7, border: '1px solid rgba(0,0,0,0.1)', background: 'white', cursor: 'pointer', fontFamily: 'inherit', color: '#6b6a66' }}>
+                      <button onClick={() => checkAll(cat)} style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 7, border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', cursor: 'pointer', fontFamily: 'inherit', color: '#6b6a66' }}>
                         Check all
                       </button>
                     )}
@@ -275,14 +275,14 @@ export function SafetyClient({ user, project, initialChecklists, jobs }: Props) 
             <button onClick={saveChecklist} disabled={saving || !completedBy.trim()} style={{ padding: '11px 28px', fontSize: 13, fontWeight: 700, borderRadius: 9, cursor: 'pointer', border: 'none', background: allClear ? '#2d7a4f' : '#0f0f0f', color: 'white', fontFamily: 'inherit' }}>
               {saving ? 'Saving...' : allClear ? '✓ Save — All Clear' : 'Save Checklist'}
             </button>
-            <button onClick={() => setShowNew(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontFamily: 'inherit' }}>Cancel</button>
+            <button onClick={() => setShowNew(false)} style={{ padding: '11px 16px', fontSize: 13, borderRadius: 9, cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)', background: '#131A26', fontFamily: 'inherit' }}>Cancel</button>
           </div>
         </div>
       )}
 
       {/* PAST CHECKLISTS */}
       {checklists.length === 0 && !showNew ? (
-        <div style={{ textAlign: 'center', padding: '52px 20px', background: 'white', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
+        <div style={{ textAlign: 'center', padding: '52px 20px', background: '#131A26', borderRadius: 16, border: '2px dashed rgba(0,0,0,0.08)' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>🦺</div>
           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>No safety checklists yet</div>
           <div style={{ fontSize: 13, color: '#9e9d99', marginBottom: 20 }}>Complete one before every job — creates a timestamped legal record</div>
@@ -296,7 +296,7 @@ export function SafetyClient({ user, project, initialChecklists, jobs }: Props) 
             const total = cl.items.length
             const pct = Math.round((checked / total) * 100)
             return (
-              <div key={cl.id} onClick={() => setSelected(cl === selected ? null : cl)} style={{ background: 'white', border: `1.5px solid ${cl.all_clear ? 'rgba(45,122,79,0.2)' : selected?.id === cl.id ? '#0f0f0f' : 'rgba(0,0,0,0.07)'}`, borderRadius: 14, padding: '16px 20px', cursor: 'pointer', transition: 'all 0.15s', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+              <div key={cl.id} onClick={() => setSelected(cl === selected ? null : cl)} style={{ background: '#131A26', border: `1.5px solid ${cl.all_clear ? 'rgba(45,122,79,0.2)' : selected?.id === cl.id ? '#0f0f0f' : 'rgba(0,0,0,0.07)'}`, borderRadius: 14, padding: '16px 20px', cursor: 'pointer', transition: 'all 0.15s', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                   <div style={{ width: 44, height: 44, borderRadius: 10, background: cl.all_clear ? '#edf5f0' : '#fdf4e3', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
                     {cl.all_clear ? '✅' : '⚠️'}
@@ -340,7 +340,7 @@ export function SafetyClient({ user, project, initialChecklists, jobs }: Props) 
       )}
 
       {toast && (
-        <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#0f0f0f', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
+        <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, background: '#131A26', color: 'white', padding: '12px 20px', borderRadius: 12, fontSize: 13, fontWeight: 500, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
           {toast}
         </div>
       )}

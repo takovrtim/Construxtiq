@@ -12,7 +12,7 @@ const CAUSE_CONFIG: Record<DelayCause, { label: string; color: string; emoji: st
   gc:       { label: 'GC',       color: '#ef4444', emoji: 'GC' },
   weather:  { label: 'Weather',  color: '#3b82f6', emoji: 'Rain' },
   material: { label: 'Material', color: '#f59e0b', emoji: 'Mat' },
-  other:    { label: 'Other',    color: '#9ca3af', emoji: 'Other' },
+  other:    { label: 'Other',    color: '#545B6C', emoji: 'Other' },
 }
 
 export function QuickLog({ user, project, jobs }: Props) {
@@ -222,7 +222,7 @@ export function QuickLog({ user, project, jobs }: Props) {
                     <span style={{ fontSize: 13, fontWeight: 700, color: '#22c55e' }}>All Clear</span>
                     <span style={{ fontSize: 11, color: '#16a34a' }}>1 tap — saves instantly</span>
                   </button>
-                  <button onClick={() => { setShowIssueInput(true); setMode('safety') }} style={{ padding: '16px', borderRadius: 14, cursor: 'pointer', border: '2px solid #1f1f1f', background: '#111', fontFamily: 'inherit', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                  <button onClick={() => { setShowIssueInput(true); setMode('safety') }} style={{ padding: '16px', borderRadius: 14, cursor: 'pointer', border: '2px solid #1f1f1f', background: '#07090E', fontFamily: 'inherit', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
                     <span style={{ fontSize: 28 }}>⚠️</span>
                     <span style={{ fontSize: 13, fontWeight: 700, color: '#ef4444' }}>Issue Found</span>
                     <span style={{ fontSize: 11, color: '#666' }}>Note the issue</span>
@@ -238,7 +238,7 @@ export function QuickLog({ user, project, jobs }: Props) {
                   { m: 'delay'  as Mode, emoji: '', label: 'Log a Delay',   sub: 'GC • Weather • Material' },
                   { m: 'change' as Mode, emoji: '', label: 'Change Order',  sub: 'Quick scope change note' },
                 ].map(item => (
-                  <button key={item.m} onClick={() => setMode(item.m)} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', borderRadius: 12, cursor: 'pointer', border: '1px solid #1f1f1f', background: '#111', fontFamily: 'inherit', textAlign: 'left' }}>
+                  <button key={item.m} onClick={() => setMode(item.m)} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', borderRadius: 12, cursor: 'pointer', border: '1px solid #1f1f1f', background: '#07090E', fontFamily: 'inherit', textAlign: 'left' }}>
                     
                     <div>
                       <div style={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>{item.label}</div>

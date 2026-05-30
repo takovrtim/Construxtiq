@@ -16,23 +16,27 @@ interface Project { id: string; name: string; status: string }
 interface Props   { user: User; projects: Project[]; activeProject: Project | null; children: React.ReactNode }
 
 // ── NAV ORDER — by job site priority ─────────────────────────
+// ── DAILY WORK — what John uses every single day ─────────────
 const PRIMARY = [
+  { href: '/bids',         label: 'Bid Intelligence', Icon: TrendingUp      },
   { href: '/dashboard',    label: 'Dashboard',     Icon: LayoutDashboard },
   { href: '/logs',         label: 'Daily Log',     Icon: ClipboardList   },
   { href: '/changes',      label: 'Change Orders', Icon: FileText        },
   { href: '/delay-tracker',label: 'Delay Tracker', Icon: Clock           },
   { href: '/RFI',          label: 'RFI Tracker',   Icon: MessageSquare   },
+  { href: '/safety',       label: 'Safety',        Icon: Shield          },
 ]
 
+// ── LEGAL SHIELD — case file and protection ───────────────────
 const LEGAL = [
-  { href: '/safety',       label: 'Safety',        Icon: Shield          },
   { href: '/reports',      label: 'Audit Export',  Icon: Download        },
   { href: '/documents',    label: 'Documents AI',  Icon: FolderOpen      },
-  { href: '/invoices',     label: 'Invoices',      Icon: Receipt         },
-  { href: '/retention',    label: 'Retention',     Icon: DollarSign      },
   { href: '/lien-waivers', label: 'Lien Waivers',  Icon: FileCheck       },
+  { href: '/retention',    label: 'Retention',     Icon: DollarSign      },
+  { href: '/invoices',     label: 'Invoices',      Icon: Receipt         },
 ]
 
+// ── FIELD OPS — site management ──────────────────────────────
 const ADMIN = [
   { href: '/jobs',         label: 'Jobs',          Icon: Briefcase       },
   { href: '/crew-time',    label: 'Crew Time',     Icon: Users           },
@@ -43,11 +47,11 @@ const ADMIN = [
 ]
 
 const BOTTOM = [
+  { href: '/bids',         label: 'Bids',    Icon: TrendingUp      },
   { href: '/dashboard',    label: 'Home',    Icon: LayoutDashboard },
   { href: '/logs',         label: 'Log',     Icon: ClipboardList   },
   { href: '/changes',      label: 'COs',     Icon: FileText        },
   { href: '/delay-tracker',label: 'Delays',  Icon: Clock           },
-  { href: '/reports',      label: 'Audit',   Icon: Download        },
 ]
 
 // ── NAV ITEM ──────────────────────────────────────────────────
@@ -247,7 +251,7 @@ function SidebarInner({ projects, activeProject, user, onSignOut, onClose, navRe
         <style>{`.sq-nav::-webkit-scrollbar{display:none}`}</style>
         <NavSection label="Daily Work"    items={PRIMARY} pathname={pathname} onClick={saveScroll} />
         <NavSection label="Legal Shield"  items={LEGAL}   pathname={pathname} onClick={saveScroll} />
-        <NavSection label="Admin"         items={ADMIN}   pathname={pathname} onClick={saveScroll} />
+        <NavSection label="Field Ops"         items={ADMIN}   pathname={pathname} onClick={saveScroll} />
       </nav>
 
       {/* User footer */}

@@ -398,12 +398,12 @@ export default function LandingPage() {
           <div className="feat-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
             {intelligence.map((f, i) => (
               <Reveal key={i} delay={i * 60}>
-                <div className="feat-card" style={{ background: C.cream, border: `1px solid ${C.border}`, borderRadius: 16, padding: '28px 24px', height: '100%' }}>
+                <div className="feat-card" style={{ background: C.cream, border: `1px solid ${C.border}`, borderLeft: `3px solid ${f.color}`, borderRadius: 16, padding: '28px 24px', height: '100%' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
                     <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, fontWeight: 600, padding: '3px 9px', borderRadius: 99, background: `${f.color}18`, color: f.color, letterSpacing: '0.1em' }}>{f.tag}</span>
                   </div>
                   <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 700, color: C.ink, marginBottom: 10, letterSpacing: '-0.3px' }}>{f.title}</div>
-                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: C.ink3, lineHeight: 1.75 }}>{f.desc}</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: C.ink2, lineHeight: 1.75 }}>{f.desc}</div>
                 </div>
               </Reveal>
             ))}

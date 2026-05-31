@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -154,7 +154,7 @@ export function BidIQClient({ user, project }: Props) {
       const ovhPct = parseFloat(overhead) || 15
       const marginPct = parseFloat(margin) || 12
 
-      const prompt = `You are SubIQ's Bid Intelligence Engine — the Bloomberg Terminal for contractors. Analyze this bid with deep market intelligence.
+      const prompt = `You are SubIQ's Bid Intelligence Engine â€” the Bloomberg Terminal for contractors. Analyze this bid with deep market intelligence.
 
 BID DETAILS:
 Trade: ${trade}
@@ -234,7 +234,7 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
 
     } catch(e) {
       clearInterval(iv)
-      msg('Analysis failed — try again')
+      msg('Analysis failed â€” try again')
       setStep('input')
     }
   }
@@ -257,7 +257,7 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
         <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:T.fg4 }}>Upload your bid. Know if you'll win before you submit.</div>
       </div>
 
-      {/* ── INPUT FORM ── */}
+      {/* â”€â”€ INPUT FORM â”€â”€ */}
       {step === 'input' && (
         <div style={{ display:'grid', gridTemplateColumns:'1fr 360px', gap:20, alignItems:'start' }}>
 
@@ -282,7 +282,7 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
                 <div>
                   <label style={lbl}>General Contractor</label>
                   <select style={sel} value={gc} onChange={e=>setGc(e.target.value)}>
-                    {GC_LIST.map(g=><option key={g}>{g}</option>)}
+                    {GC_LIS'#4FE3B5'(g=><option key={g}>{g}</option>)}
                   </select>
                 </div>
                 {gc === 'Other' && (
@@ -350,7 +350,7 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
               onClick={()=>fileRef.current?.click()}
             >
               <input ref={fileRef} type="file" accept=".pdf,.xlsx,.xls,.csv" style={{ display:'none' }} onChange={e=>setBidFile(e.target.files?.[0]||null)}/>
-              <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:T.fg4, marginBottom:6 }}>OPTIONAL — UPLOAD BID DOCUMENT</div>
+              <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:T.fg4, marginBottom:6 }}>OPTIONAL â€” UPLOAD BID DOCUMENT</div>
               <div style={{ fontSize:13, color:T.fg3 }}>{bidFile ? bidFile.name : 'Drop your bid PDF or spreadsheet for deeper analysis'}</div>
             </div>
 
@@ -359,11 +359,11 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
               disabled={!bidAmount || !scope.trim()}
               style={{ width:'100%', padding:'15px', fontSize:15, fontWeight:700, borderRadius:12, cursor:(!bidAmount||!scope.trim())?'not-allowed':'pointer', border:'none', background:(!bidAmount||!scope.trim())?T.bgElev:T.orange, color:(!bidAmount||!scope.trim())?T.fg4:'#0A0E14', fontFamily:'inherit', letterSpacing:'-0.2px', transition:'all 0.15s' }}
             >
-              Analyze My Bid — Get Win Probability
+              Analyze My Bid â€” Get Win Probability
             </button>
           </div>
 
-          {/* Right — what this does */}
+          {/* Right â€” what this does */}
           <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
             <div style={{ background:T.bgCard, border:`1px solid ${T.borderSoft}`, borderRadius:14, padding:20 }}>
               <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:T.orange, textTransform:'uppercase', letterSpacing:'0.12em', marginBottom:14 }}>What BidIQ Returns</div>
@@ -388,16 +388,16 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
             <div style={{ background:T.orangeDim, border:`1px solid ${T.orange}30`, borderRadius:14, padding:18 }}>
               <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:T.orange, textTransform:'uppercase', letterSpacing:'0.12em', marginBottom:10 }}>The Intelligence Edge</div>
               <div style={{ fontSize:13, color:T.fg2, lineHeight:1.7 }}>
-                Every bid analyzed makes the engine smarter. After 1,000 bids in Las Vegas, SubIQ knows exactly what wins — and tells you before you submit.
+                Every bid analyzed makes the engine smarter. After 1,000 bids in Las Vegas, SubIQ knows exactly what wins â€” and tells you before you submit.
               </div>
             </div>
 
             <div style={{ background:T.bgCard, border:`1px solid ${T.borderSoft}`, borderRadius:14, padding:18 }}>
               <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:T.fg4, textTransform:'uppercase', letterSpacing:'0.12em', marginBottom:12 }}>Recent Market Intel</div>
               {[
-                { market:'Las Vegas Casino',    range:'$88K–$96K', trade:'Electrical', confidence:'High' },
-                { market:'Commercial Office NV', range:'$42K–$51K', trade:'Plumbing',   confidence:'Medium' },
-                { market:'Las Vegas Hotel',      range:'$210K–$240K',trade:'Mechanical', confidence:'High' },
+                { market:'Las Vegas Casino',    range:'$88Kâ€“$96K', trade:'Electrical', confidence:'High' },
+                { market:'Commercial Office NV', range:'$42Kâ€“$51K', trade:'Plumbing',   confidence:'Medium' },
+                { market:'Las Vegas Hotel',      range:'$210Kâ€“$240K',trade:'Mechanical', confidence:'High' },
               ].map((m,i)=>(
                 <div key={i} style={{ padding:'8px 0', borderBottom:i<2?`1px solid ${T.borderSoft}`:'none' }}>
                   <div style={{ display:'flex', justifyContent:'space-between', marginBottom:2 }}>
@@ -416,7 +416,7 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
         </div>
       )}
 
-      {/* ── ANALYZING ── */}
+      {/* â”€â”€ ANALYZING â”€â”€ */}
       {step === 'analyzing' && (
         <div style={{ textAlign:'center', padding:'80px 20px' }}>
           <div style={{ marginBottom:32 }}>
@@ -442,7 +442,7 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
         </div>
       )}
 
-      {/* ── RESULT ── */}
+      {/* â”€â”€ RESULT â”€â”€ */}
       {step === 'result' && result && (
         <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
 
@@ -457,7 +457,7 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
                 Analyze Another Bid
               </button>
               <button onClick={()=>{
-                const text = `BID ANALYSIS REPORT\n\nProject: ${projectName||'Project'}\nBid: $${result.your_bid.toLocaleString()}\nWin Probability: ${result.win_probability}%\nMarket Range: $${result.market_low.toLocaleString()} - $${result.market_high.toLocaleString()}\nRecommended Bid: $${result.adjusted_bid.toLocaleString()} (${result.adjusted_probability}% win probability)\n\nRecommendation: ${result.recommendation}\n\nRisk Flags:\n${result.risk_flags.map(r=>`• ${r.text}`).join('\n')}\n\nMissing:\n${result.missing.map(m=>`• ${m}`).join('\n')}`
+                const text = `BID ANALYSIS REPORT\n\nProject: ${projectName||'Project'}\nBid: $${result.your_bid.toLocaleString()}\nWin Probability: ${result.win_probability}%\nMarket Range: $${result.market_low.toLocaleString()} - $${result.market_high.toLocaleString()}\nRecommended Bid: $${result.adjusted_bid.toLocaleString()} (${result.adjusted_probability}% win probability)\n\nRecommendation: ${result.recommendation}\n\nRisk Flags:\n${result.risk_flags.map(r=>`â€¢ ${r.text}`).join('\n')}\n\nMissing:\n${result.missing.map(m=>`â€¢ ${m}`).join('\n')}`
                 navigator.clipboard?.writeText(text)
                 msg('Copied to clipboard')
               }} style={{ padding:'8px 16px', fontSize:12, fontWeight:700, borderRadius:8, cursor:'pointer', border:'none', background:T.orange, color:'#0A0E14', fontFamily:'inherit' }}>
@@ -497,7 +497,7 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
                     <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:T.fg4, marginBottom:2 }}>Recommended Bid</div>
                     <div style={{ fontSize:18, fontWeight:700, color:T.orange }}>${result.adjusted_bid.toLocaleString()}</div>
                   </div>
-                  <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:12, color:T.fg4, margin:'0 8px' }}>→</div>
+                  <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:12, color:T.fg4, margin:'0 8px' }}>â†’</div>
                   <div>
                     <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:T.fg4, marginBottom:2 }}>New Win Probability</div>
                     <div style={{ fontSize:18, fontWeight:700, color:T.mint }}>{result.adjusted_probability}%</div>
@@ -525,7 +525,7 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
           {/* Risk flags */}
           {result.risk_flags.length > 0 && (
             <div style={{ background:T.bgCard, border:`1px solid ${T.borderSoft}`, borderRadius:14, padding:20 }}>
-              <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:T.fg4, textTransform:'uppercase', letterSpacing:'0.1em', marginBottom:14 }}>Risk Flags — {result.risk_flags.length} Found</div>
+              <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:T.fg4, textTransform:'uppercase', letterSpacing:'0.1em', marginBottom:14 }}>Risk Flags â€” {result.risk_flags.length} Found</div>
               <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
                 {result.risk_flags.map((f,i)=>{
                   const c = f.level==='high'?T.danger:f.level==='medium'?T.warn:T.fg3
@@ -601,3 +601,4 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
     </div>
   )
 }
+

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import {
   LayoutDashboard, ClipboardList, FileText, Clock, MessageSquare,
+  Target,
   Shield, Download, FolderOpen, Receipt, DollarSign, FileCheck,
   Users, ClipboardCheck, Image, Package, FileWarning, Hammer,
   UserCog, Settings, Menu, X, ChevronDown, LogOut, PenLine, Briefcase,
@@ -18,8 +19,8 @@ interface Props   { user: User; projects: Project[]; activeProject: Project | nu
 // ── NAV ORDER — by job site priority ─────────────────────────
 // ── DAILY WORK — what John uses every single day ─────────────
 const PRIMARY = [
-  { href: '/bids',         label: 'Bid Intelligence', Icon: TrendingUp      },
   { href: '/dashboard',    label: 'Dashboard',     Icon: LayoutDashboard },
+  { href: '/bid',          label: 'BidIQ',         Icon: Target          },
   { href: '/logs',         label: 'Daily Log',     Icon: ClipboardList   },
   { href: '/changes',      label: 'Change Orders', Icon: FileText        },
   { href: '/delay-tracker',label: 'Delay Tracker', Icon: Clock           },

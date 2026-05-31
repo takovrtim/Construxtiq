@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createServerSupabase } from '@/lib/supabase'
 import { AppShell } from '@/components/layout/AppShell'
-import { BidIntelligenceClient } from './BidIntelligenceClient'
+import { BidIQClient } from './BidIQClient'
 import type { User, Project } from '@/types'
 
 export default async function BidPage() {
@@ -16,7 +16,7 @@ export default async function BidPage() {
   const activeProject = projects?.[0] ?? null
   return (
     <AppShell user={user as User} projects={(projects ?? []) as Project[]} activeProject={activeProject as Project | null}>
-      <BidIntelligenceClient user={user as any} project={activeProject as any} />
+      <BidIQClient user={user as any} project={activeProject as any} />
     </AppShell>
   )
 }

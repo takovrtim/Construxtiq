@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useRef, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -19,7 +19,7 @@ const T = {
 
 const TABS = ['Bid Score', 'Bid Builder', 'My Bids', 'Opportunities']
 
-// ── SCORE RING ────────────────────────────────────────────────
+// â”€â”€ SCORE RING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function ScoreRing({ score, size=120 }: { score:number; size?:number }) {
   const r = (size-10)/2
   const c = 2*Math.PI*r
@@ -41,7 +41,7 @@ function ScoreRing({ score, size=120 }: { score:number; size?:number }) {
   )
 }
 
-// ── BID SCORE TAB ─────────────────────────────────────────────
+// â”€â”€ BID SCORE TAB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function BidScoreTab({ user, project }: { user:any; project:any }) {
   const [file, setFile] = useState<File|null>(null)
   const [scanning, setScanning] = useState(false)
@@ -68,7 +68,7 @@ function BidScoreTab({ user, project }: { user:any; project:any }) {
             role:'user',
             content:[
               { type:'document', source:{ type:'base64', media_type:mediaType, data:base64 } },
-              { type:'text', text:`You are SubIQ's bid intelligence AI — the Bloomberg Terminal for ${trade} subcontractors in ${market}.
+              { type:'text', text:`You are SubIQ's bid intelligence AI â€” the Bloomberg Terminal for ${trade} subcontractors in ${market}.
 
 Analyze this bid document like a senior estimator with 20 years of experience in commercial ${trade} contracting.
 
@@ -149,12 +149,12 @@ Be specific to ${trade} work in ${market}. Reference real market conditions. Fla
           {file ? (
             <div>
               <div style={{ fontSize:15, fontWeight:700, color:T.orange, marginBottom:4 }}>{file.name}</div>
-              <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:T.fg4 }}>{(file.size/1024).toFixed(0)}KB — Ready to analyze</div>
+              <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:T.fg4 }}>{(file.size/1024).toFixed(0)}KB â€” Ready to analyze</div>
             </div>
           ) : (
             <div>
               <div style={{ fontSize:16, fontWeight:700, color:T.fg, marginBottom:6 }}>Drop your bid here</div>
-              <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:T.fg4, marginBottom:16 }}>PDF, PNG, JPG — any bid document</div>
+              <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:T.fg4, marginBottom:16 }}>PDF, PNG, JPG â€” any bid document</div>
             </div>
           )}
         </div>
@@ -191,10 +191,10 @@ Be specific to ${trade} work in ${market}. Reference real market conditions. Fla
         {!file && !result && (
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
             {[
-              { icon:'🎯', title:'Win Probability', desc:'Based on market data and bid strength' },
-              { icon:'📊', title:'Market Range', desc:'What this scope typically wins for' },
-              { icon:'⚠️', title:'Risk Flags', desc:'What will get your bid rejected' },
-              { icon:'✓', title:'Missing Items', desc:'Gaps that cost you the job' },
+              { icon:'ðŸŽ¯', title:'Win Probability', desc:'Based on market data and bid strength' },
+              { icon:'ðŸ“Š', title:'Market Range', desc:'What this scope typically wins for' },
+              { icon:'âš ï¸', title:'Risk Flags', desc:'What will get your bid rejected' },
+              { icon:'âœ“', title:'Missing Items', desc:'Gaps that cost you the job' },
             ].map(c=>(
               <div key={c.title} style={{ background:T.bgCard, border:`1px solid ${T.borderSoft}`, borderRadius:12, padding:'14px' }}>
                 <div style={{ fontSize:20, marginBottom:8 }}>{c.icon}</div>
@@ -233,7 +233,7 @@ Be specific to ${trade} work in ${market}. Reference real market conditions. Fla
               </div>
               <div style={{ background:T.bgElev, borderRadius:10, padding:'12px' }}>
                 <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, color:T.fg4, textTransform:'uppercase', letterSpacing:'0.08em', marginBottom:4 }}>Market Range</div>
-                <div style={{ fontSize:13, fontWeight:700, color:T.fg }}>{result.market_range_low} — {result.market_range_high}</div>
+                <div style={{ fontSize:13, fontWeight:700, color:T.fg }}>{result.market_range_low} â€” {result.market_range_high}</div>
               </div>
             </div>
           </div>
@@ -303,7 +303,7 @@ Be specific to ${trade} work in ${market}. Reference real market conditions. Fla
   )
 }
 
-// ── BID BUILDER TAB ───────────────────────────────────────────
+// â”€â”€ BID BUILDER TAB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function BidBuilderTab({ user, project }: { user:any; project:any }) {
   const [step, setStep] = useState(1)
   const [trade, setTrade] = useState('Electrical')
@@ -364,7 +364,7 @@ Use realistic market rates for Las Vegas, NV. Be specific with line items. Forma
         {['Job Info','Scope','Your Bid'].map((s,i)=>(
           <div key={s} style={{ display:'flex', alignItems:'center', gap:4 }}>
             <div style={{ width:22, height:22, borderRadius:'50%', background:step>i?T.mint:step===i+1?T.orange:T.bgElev, display:'flex', alignItems:'center', justifyContent:'center', fontSize:10, fontWeight:700, color:step>i?'#042418':step===i+1?'#0A0E14':T.fg4, transition:'all 0.3s' }}>
-              {step>i+1?'✓':i+1}
+              {step>i+1?'âœ“':i+1}
             </div>
             <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:step===i+1?T.fg:T.fg4 }}>{s}</span>
             {i<2 && <div style={{ width:24, height:1, background:T.border, margin:'0 4px' }}/>}
@@ -386,7 +386,7 @@ Use realistic market rates for Las Vegas, NV. Be specific with line items. Forma
               </select>
             </div>
           </div>
-          <div><label style={lbl}>Project Name</label><input style={inp} value={jobName} onChange={e=>setJobName(e.target.value)} placeholder="Hardrock Hotel — Tower B Electrical"/></div>
+          <div><label style={lbl}>Project Name</label><input style={inp} value={jobName} onChange={e=>setJobName(e.target.value)} placeholder="Hardrock Hotel â€” Tower B Electrical"/></div>
           <div><label style={lbl}>General Contractor</label><input style={inp} value={gcName} onChange={e=>setGcName(e.target.value)} placeholder="Turner Construction"/></div>
           <div><label style={lbl}>Square Footage</label><input style={inp} value={sqft} onChange={e=>setSqft(e.target.value)} placeholder="45,000"/></div>
           <button onClick={()=>setStep(2)} disabled={!jobName.trim()||!gcName.trim()} style={{ padding:'12px', fontSize:14, fontWeight:700, borderRadius:10, cursor:'pointer', border:'none', background:T.orange, color:'#0A0E14', fontFamily:'inherit' }}>
@@ -429,10 +429,10 @@ Use realistic market rates for Las Vegas, NV. Be specific with line items. Forma
   )
 }
 
-// ── MY BIDS TAB ───────────────────────────────────────────────
+// â”€â”€ MY BIDS TAB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function MyBidsTab({ user }: { user:any }) {
   const [bids, setBids] = useState([
-    { id:'1', name:'Hardrock Tower B — Electrical', gc:'Turner Construction', value:'$892,000', submitted:'May 15, 2026', status:'pending',   score:78 },
+    { id:'1', name:'Hardrock Tower B â€” Electrical', gc:'Turner Construction', value:'$892,000', submitted:'May 15, 2026', status:'pending',   score:78 },
     { id:'2', name:'Raiders Stadium Expansion',    gc:'Skanska USA',         value:'$1.2M',    submitted:'May 8, 2026',  status:'won',      score:91 },
     { id:'3', name:'UNLV Student Center',          gc:'McCarthy Building',   value:'$340,000', submitted:'Apr 22, 2026', status:'lost',     score:62 },
     { id:'4', name:'Allegiant Stadium Suite Fit',  gc:'Hensel Phelps',       value:'$156,000', submitted:'Apr 10, 2026', status:'pending',  score:74 },
@@ -475,7 +475,7 @@ function MyBidsTab({ user }: { user:any }) {
               <ScoreRing score={b.score} size={48}/>
               <div style={{ flex:1, minWidth:0 }}>
                 <div style={{ fontSize:13, fontWeight:600, color:T.fg, marginBottom:3, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{b.name}</div>
-                <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:T.fg4 }}>{b.gc} · {b.submitted}</div>
+                <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:10, color:T.fg4 }}>{b.gc} Â· {b.submitted}</div>
               </div>
               <div style={{ textAlign:'right', flexShrink:0 }}>
                 <div style={{ fontSize:13, fontWeight:700, color:T.fg, marginBottom:4 }}>{b.value}</div>
@@ -489,14 +489,14 @@ function MyBidsTab({ user }: { user:any }) {
   )
 }
 
-// ── OPPORTUNITIES TAB ─────────────────────────────────────────
+// â”€â”€ OPPORTUNITIES TAB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function OpportunitiesTab({ user }: { user:any }) {
   const opps = [
-    { id:'1', name:'MSG Sphere Phase 2 — Interior Electrical', type:'Casino/Entertainment', value:'$2.1M–$3.4M', gc:'Mortenson Construction', deadline:'Jun 15, 2026', source:'Clark County Permit', match:94, posted:'2 days ago' },
-    { id:'2', name:'Station Casinos Durango Expansion', type:'Casino', value:'$890K–$1.2M', gc:'Turner Construction', deadline:'Jun 22, 2026', source:'BuildingConnected', match:88, posted:'3 days ago' },
-    { id:'3', name:'UNLV Medical School Building', type:'Healthcare/Education', value:'$1.4M–$1.9M', gc:'Hensel Phelps', deadline:'Jul 1, 2026', source:'Nevada State Procurement', match:76, posted:'5 days ago' },
-    { id:'4', name:'Las Vegas Convention Center Renovation', type:'Commercial', value:'$420K–$680K', gc:'McCarthy Building Co', deadline:'Jun 30, 2026', source:'Clark County Permit', match:82, posted:'1 week ago' },
-    { id:'5', name:'Resorts World Pool Complex Electrical', type:'Casino/Hotel', value:'$280K–$390K', gc:'Skanska USA', deadline:'Jun 18, 2026', source:'PlanHub', match:71, posted:'1 week ago' },
+    { id:'1', name:'MSG Sphere Phase 2 â€” Interior Electrical', type:'Casino/Entertainment', value:'$2.1Mâ€“$3.4M', gc:'Mortenson Construction', deadline:'Jun 15, 2026', source:'Clark County Permit', match:94, posted:'2 days ago' },
+    { id:'2', name:'Station Casinos Durango Expansion', type:'Casino', value:'$890Kâ€“$1.2M', gc:'Turner Construction', deadline:'Jun 22, 2026', source:'BuildingConnected', match:88, posted:'3 days ago' },
+    { id:'3', name:'UNLV Medical School Building', type:'Healthcare/Education', value:'$1.4Mâ€“$1.9M', gc:'Hensel Phelps', deadline:'Jul 1, 2026', source:'Nevada State Procurement', match:76, posted:'5 days ago' },
+    { id:'4', name:'Las Vegas Convention Center Renovation', type:'Commercial', value:'$420Kâ€“$680K', gc:'McCarthy Building Co', deadline:'Jun 30, 2026', source:'Clark County Permit', match:82, posted:'1 week ago' },
+    { id:'5', name:'Resorts World Pool Complex Electrical', type:'Casino/Hotel', value:'$280Kâ€“$390K', gc:'Skanska USA', deadline:'Jun 18, 2026', source:'PlanHub', match:71, posted:'1 week ago' },
   ]
 
   return (
@@ -522,7 +522,7 @@ function OpportunitiesTab({ user }: { user:any }) {
               <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, fontWeight:700, color:T.mint, flexShrink:0 }}>{o.value}</div>
             </div>
             <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginBottom:10 }}>
-              <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, padding:'2px 8px', borderRadius:20, background:T.blueprintDim, color:T.blue }}>{o.type}</span>
+              <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, padding:'2px 8px', borderRadius:20, background:'rgba(111,168,255,0.12)', color:T.blue }}>{o.type}</span>
               <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, padding:'2px 8px', borderRadius:20, background:T.bgElev, color:T.fg4 }}>via {o.source}</span>
               <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:9, padding:'2px 8px', borderRadius:20, background:T.bgElev, color:T.fg4 }}>{o.posted}</span>
             </div>
@@ -544,7 +544,7 @@ function OpportunitiesTab({ user }: { user:any }) {
 
       <div style={{ padding:'16px 18px', background:T.bgCard, border:`1px solid ${T.borderSoft}`, borderRadius:14, textAlign:'center' }}>
         <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:T.fg4, marginBottom:8 }}>
-          Connected to: Clark County Permits · BuildingConnected · PlanHub · SAM.gov
+          Connected to: Clark County Permits Â· BuildingConnected Â· PlanHub Â· SAM.gov
         </div>
         <div style={{ fontSize:12, color:T.fg3 }}>Opportunities refresh every 24 hours based on your trade and market</div>
       </div>
@@ -552,7 +552,7 @@ function OpportunitiesTab({ user }: { user:any }) {
   )
 }
 
-// ── MAIN COMPONENT ────────────────────────────────────────────
+// â”€â”€ MAIN COMPONENT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function BidIntelligenceClient({ user, project }: Props) {
   const [activeTab, setActiveTab] = useState(0)
 
@@ -570,7 +570,7 @@ export function BidIntelligenceClient({ user, project }: Props) {
           The Bloomberg Terminal for Contractors
         </h1>
         <div style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:T.fg4 }}>
-          Find jobs · Score bids · Predict wins · Track outcomes
+          Find jobs Â· Score bids Â· Predict wins Â· Track outcomes
         </div>
       </div>
 
@@ -595,3 +595,4 @@ export function BidIntelligenceClient({ user, project }: Props) {
     </div>
   )
 }
+

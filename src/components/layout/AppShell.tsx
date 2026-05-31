@@ -48,7 +48,7 @@ const ADMIN = [
 ]
 
 const BOTTOM = [
-  { href: '/bids',         label: 'Bids',    Icon: TrendingUp      },
+  { href: '/bids',         label: 'Bids',    Icon: Briefcase      },
   { href: '/dashboard',    label: 'Home',    Icon: LayoutDashboard },
   { href: '/logs',         label: 'Log',     Icon: ClipboardList   },
   { href: '/changes',      label: 'COs',     Icon: FileText        },

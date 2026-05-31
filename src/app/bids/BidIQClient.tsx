@@ -282,7 +282,7 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
                 <div>
                   <label style={lbl}>General Contractor</label>
                   <select style={sel} value={gc} onChange={e=>setGc(e.target.value)}>
-                    {GC_LIS'#4FE3B5'(g=><option key={g}>{g}</option>)}
+                    {GC_LIST.map(g=><option key={g}>{g}</option>)}
                   </select>
                 </div>
                 {gc === 'Other' && (
@@ -601,4 +601,5 @@ Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
     </div>
   )
 }
+
 

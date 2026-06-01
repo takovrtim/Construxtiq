@@ -3,10 +3,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 
-// ── DESIGN SYSTEM ─────────────────────────────────────────────
-// Editorial / financial terminal aesthetic
-// Cream background, near-black text, electric amber accent
-// Fonts: Instrument Serif (display) + DM Mono (data) + Geist (body)
 const C = {
   cream:    '#FAF9F6',
   paper:    '#F4F2ED',
@@ -16,13 +12,11 @@ const C = {
   ink4:     '#9B9B91',
   amber:    '#E8A020',
   amberDim: 'rgba(232,160,32,0.12)',
-  amberBr:  'rgba(232,160,32,0.3)',
   green:    '#1A7A45',
   greenDim: 'rgba(26,122,69,0.1)',
   red:      '#C0392B',
   redDim:   'rgba(192,57,43,0.1)',
   blue:     '#1A3A8F',
-  blueDim:  'rgba(26,58,143,0.1)',
   border:   'rgba(14,14,12,0.1)',
   borderMd: 'rgba(14,14,12,0.18)',
 }
@@ -53,31 +47,28 @@ function BidScoreDemo() {
   }
 
   const checks = [
-    { label: 'Union wage rates verified', ok: true },
-    { label: 'Material escalation included', ok: true },
-    { label: 'Permit fees accounted', ok: true },
-    { label: 'Bonding requirement noted', ok: false, flag: 'Missing: Performance bond 100% contract value' },
-    { label: 'Prevailing wage clause', ok: false, flag: 'Clark County project — prevailing wage applies' },
+    { label: 'Union wage rates verified',    ok: true  },
+    { label: 'Material escalation included', ok: true  },
+    { label: 'Permit fees accounted',        ok: true  },
+    { label: 'Bonding requirement noted',    ok: false, flag: 'Missing: Performance bond 100% contract value' },
+    { label: 'Prevailing wage clause',       ok: false, flag: 'Clark County project — prevailing wage applies' },
   ]
 
   return (
     <div style={{ background: C.cream, border: `1px solid ${C.borderMd}`, borderRadius: 20, overflow: 'hidden', boxShadow: '0 32px 80px rgba(14,14,12,0.12)', fontFamily: "'DM Mono', monospace" }}>
-      {/* Terminal bar */}
       <div style={{ background: C.ink, padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 8 }}>
         <div style={{ display: 'flex', gap: 5 }}>
           {['#FF5F57','#FEBC2E','#28C840'].map((c,i) => <div key={i} style={{ width: 10, height: 10, borderRadius: '50%', background: c }}/>)}
         </div>
         <span style={{ flex: 1, textAlign: 'center', fontSize: 11, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em' }}>subiq — bid intelligence terminal</span>
       </div>
-
       <div style={{ padding: '24px 24px 20px' }}>
-        {/* Upload zone */}
         <div style={{ border: `2px dashed ${phase === 'idle' ? C.border : C.amber}`, borderRadius: 12, padding: '20px', marginBottom: 18, textAlign: 'center', background: phase !== 'idle' ? C.amberDim : 'transparent', transition: 'all 0.3s' }}>
           <div style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: C.ink3, marginBottom: 8 }}>
             {phase === 'idle' ? 'Bid Document' : phase === 'analyzing' ? 'Analyzing...' : 'Analysis Complete'}
           </div>
           <div style={{ fontSize: 13, fontWeight: 600, color: C.ink2, marginBottom: phase === 'idle' ? 12 : 0 }}>
-            {phase === 'idle' ? 'Hardrock Tower — Electrical Rough-In.pdf' : 'Hardrock Tower — Electrical Rough-In.pdf'}
+            Hardrock Tower — Electrical Rough-In.pdf
           </div>
           {phase === 'idle' && (
             <button onClick={run} style={{ marginTop: 4, padding: '8px 20px', fontSize: 12, fontWeight: 600, borderRadius: 8, cursor: 'pointer', border: `1.5px solid ${C.ink}`, background: C.ink, color: C.cream, fontFamily: 'inherit', letterSpacing: '0.05em' }}>
@@ -90,12 +81,10 @@ function BidScoreDemo() {
             </div>
           )}
         </div>
-
         {phase === 'done' && (
           <>
-            {/* Score */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, marginBottom: 16 }}>
-              <div style={{ gridColumn: '1', background: C.paper, border: `1px solid ${C.border}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center' }}>
+              <div style={{ background: C.paper, border: `1px solid ${C.border}`, borderRadius: 12, padding: '16px 14px', textAlign: 'center' }}>
                 <div style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.ink4, marginBottom: 8 }}>Win Score</div>
                 <div style={{ fontSize: 40, fontWeight: 700, color: C.amber, letterSpacing: '-2px', lineHeight: 1, fontFamily: "'Instrument Serif', serif" }}>{score}</div>
                 <div style={{ fontSize: 9, color: C.ink4, marginTop: 4 }}>out of 100</div>
@@ -111,9 +100,7 @@ function BidScoreDemo() {
                 <div style={{ fontSize: 10, color: C.ink4, marginTop: 3 }}>Market avg: 14.1%</div>
               </div>
             </div>
-
-            {/* Checks */}
-            <div style={{ marginBottom: 0 }}>
+            <div>
               <div style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.ink4, marginBottom: 10 }}>Bid Analysis</div>
               {checks.map((c, i) => (
                 <div key={i} style={{ marginBottom: 8 }}>
@@ -134,21 +121,21 @@ function BidScoreDemo() {
   )
 }
 
-// ── MARKET TICKER ─────────────────────────────────────────────
+// ── TICKER ────────────────────────────────────────────────────
 function MarketTicker() {
   const items = [
-    { label: 'ELEC · LAS VEGAS', val: '$89K–$97K', dir: 'up' },
-    { label: 'PLMB · LAS VEGAS', val: '$62K–$71K', dir: 'up' },
-    { label: 'ELEC · HENDERSON', val: '$74K–$83K', dir: 'down' },
-    { label: 'MECH · CLARK CO.',  val: '$118K–$134K', dir: 'up' },
-    { label: 'WIN RATE · ELEC',   val: '31%',     dir: 'neutral' },
-    { label: 'AVG MARGIN',        val: '14.1%',   dir: 'up' },
-    { label: 'BIDS THIS WEEK',    val: '247',     dir: 'up' },
-    { label: 'ACTIVE PROJECTS',   val: '1,842',   dir: 'up' },
+    { label: 'ELEC · LAS VEGAS', val: '$89K–$97K', dir: 'up'     },
+    { label: 'PLMB · LAS VEGAS', val: '$62K–$71K', dir: 'up'     },
+    { label: 'ELEC · HENDERSON', val: '$74K–$83K', dir: 'down'   },
+    { label: 'MECH · CLARK CO.', val: '$118K–$134K', dir: 'up'   },
+    { label: 'WIN RATE · ELEC',  val: '31%',       dir: 'neutral' },
+    { label: 'AVG MARGIN',       val: '14.1%',     dir: 'up'     },
+    { label: 'BIDS THIS WEEK',   val: '247',       dir: 'up'     },
+    { label: 'ACTIVE PROJECTS',  val: '1,842',     dir: 'up'     },
   ]
   return (
-    <div style={{ background: C.ink, padding: '10px 0', overflow: 'hidden', position: 'relative' }}>
-      <div style={{ display: 'flex', animation: 'ticker 40s linear infinite', width: 'max-content', gap: 0 }}>
+    <div style={{ background: C.ink, padding: '10px 0', overflow: 'hidden' }}>
+      <div style={{ display: 'flex', animation: 'ticker 40s linear infinite', width: 'max-content' }}>
         {[...items,...items,...items,...items].map((item, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 28px', borderRight: `1px solid rgba(255,255,255,0.08)` }}>
             <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.1em' }}>{item.label}</span>
@@ -192,77 +179,72 @@ function Reveal({ children, delay=0, dir='up' }: { children: React.ReactNode; de
   return <div ref={ref} style={{ opacity:vis?1:0, transform:t, transition:'opacity 0.7s ease, transform 0.7s ease' }}>{children}</div>
 }
 
-// ── MAIN PAGE ─────────────────────────────────────────────────
+// ── LOGO SVG ──────────────────────────────────────────────────
+function NavLogo({ size=28 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 32 32" width={size} height={size}>
+      <rect width="32" height="32" rx="7" fill="#FF6B1F"/>
+      <path d="M16 5L7 8.5V15.5C7 20.8 10.5 24.5 16 26.5C21.5 24.5 25 20.8 25 15.5V8.5L16 5Z" fill="rgba(0,0,0,0.2)"/>
+      <path d="M16 6.5L8.5 9.5V15.8C8.5 20.6 11.8 24 16 25.8C20.2 24 23.5 20.6 23.5 15.8V9.5L16 6.5Z" fill="white" fillOpacity="0.95"/>
+      <path d="M12 16.5L14.8 19.3L20.5 13" fill="none" stroke="#FF6B1F" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
+}
+
+// ── MAIN ──────────────────────────────────────────────────────
 export default function LandingPage() {
-  const [activeTab, setActiveTab] = useState(0)
-  const [hovered, setHovered] = useState<number|null>(null)
 
   const problems = [
-    { q: 'What should I bid?', a: 'SubIQ tells you the winning range in your market before you submit.' },
-    { q: 'Will I win this job?', a: 'Your bid score predicts win probability in 30 seconds.' },
-    { q: 'Am I making money?', a: 'Margin forecasting shows if a job is worth taking before you start.' },
-    { q: 'What did the GC approve?', a: 'Every verbal directive captured, timestamped, and sent back for confirmation.' },
+    { q: 'What did the GC approve?', a: 'Every verbal directive captured, timestamped, and sent back for GC confirmation. When Turner says they never approved it — you have proof.' },
+    { q: 'What should I bid?',       a: 'SubIQ tells you the winning range in your market before you submit a number.' },
+    { q: 'Will I win this job?',     a: 'Your bid score predicts win probability in 30 seconds.' },
+    { q: 'Am I making money?',       a: 'Margin forecasting shows if a job is worth taking before you start.' },
   ]
 
   const intelligence = [
-    { tag: 'BID', color: C.amber,   title: 'Bid Score',           desc: 'Upload any bid. Get win probability, market range comparison, risk flags, and missing requirements in 30 seconds.' },
-    { tag: 'MKT', color: C.blue,    title: 'Market Intelligence',  desc: 'See what bids are winning in your trade and market. Know the range before you submit a number.' },
-    { tag: 'CASH',color: C.green,   title: 'Cash Flow Forecast',   desc: 'Model payment timelines, retention release, and working capital before you commit to a job.' },
-    { tag: 'RISK', color: C.red,    title: 'Contract Risk Score',  desc: 'Upload any contract. AI flags pay-if-paid clauses, short notice windows, and liquidated damages before you sign.' },
-    { tag: 'FIELD',color: C.ink,    title: 'Verbal Directive Capture', desc: 'Record what the GC says on site. SubIQ transcribes it and sends an automated confirmation email within 60 seconds.' },
-    { tag: 'LEGAL',color: C.green,  title: 'Settlement Calculator', desc: 'When a dispute happens, SubIQ calculates exactly what you\'re owed from every logged delay, CO, and RFI.' },
+    { tag: 'FIELD', color: C.green, title: 'Verbal Directive Capture',  desc: 'Record what the GC says on site. SubIQ transcribes it and sends an automated confirmation email within 60 seconds. When Turner says they never approved it — you pull up the timestamp.', featured: true },
+    { tag: 'LEGAL', color: C.amber, title: 'Settlement Calculator',      desc: "When a dispute happens, SubIQ calculates exactly what you're owed from every logged delay, CO, and RFI. Walk into mediation with a number, not a gut feeling.", featured: true },
+    { tag: 'BID',   color: C.amber, title: 'Bid Score',                  desc: 'Upload any bid. Get win probability, market range comparison, risk flags, and missing requirements in 30 seconds.' },
+    { tag: 'MKT',   color: C.blue,  title: 'Market Intelligence',        desc: 'See what bids are winning in your trade and market. Know the range before you submit a number.' },
+    { tag: 'CASH',  color: C.green, title: 'Cash Flow Forecast',         desc: 'Model payment timelines, retention release, and working capital before you commit to a job.' },
+    { tag: 'RISK',  color: C.red,   title: 'Contract Risk Score',        desc: 'Upload any contract. AI flags pay-if-paid clauses, short notice windows, and liquidated damages before you sign.' },
   ]
 
   return (
-    <div style={{ fontFamily: "'Geist', 'DM Sans', -apple-system, sans-serif", background: C.cream, color: C.ink, overflowX: 'hidden' }}>
+    <div style={{ fontFamily: "'DM Sans', -apple-system, sans-serif", background: C.cream, color: C.ink, overflowX: 'hidden' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         ::selection { background: ${C.amber}; color: ${C.ink}; }
         html { scroll-behavior: smooth; }
         a { color: inherit; }
-
-        .nav-link { color: ${C.ink3}; text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.01em; transition: color 0.15s; }
+        .nav-link { color: ${C.ink3}; text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.15s; }
         .nav-link:hover { color: ${C.ink}; }
-
-        .tab-btn { cursor: pointer; font-family: inherit; transition: all 0.15s; background: none; border: none; }
-
         .feat-card { transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: default; }
         .feat-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(14,14,12,0.1); }
-
-        .cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; font-size: 14px; font-weight: 600; border-radius: 10px; cursor: pointer; text-decoration: none; font-family: inherit; letter-spacing: 0.01em; transition: all 0.15s; border: none; }
+        .cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; font-size: 14px; font-weight: 600; border-radius: 10px; cursor: pointer; text-decoration: none; font-family: inherit; transition: all 0.15s; border: none; }
         .cta-primary { background: ${C.ink}; color: ${C.cream}; }
-        .cta-primary:hover { background: ${C.ink2}; }
+        .cta-primary:hover { background: #2a2a26; }
         .cta-ghost { background: transparent; color: ${C.ink}; border: 1.5px solid ${C.borderMd}; }
         .cta-ghost:hover { background: ${C.paper}; }
-
-        /* Grid background */
-        .grid-bg {
-          background-image: linear-gradient(${C.border} 1px, transparent 1px), linear-gradient(90deg, ${C.border} 1px, transparent 1px);
-          background-size: 48px 48px;
-        }
-
-        @media (max-width: 768px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
-          .feat-grid { grid-template-columns: 1fr !important; }
-          .stats-grid { grid-template-columns: 1fr 1fr !important; }
-          .problems-grid { grid-template-columns: 1fr 1fr !important; }
-          .comp-cols { grid-template-columns: 1fr !important; }
+        .grid-bg { background-image: linear-gradient(${C.border} 1px, transparent 1px), linear-gradient(90deg, ${C.border} 1px, transparent 1px); background-size: 48px 48px; }
+        @media(max-width:768px){
+          .hero-grid{grid-template-columns:1fr!important;}
+          .feat-grid{grid-template-columns:1fr!important;}
+          .stats-grid{grid-template-columns:1fr 1fr!important;}
+          .problems-grid{grid-template-columns:1fr 1fr!important;}
+          .comp-cols{grid-template-columns:1fr!important;}
+          .featured-grid{grid-template-columns:1fr!important;}
         }
       `}</style>
 
-      {/* ── NAV ─────────────────────────────────────────────── */}
+      {/* NAV */}
       <nav style={{ position: 'sticky', top: 0, zIndex: 100, background: 'rgba(250,249,246,0.92)', backdropFilter: 'blur(20px)', borderBottom: `1px solid ${C.border}` }}>
         <div style={{ maxWidth: 1120, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 58 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 28, height: 28, background: C.ink, borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <svg viewBox="0 0 16 16" width={14} height={14} fill="none">
-                <path d="M8 1 2 3v4C2 10.5 4.5 13 8 14c3.5-1 6-3.5 6-7V3L8 1Z" fill={C.amber} stroke={C.amber} strokeWidth="0.8"/>
-                <path d="m5.5 8 2 2 3-4" fill="none" stroke={C.ink} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 9, textDecoration: 'none' }}>
+            <NavLogo size={28} />
             <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 15, fontWeight: 600, letterSpacing: '-0.03em', color: C.ink }}>SubIQ</span>
-          </div>
+          </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
             {['Intelligence','Pricing','About'].map(l => <a key={l} href={`#${l.toLowerCase()}`} className="nav-link">{l}</a>)}
           </div>
@@ -273,31 +255,27 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* ── HERO ─────────────────────────────────────────────── */}
+      {/* HERO */}
       <section className="grid-bg" style={{ padding: '100px 24px 80px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(900px 700px at 30% 0%, rgba(232,160,32,0.06), transparent 60%), radial-gradient(700px 500px at 80% 100%, rgba(26,58,143,0.04), transparent 60%)`, pointerEvents: 'none' }}/>
-
         <div style={{ maxWidth: 1120, margin: '0 auto', position: 'relative' }}>
-          {/* Eyebrow */}
           <Reveal>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: C.paper, border: `1px solid ${C.borderMd}`, borderRadius: 99, padding: '5px 14px 5px 8px', marginBottom: 32 }}>
               <div style={{ background: C.amber, borderRadius: 99, padding: '2px 8px', fontFamily: "'DM Mono', monospace", fontSize: 9, fontWeight: 600, color: C.ink, letterSpacing: '0.12em', textTransform: 'uppercase' }}>New</div>
               <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: C.ink3, letterSpacing: '0.06em' }}>Bid intelligence now available for electrical subs</span>
             </div>
           </Reveal>
-
           <div className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
             <div>
               <Reveal delay={60}>
                 <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 'clamp(44px, 5vw, 68px)', fontWeight: 400, lineHeight: 1.05, letterSpacing: '-1px', color: C.ink, marginBottom: 24 }}>
-                  Subcontractors are<br/>
-                  flying blind.<br/>
+                  Subcontractors are<br/>flying blind.<br/>
                   <span style={{ fontStyle: 'italic', color: C.amber }}>SubIQ gives them eyes.</span>
                 </h1>
               </Reveal>
               <Reveal delay={120}>
                 <p style={{ fontSize: 17, color: C.ink3, lineHeight: 1.75, marginBottom: 36, maxWidth: 480, fontFamily: "'DM Sans', sans-serif" }}>
-                  The first construction intelligence platform for subs. Know what to bid, predict your win probability, capture every GC directive, and protect every dollar — before it's too late.
+                  The first construction intelligence platform for subs. Know what to bid, win more jobs, and protect every dollar once you're on site — because the real money gets lost after you win.
                 </p>
               </Reveal>
               <Reveal delay={180}>
@@ -313,8 +291,8 @@ export default function LandingPage() {
                 <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
                   {[
                     { v: '74%', l: 'Average win score improvement' },
-                    { v: '30s', l: 'To score any bid' },
-                    { v: '$2M+', l: 'In documented disputes won' },
+                    { v: '30s', l: 'To score any bid'             },
+                    { v: '$2M+',l: 'In documented disputes won'   },
                   ].map(s => (
                     <div key={s.l}>
                       <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 28, fontWeight: 400, color: C.amber, letterSpacing: '-0.5px' }}>{s.v}</div>
@@ -324,18 +302,14 @@ export default function LandingPage() {
                 </div>
               </Reveal>
             </div>
-
-            <Reveal delay={100} dir="right">
-              <BidScoreDemo/>
-            </Reveal>
+            <Reveal delay={100} dir="right"><BidScoreDemo/></Reveal>
           </div>
         </div>
       </section>
 
-      {/* ── MARKET TICKER ────────────────────────────────────── */}
       <MarketTicker/>
 
-      {/* ── PROBLEM FRAMING ──────────────────────────────────── */}
+      {/* PROBLEMS */}
       <section style={{ padding: '100px 24px', background: C.ink, position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, backgroundImage: `repeating-linear-gradient(0deg,transparent 0,transparent 47px,rgba(255,255,255,0.02) 47px,rgba(255,255,255,0.02) 48px),repeating-linear-gradient(90deg,transparent 0,transparent 47px,rgba(255,255,255,0.02) 47px,rgba(255,255,255,0.02) 48px)`, pointerEvents: 'none' }}/>
         <div style={{ maxWidth: 1120, margin: '0 auto', position: 'relative' }}>
@@ -350,8 +324,8 @@ export default function LandingPage() {
           <div className="problems-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16 }}>
             {problems.map((p, i) => (
               <Reveal key={i} delay={i * 80}>
-                <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: '28px 22px', height: '100%' }}>
-                  <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'rgba(255,255,255,0.3)', marginBottom: 14, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Q{i+1}</div>
+                <div style={{ background: i === 0 ? 'rgba(232,160,32,0.06)' : 'rgba(255,255,255,0.04)', border: i === 0 ? '1px solid rgba(232,160,32,0.2)' : '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: '28px 22px', height: '100%' }}>
+                  <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: i === 0 ? C.amber : 'rgba(255,255,255,0.3)', marginBottom: 14, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Q{i+1}{i === 0 ? ' · Most costly' : ''}</div>
                   <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 20, color: C.cream, marginBottom: 14, lineHeight: 1.3, fontStyle: 'italic' }}>{p.q}</div>
                   <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 1.7 }}>{p.a}</div>
                 </div>
@@ -361,15 +335,15 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── STATS ────────────────────────────────────────────── */}
+      {/* STATS */}
       <section style={{ padding: '80px 24px', borderBottom: `1px solid ${C.border}` }}>
         <div style={{ maxWidth: 1120, margin: '0 auto' }}>
           <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)' }}>
             {[
-              { n: 247,  prefix: '', suffix: '',     label: 'Bids scored this week' },
-              { n: 74,   prefix: '', suffix: '%',    label: 'Average win score' },
-              { n: 30,   prefix: '', suffix: 's',    label: 'To score any bid' },
-              { n: 2000, prefix: '$', suffix: 'M+',  label: 'In protected disputes' },
+              { n: 247,  prefix: '',  suffix: '',    label: 'Bids scored this week'  },
+              { n: 74,   prefix: '',  suffix: '%',   label: 'Average win score'      },
+              { n: 30,   prefix: '',  suffix: 's',   label: 'To score any bid'       },
+              { n: 2000, prefix: '$', suffix: 'M+',  label: 'In protected disputes'  },
             ].map((s, i) => (
               <Reveal key={i} delay={i * 80}>
                 <div style={{ textAlign: 'center', padding: '32px 20px', borderRight: i < 3 ? `1px solid ${C.border}` : 'none' }}>
@@ -384,7 +358,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── INTELLIGENCE FEATURES ────────────────────────────── */}
+      {/* INTELLIGENCE */}
       <section id="intelligence" style={{ padding: '100px 24px', background: C.paper }}>
         <div style={{ maxWidth: 1120, margin: '0 auto' }}>
           <Reveal>
@@ -395,15 +369,33 @@ export default function LandingPage() {
               </h2>
             </div>
           </Reveal>
-          <div className="feat-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
-            {intelligence.map((f, i) => (
+
+          {/* Featured 2 */}
+          <div className="featured-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 14 }}>
+            {intelligence.filter(f => f.featured).map((f, i) => (
               <Reveal key={i} delay={i * 60}>
-                <div className="feat-card" style={{ background: C.cream, border: `1px solid ${C.border}`, borderLeft: `3px solid ${f.color}`, borderRadius: 16, padding: '28px 24px', height: '100%' }}>
+                <div className="feat-card" style={{ background: C.ink, border: `1px solid transparent`, borderLeft: `3px solid ${f.color}`, borderRadius: 16, padding: '36px 32px', height: '100%' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, fontWeight: 600, padding: '3px 9px', borderRadius: 99, background: `${f.color}22`, color: f.color, letterSpacing: '0.1em' }}>{f.tag}</span>
+                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color: 'rgba(250,249,246,0.3)', letterSpacing: '0.1em' }}>★ KEY PROTECTION</span>
+                  </div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 20, fontWeight: 700, color: C.cream, marginBottom: 12, letterSpacing: '-0.3px' }}>{f.title}</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: 'rgba(250,249,246,0.55)', lineHeight: 1.8 }}>{f.desc}</div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Standard 4 */}
+          <div className="feat-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 14 }}>
+            {intelligence.filter(f => !f.featured).map((f, i) => (
+              <Reveal key={i} delay={i * 60}>
+                <div className="feat-card" style={{ background: C.cream, border: `1px solid ${C.border}`, borderLeft: `3px solid ${f.color}`, borderRadius: 16, padding: '24px 20px', height: '100%' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
                     <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, fontWeight: 600, padding: '3px 9px', borderRadius: 99, background: `${f.color}18`, color: f.color, letterSpacing: '0.1em' }}>{f.tag}</span>
                   </div>
-                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 700, color: C.ink, marginBottom: 10, letterSpacing: '-0.3px' }}>{f.title}</div>
-                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: C.ink2, lineHeight: 1.75 }}>{f.desc}</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, fontWeight: 700, color: C.ink, marginBottom: 8, letterSpacing: '-0.3px' }}>{f.title}</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: C.ink2, lineHeight: 1.75 }}>{f.desc}</div>
                 </div>
               </Reveal>
             ))}
@@ -411,7 +403,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── COMPARISON ───────────────────────────────────────── */}
+      {/* COMPARISON */}
       <section style={{ padding: '100px 24px' }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <Reveal>
@@ -435,9 +427,9 @@ export default function LandingPage() {
               </div>
               <div style={{ background: C.ink, padding: '36px 32px' }}>
                 <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color: C.amber, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 20 }}>SubIQ</div>
-                {['Scores your bids before you submit','Predicts win probability in 30 seconds','Tells you what\'s about to happen','Starts at $149/month, built for subs','Your legal advisor on the job site'].map((t,i) => (
+                {["Scores your bids before you submit","Predicts win probability in 30 seconds","Tells you what's about to happen","Starts at $149/month, built for subs","Your legal advisor on the job site"].map((t,i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-                    <div style={{ width: 18, height: 18, borderRadius: '50%', background: C.amberDim, border: `1px solid ${C.amber}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <div style={{ width: 18, height: 18, borderRadius: '50%', background: 'rgba(232,160,32,0.12)', border: `1px solid ${C.amber}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       <svg width="8" height="8" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke={C.amber} strokeWidth="2.5" strokeLinecap="round"/></svg>
                     </div>
                     <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: 'rgba(250,249,246,0.8)' }}>{t}</span>
@@ -449,7 +441,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── PRICING ──────────────────────────────────────────── */}
+      {/* PRICING */}
       <section id="pricing" style={{ padding: '100px 24px', background: C.paper }}>
         <div style={{ maxWidth: 820, margin: '0 auto', textAlign: 'center' }}>
           <Reveal>
@@ -458,8 +450,8 @@ export default function LandingPage() {
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
             {[
-              { name: 'Starter', price: '$149', desc: 'Individual subs and small crews', features: ['Bid scoring — 10 bids/month','Change order protection','Delay tracker','RFI tracker','Daily log','Permit scanner'], hl: false },
-              { name: 'Intelligence', price: '$299', desc: 'Serious operators who want every edge', features: ['Unlimited bid scoring','Market intelligence data','Contract risk scanner','Verbal directive capture','Settlement calculator','GC reputation profiles'], hl: true },
+              { name: 'Starter',      price: '$149', desc: 'Individual subs and small crews',         features: ['Bid scoring — 10 bids/month','Change order protection','Delay tracker','RFI tracker','Daily log','Permit scanner'],           hl: false },
+              { name: 'Intelligence', price: '$299', desc: 'Serious operators who want every edge',    features: ['Unlimited bid scoring','Market intelligence data','Contract risk scanner','Verbal directive capture','Settlement calculator','GC reputation profiles'], hl: true  },
             ].map((p, i) => (
               <Reveal key={i} delay={i*100}>
                 <div style={{ background: p.hl ? C.ink : C.cream, border: `1px solid ${p.hl ? 'transparent' : C.borderMd}`, borderRadius: 20, padding: '36px 28px', textAlign: 'left', position: 'relative' }}>
@@ -486,7 +478,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── FINAL CTA ────────────────────────────────────────── */}
+      {/* FINAL CTA */}
       <section style={{ padding: '120px 24px', background: C.ink, textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, backgroundImage: `radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232,160,32,0.12), transparent 70%)`, pointerEvents: 'none' }}/>
         <Reveal>
@@ -508,12 +500,10 @@ export default function LandingPage() {
         </Reveal>
       </section>
 
-      {/* ── FOOTER ───────────────────────────────────────────── */}
+      {/* FOOTER */}
       <footer style={{ padding: '36px 24px', borderTop: `1px solid ${C.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16, background: C.cream }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-          <div style={{ width: 22, height: 22, background: C.ink, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg viewBox="0 0 16 16" width={11} height={11} fill="none"><path d="M8 1 2 3v4C2 10.5 4.5 13 8 14c3.5-1 6-3.5 6-7V3L8 1Z" fill={C.amber}/><path d="m5.5 8 2 2 3-4" fill="none" stroke={C.ink} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </div>
+          <NavLogo size={22} />
           <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 13, fontWeight: 600, color: C.ink }}>SubIQ</span>
           <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: C.ink4, marginLeft: 8 }}>Construction Intelligence</span>
         </div>
